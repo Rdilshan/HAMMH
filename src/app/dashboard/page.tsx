@@ -1,10 +1,38 @@
 'use client'
+
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import { OverviewCard } from '@/components/dashboard/HospitalOverview'
 import doctor from '../../../public/doctor.png'
 import Image from 'next/image'
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Dashboard() {
+  const data = {
+    labels: ['Male', 'Female'],
+    datasets: [
+      {
+        label: 'Gender Distribution',
+        data: [60, 40], // Adjust values as needed
+        backgroundColor: ['#36A2EB', '#FF6384'],
+        hoverBackgroundColor: ['#36A2EB', '#FF6384'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options: ChartOptions<'doughnut'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const, // Cast position as const to avoid type errors
+      },
+    },
+  };
+
   return (
     <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
@@ -54,26 +82,10 @@ export default function Dashboard() {
         </div>
 
         {/* Gender Distribution */}
-        <div className="flex-1">
-          <h2 className="text-xl font-bold mb-4">GENDER DISTRIBUTION</h2>
-          <div className="bg-white rounded-lg p-6 shadow-md text-center">
-            <div className="relative w-20 h-20">
-              <div className="absolute inset-0 rounded-full border-8 border-purple-500" />
-              <div className="absolute inset-0 rounded-full border-8 border-blue-500 border-l-transparent border-b-transparent rotate-45" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-bold">100%</span>
-              </div>
-            </div>
-            <div className="flex justify-center gap-8 mt-4">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-purple-500" />
-                <span>Female (60%)</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500" />
-                <span>Male (40%)</span>
-              </div>
-            </div>
+        <div className="flex-none">
+          <h2 className="text-xl font-bold mb-4">Gender Distribution</h2>
+          <div className="bg-white rounded-lg p-4 shadow-sm">
+            <Doughnut data={data} options={options} height={300} />
           </div>
         </div>
       </div>

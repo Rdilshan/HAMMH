@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.4.8",
+    "chart.js": "^4.4.6",
     "next": "15.0.2",
     "next-themes": "^0.4.3",
-    "react": "19.0.0-rc-02c0e824-20241028",
-    "react-dom": "19.0.0-rc-02c0e824-20241028"
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.13.3"
   },
   "devDependencies": {
     "@types/node": "^20",
