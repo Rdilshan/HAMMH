@@ -12,7 +12,7 @@ const DoctorRegister = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Handle form submission logic here
+    
     console.log({
       fullName,
       contactNumber,
@@ -26,7 +26,7 @@ const DoctorRegister = () => {
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
     if (file) {
-      setProfileImage(URL.createObjectURL(file)); // Preview the uploaded image
+      setProfileImage(URL.createObjectURL(file)); 
     }
   };
 
