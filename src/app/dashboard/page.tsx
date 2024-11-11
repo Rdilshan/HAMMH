@@ -3,6 +3,7 @@
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import { OverviewCard } from '@/components/dashboard/HospitalOverview'
 import doctor from '../../../public/doctor.png'
+import team from '../../../public/team.jpg'
 import Image from 'next/image'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
@@ -37,20 +38,25 @@ export default function Dashboard() {
     <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
       <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg">
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 h-48 flex items-center px-8 relative">
+        <div className="bg-gradient-to-r from-[#6800E9] to-[#3a0a73] h-48 flex items-center px-8 relative">
           <div className="absolute inset-0 bg-[url('/molecules-bg.png')] opacity-20" />
-          <div className="flex items-center gap-6 z-10">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          <div className="flex items-center justify-between gap-8 z-10">
+            <div className="w-40 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
               <Image
-                src={doctor}
+                src={team}
                 alt="Doctor"
                 className="w-full h-full object-cover"
               />
             </div>
+            <div>
             <h1 className="text-3xl font-bold text-white">YOUR HEALTH IS OUR PRIORITY</h1>
+            <p>We always give the best for you life and health. Let's take better care of our own health from and early age.</p>
+            </div>
+            
           </div>
         </div>
       </div>
+    
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -67,13 +73,14 @@ export default function Dashboard() {
       <div className="flex flex-col lg:flex-row gap-10">
         {/* Hospital Overview */}
         <div className="flex-1">
-          <h2 className="text-xl font-bold mb-4">HOSPITAL OVERVIEW</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <h2 className="text-xl font-bold mb-4 text-black">HOSPITAL OVERVIEW</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {[
               { title: "New Patients", count: 4, icon: "👤" },
               { title: "Admin Patients", count: 80, icon: "📋" },
               { title: "Clinic Patients", count: 500, icon: "🏥" },
               { title: "Injection Count", count: 500, icon: "💉" },
+              { title: "Risk Patient", count: 500, icon: "⚠️" },
               { title: "Risk Patient", count: 500, icon: "⚠️" },
             ].map((overview, index) => (
               <OverviewCard key={index} {...overview} />
@@ -83,7 +90,7 @@ export default function Dashboard() {
 
         {/* Gender Distribution */}
         <div className="flex-none">
-          <h2 className="text-xl font-bold mb-4">Gender Distribution</h2>
+          <h2 className="text-xl font-bold mb-4 text-black">Gender Distribution</h2>
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <Doughnut data={data} options={options} height={300} />
           </div>
