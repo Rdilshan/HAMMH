@@ -3,86 +3,117 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import type { MenuItem } from '@/types/types'
+import {
+  LayoutDashboard,
+  Users,
+  UserCog,
+  Stethoscope,
+  ClipboardCheck,
+  Syringe,
+  FileText,
+  LogOut,
+  ChevronRight
+} from 'lucide-react'
 
 export default function Sidebar() {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(true)
 
-  const menuItems: MenuItem[] = [
-    { title: 'Dashboard', path: '/dashboard', icon: '📊' },
-    { title: 'Patients', path: '/dashboard/patients', icon: '🏥' },
-    { title: 'Doctors', path: '/dashboard/doctors', icon: '👨‍⚕️' },
-    { title: 'Nurses', path: '/dashboard/nurses', icon: '👩‍⚕️' },
-    { title: 'Attendance', path: '/dashboard/attendance', icon: '📋' },
-    { title: 'Injections', path: '/dashboard/injections', icon: '💉' },
-    { title: 'Reports', path: '/dashboard/reports', icon: '📈' },
-    { title: 'Logout', path: '/logout', icon: '🚪' },
+  const menuItems = [
+    { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { title: 'Patients', path: '/dashboard/patients', icon: Users },
+    { title: 'Doctors', path: '/dashboard/doctors', icon: UserCog },
+    { title: 'Nurses', path: '/dashboard/nurses', icon: Stethoscope },
+    { title: 'Attendance', path: '/dashboard/attendance', icon: ClipboardCheck },
+    { title: 'Injection', path: '/dashboard/injection', icon: Syringe },
+    { title: 'Report', path: '/dashboard/report', icon: FileText },
   ]
 
   return (
-    <aside
-      className={`bg-white text-black fixed left-0 top-16 transition-all duration-300 ${
-        isCollapsed ? 'w-20' : 'w-64'
-      }`}
-      style={{ height: 'calc(100vh - 4rem)' }}
+    <aside 
+      className={`
+        fixed left-0 top-0 h-screen bg-white border-r border-gray-200
+        transition-all duration-300 ease-in-out
+        ${isExpanded ? 'w-64' : 'w-16'}
+      `}
     >
+      {/* Logo */}
+      <div className="h-16 flex items-center border-b border-gray-200 px-4">
+        <span className="text-purple-600 font-bold text-xl">
+          {isExpanded ? 'HOSPITAL' : 'H'}
+        </span>
+      </div>
+
       {/* Toggle Button */}
       <button
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className={`absolute -right-3 top-8 bg-indigo-600 text-white p-1 rounded-full shadow-lg hover:bg-indigo-700 transition-transform duration-300 ${
-          isCollapsed ? 'rotate-180' : ''
-        }`}
-        aria-label={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="absolute -right-3 top-20 bg-white border border-gray-200 rounded-full p-1.5 
+          hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
+        <ChevronRight 
+          className={`h-4 w-4 text-gray-600 transition-transform duration-300 
+            ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+        />
       </button>
 
       {/* Navigation Menu */}
-      <nav className="p-4 space-y-1">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.path
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`
-                flex items-center gap-3 px-4 py-3 rounded-lg transition-colors relative group
-                ${isActive ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}
-                ${isCollapsed ? 'justify-center' : ''}
-              `}
-            >
-              <span className="text-xl">{item.icon}</span>
-              {!isCollapsed && (
-                <span className="font-medium">{item.title}</span>
-              )}
-              {isCollapsed && (
-                <div className="
-                  absolute left-full ml-2 px-2 py-1 bg-gray-900 text-white text-sm
-                  rounded invisible opacity-0 group-hover:visible group-hover:opacity-100
-                  transition-opacity whitespace-nowrap z-50
-                ">
-                  {item.title}
-                </div>
-              )}
-              {isActive && !isCollapsed && (
-                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white"></span>
-              )}
-            </Link>
-          )
-        })}
+      <nav className="py-4 flex flex-col h-[calc(100vh-4rem)]">
+        <div className="flex-1 space-y-1">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.path
+            const Icon = item.icon
+            
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                className={`
+                  flex items-center h-12 px-4 relative group
+                  ${isActive ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:bg-gray-50'}
+                `}
+              >
+                <Icon className="h-5 w-5 min-w-[20px]" />
+                {isExpanded && (
+                  <span className="ml-4 text-sm font-medium whitespace-nowrap">
+                    {item.title}
+                  </span>
+                )}
+                {!isExpanded && (
+                  <div className="
+                    absolute left-16 px-3 py-2 bg-gray-800 text-white text-sm
+                    rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                    transition-all duration-200 whitespace-nowrap z-50
+                  ">
+                    {item.title}
+                  </div>
+                )}
+              </Link>
+            )
+          })}
+        </div>
+
+        {/* Logout Button */}
+        <Link
+          href="/logout"
+          className={`
+            flex items-center h-12 px-4 text-red-500 hover:bg-gray-50
+            ${!isExpanded && 'justify-center'}
+          `}
+        >
+          <LogOut className="h-5 w-5 min-w-[20px]" />
+          {isExpanded && (
+            <span className="ml-4 text-sm font-medium">Logout</span>
+          )}
+          {!isExpanded && (
+            <div className="
+              absolute left-16 px-3 py-2 bg-gray-800 text-white text-sm
+              rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible
+              transition-all duration-200 whitespace-nowrap z-50
+            ">
+              Logout
+            </div>
+          )}
+        </Link>
       </nav>
     </aside>
   )
