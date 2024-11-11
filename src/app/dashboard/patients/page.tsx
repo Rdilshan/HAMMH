@@ -1,5 +1,5 @@
 'use client'
-import { FaEye } from 'react-icons/fa';
+import { FaEye , FaEdit } from 'react-icons/fa';
 import { useState } from 'react';
 
 const PatientsDetails = () => {
@@ -61,7 +61,7 @@ const PatientsDetails = () => {
                 </button>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow">
+            <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow-sm">
                 <input
                     type="text"
                     placeholder={`Search by ${selectedCategory === 'All' ? 'Name or NIC' : selectedCategory}`}
@@ -88,7 +88,7 @@ const PatientsDetails = () => {
                 </button>
             </div>
 
-            <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
+            <div className="bg-white shadow-sm rounded-md overflow-x-auto p-4">
             <h2 className='text-[15px] font-bold text-black uppercase mb-3'>Details <span>(All)</span></h2> 
                 <table className="w-full table-auto text-left text-sm text-black">
                     <thead>
@@ -110,9 +110,9 @@ const PatientsDetails = () => {
                                     <td className="px-4 py-2 text-center">{patient.address}</td>
                                     <td className="px-4 py-2 text-center">
                                     <div className="flex items-center justify-center">
-                                            <button className="text-green-900">
-                                                <FaEye className="inline-block" /> 
-                                            </button>
+                                    <button className="text-yellow-600">
+                        <FaEdit />
+                      </button>
                                         </div>
                                     </td>
                                 </tr>
