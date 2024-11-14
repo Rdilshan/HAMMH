@@ -30,7 +30,7 @@ export default function Sidebar() {
     <aside 
       className="
         fixed left-0 top-0 h-screen bg-white border-r border-gray-200
-        w-16 sm:w-20 lg:w-64 transition-all duration-300 ease-in-out
+        w-14 sm:w-20 lg:w-64 transition-all duration-300 ease-in-out
       "
     >
       {/* Logo */}
