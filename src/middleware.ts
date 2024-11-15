@@ -5,10 +5,10 @@ import * as jose from "jose";
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 export async function middleware(request: NextRequest) {
-
   //exclude the /api/Auth route
   const routepath = request.nextUrl.pathname;
-  if(routepath == "/api/Auth"){
+
+  if (routepath == "/api/Auth") {
     return NextResponse.next();
   }
   const authHeader = request.headers.get("authorization");
@@ -25,10 +25,26 @@ export async function middleware(request: NextRequest) {
 
     const payloadData = decodedToken.payload.data as { role: string };
     const role: string = payloadData.role;
-    console.log(role);
+
+    // Allow access to these dynamic routes
+    if (
+      routepath.startsWith("/api/doctor/") ||
+      routepath.startsWith("/api/nurse/") 
+    ) {
+      return NextResponse.next(); 
+    }
+
+    //Block access doctor and nurse
+    if (role == "doctor" || "nurse") {
+      if (routepath == "/api/doctor" || "/api/Nurse/" || "/api/Admin") {
+        return NextResponse.json(
+          { message: "Unauthorized access" },
+          { status: 401 }
+        );
+      }
+    }
 
     return NextResponse.next();
-
   } catch (error) {
     return NextResponse.json(
       { message: "Invalid or expired token" },
@@ -42,4 +58,3 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: "/api/:path*",
 };
-
