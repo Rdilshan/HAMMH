@@ -7,7 +7,13 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const doctors = await prisma.user.findMany();
+    const doctors = await prisma.user.findMany(
+      {
+        where: {
+          role: "doctor",
+        },
+      }
+    );
     return NextResponse.json(doctors); // Return response here
   } catch (error) {
     console.error("Error fetching doctors:", error);
@@ -22,9 +28,8 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    const salt = genSaltSync(10);
+    const salt = genSaltSync(Number(process.env.PWD_SALT!));
     const hash = hashSync(data.password, salt);
-    // const hash = bcrypt.hashSync(, process.env.PWD_SALT!);
     const newDoctor = await prisma.user.create({
       data: {
         name: data.name,
