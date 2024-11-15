@@ -1,6 +1,6 @@
 'use client';
-import { FaEdit } from 'react-icons/fa'; 
-import { useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
+import { SetStateAction, useState } from 'react';
 
 const DoctorDetails = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -18,12 +18,31 @@ const DoctorDetails = () => {
         // Perform search logic here based on searchQuery and selectedCategory
     };
 
-    const handleCategoryChange = (e) => {
+    const handleCategoryChange = (e: { target: { value: SetStateAction<string>; }; }) => {
         setSelectedCategory(e.target.value);
     };
 
-    const handlePageChange = (pageNumber) => {
+    const handlePageChange = (pageNumber: SetStateAction<number>) => {
         setCurrentPage(pageNumber);
+    };
+
+    const getPageNumbers = () => {
+        const totalPages = 10;
+        let pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+            if (
+                i === 1 ||
+                i === totalPages ||
+                (i >= currentPage - 1 && i <= currentPage + 1)
+            ) {
+                pages.push(i);
+            } else if (i === currentPage - 2 || i === currentPage + 2) {
+                pages.push('...');
+            }
+        }
+        return pages.filter((item, index, array) => 
+            item === '...' ? array[index - 1] !== '...' : true
+        );
     };
 
     return (
@@ -54,8 +73,50 @@ const DoctorDetails = () => {
                 </div>
             </div>
 
-            <div className="bg-white text-black">
-                <h2>Details (All)</h2>
+            <div className="bg-white text-black p-4">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-lg font-medium">Details (All)</h2>
+                    
+                    <div className="flex items-center space-x-2">
+                        <button 
+                            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        
+                        {getPageNumbers().map((page, index) => (
+                            <button
+                                key={index}
+                                className={`
+                                    w-8 h-8 flex items-center justify-center rounded-lg
+                                    ${page === currentPage 
+                                        ? 'bg-purple-600 text-white' 
+                                        : 'text-gray-600 hover:bg-gray-100'}
+                                    ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}
+                                `}
+                                onClick={() => typeof page === 'number' ? handlePageChange(page) : null}
+                                disabled={page === '...'}
+                            >
+                                {page}
+                            </button>
+                        ))}
+
+                        <button 
+                            className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === 10}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
                 <table className="w-full table-auto">
                     <thead>
                         <tr>
@@ -63,7 +124,7 @@ const DoctorDetails = () => {
                             <th className="px-4 py-2 text-left">Nurse Name</th>
                             <th className="px-4 py-2 text-left">Contact Number</th>
                             <th className="px-4 py-2 text-left">Email</th>
-                            <th className="px-4 py-2 text-left">Action</th>
+                            <th className="px-4 py-2 text-left">Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,34 +143,6 @@ const DoctorDetails = () => {
                         ))}
                     </tbody>
                 </table>
-
-                <div className="flex justify-center mt-4">
-                    <button
-                        className="px-4 py-2 bg-purple-600 text-white rounded-md"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                    >
-                        Previous
-                    </button>
-                    {[...Array(10)].map((_, i) => (
-                        <button
-                            key={i}
-                            className={`px-4 py-2 mx-1 ${
-                                currentPage === i + 1 ? 'bg-purple-600 text-white' : 'bg-gray-100'
-                            } rounded-md`}
-                            onClick={() => handlePageChange(i + 1)}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
-                    <button
-                        className="px-4 py-2 bg-purple-600 text-white rounded-md"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === 10}
-                    >
-                        Next
-                    </button>
-                </div>
             </div>
         </div>
     );
