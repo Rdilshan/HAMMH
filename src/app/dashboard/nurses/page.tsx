@@ -73,10 +73,10 @@ const DoctorDetails = () => {
                 </div>
             </div>
 
-            <div className="bg-white text-black p-4">
+            <div className="bg-white text-black">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-medium">Details (All)</h2>
-                    
+                    <h2>Details (All)</h2>
+
                     <div className="flex items-center space-x-2">
                         <button 
                             className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50"
@@ -87,7 +87,7 @@ const DoctorDetails = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
-                        
+
                         {getPageNumbers().map((page, index) => (
                             <button
                                 key={index}
@@ -96,8 +96,7 @@ const DoctorDetails = () => {
                                     ${page === currentPage 
                                         ? 'bg-purple-600 text-white' 
                                         : 'text-gray-600 hover:bg-gray-100'}
-                                    ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}
-                                `}
+                                    ${page === '...' ? 'cursor-default hover:bg-transparent' : ''}`}
                                 onClick={() => typeof page === 'number' ? handlePageChange(page) : null}
                                 disabled={page === '...'}
                             >
