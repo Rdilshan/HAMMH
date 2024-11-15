@@ -13,6 +13,7 @@
     "@prisma/client": "^5.22.0",
     "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
+    "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
     "next": "15.0.2",
