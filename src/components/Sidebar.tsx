@@ -58,7 +58,7 @@ export default function Sidebar() {
 
       {/* Navigation Menu */}
       <nav className="py-4 flex flex-col h-[calc(100vh-4rem)]">
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-1 py-4">
           {menuItems.map((item) => {
             const isActive = pathname === item.path
             const Icon = item.icon
@@ -68,8 +68,8 @@ export default function Sidebar() {
                 key={item.path}
                 href={item.path}
                 className={`
-                  flex items-center h-12 px-4 relative group
-                  ${isActive ? 'text-purple-600 bg-purple-50' : 'text-gray-600 hover:bg-gray-50'}
+                  flex items-center h-12 px-4 relative group mx-2 rounded-lg
+                  ${isActive ? 'text-white bg-[#6800E9] font-medium' : 'text-gray-900 hover:bg-gray-50 font-medium'}
                 `}
               >
                 <Icon className="h-5 w-5 min-w-[20px]" />
