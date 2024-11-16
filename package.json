@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
+    "@prisma/client": "^5.22.0",
+    "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
+    "jose": "^5.9.6",
+    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
     "next": "15.0.2",
     "next-themes": "^0.4.3",
@@ -21,13 +25,16 @@
     "recharts": "^2.13.3"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^20.17.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8",
+    "prisma": "^5.22.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
   }
 }
