@@ -8,7 +8,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <Sidebar />
       <Navbar />
       <main className="ml-20 sm:ml-64 pt-16 pl-2">
-     
         {children}
       </main>
     </div>
