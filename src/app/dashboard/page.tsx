@@ -3,7 +3,6 @@
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import { OverviewCard } from '@/components/dashboard/HospitalOverview'
 import doctor from '../../../public/doctor.png'
-import team from '../../../public/team.jpg'
 import Image from 'next/image'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
@@ -37,13 +36,13 @@ export default function Dashboard() {
   return (
     <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
-      <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg">
+      <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:block">
         <div className="bg-gradient-to-r from-[#6800E9] to-[#3a0a73] h-48 flex items-center px-8 relative">
           <div className="absolute inset-0 bg-[url('/molecules-bg.png')] opacity-20" />
           <div className="flex items-center justify-between gap-8 z-10">
             <div className="w-40 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
               <Image
-                src={team}
+                src={doctor}
                 alt="Doctor"
                 className="w-full h-full object-cover"
               />
