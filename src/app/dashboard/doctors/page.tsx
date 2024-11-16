@@ -9,6 +9,8 @@ function DoctorProfilePage() {
   const rowsPerPage = 5;
 
   
+
+  
   const doctorData = [
     {
       id: "1",
