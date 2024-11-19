@@ -42,7 +42,8 @@ export async function middleware(request: NextRequest) {
 
     //Block access doctor and nurse
     if (role != "admin") {
-      if (routepath == "/api/doctor" || "/api/Nurse/" || "/api/Admin") {
+      
+      if (routepath == "/api/doctor" || routepath =="/api/Nurse/" || routepath =="/api/Admin") {
         return NextResponse.json(
           { message: "Unauthorized access here" },
           { status: 401 }

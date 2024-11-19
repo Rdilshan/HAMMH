@@ -20,6 +20,9 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
+    const authid = request.headers.get("x-user-id");
+    console.log(authid);
+
     if (
       !data.name ||
       !data.telephone ||
@@ -44,7 +47,7 @@ export async function POST(request: Request) {
         nic: data.nic,
         gender: data.gender,
         source_reffern: data.source_reffern,
-        created_by: 1,
+        created_by: Number(authid),
       },
     });
 
