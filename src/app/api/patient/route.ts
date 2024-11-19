@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export async function GET() {
   try {
     const patient = await prisma.patients.findMany();
-    return NextResponse.json(patient); // Return response here
+    return NextResponse.json(patient);
   } catch (error) {
     console.error("Error fetching patient:", error);
     return NextResponse.json(
@@ -22,43 +22,37 @@ export async function POST(request: Request) {
 
     if (
       !data.name ||
+      !data.telephone ||
       !data.address ||
+      !data.age ||
       !data.nic ||
-      typeof data.age !== "number"
+      !data.gender ||
+      !data.source_reffern
     ) {
       return NextResponse.json(
-        { error: "Missing or invalid required fields" },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
 
     const newPatient = await prisma.patients.create({
-        data: {
-          name: data.name,
-          telephone: data.telephone || null,
-          address: data.address,
-          age: data.age,
-          nic: data.nic,
-          source_referral: data.source_referral || null,
-          gender: data.gender,
-          created_by: data.created_by,
-          Clinic_session: data.condition || null, 
-          condition: data.condition || null, 
-          diagonsis: data.diagonsis || null, 
-          use_injection: data.use_injection || null,
-          inject_type: data.inject_type || null,
-          special_note: data.special_note || null
-        },
-      });
+      data: {
+        name: data.name,
+        telephone: data.telephone,
+        address: data.address,
+        age: data.age,
+        nic: data.nic,
+        gender: data.gender,
+        source_reffern: data.source_reffern,
+        created_by: 1,
+      },
+    });
 
-    return NextResponse.json(
-      { message: "success create patient" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: newPatient }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching patient:", error);
+    // console.log("Error fetching patient:", error);
     return NextResponse.json(
-      { error: "Failed to fetch patient" },
+      { msg: "Failed to fetch patient", error: error },
       { status: 500 }
     );
   }
