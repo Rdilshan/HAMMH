@@ -36,7 +36,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
-      <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:block">
+      <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:hidden md:block">
         <div className="bg-gradient-to-r from-[#6800E9] to-[#3a0a73] h-48 flex items-center px-8 relative">
           <div className="absolute inset-0 bg-[url('/molecules-bg.png')] opacity-20" />
           <div className="flex items-center justify-between gap-8 z-10">
