@@ -3,6 +3,7 @@
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import { OverviewCard } from '@/components/dashboard/HospitalOverview'
 import doctor from '../../../public/doctor.png'
+import avatar from '../../../public/avatar.png'
 import Image from 'next/image'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
@@ -36,34 +37,41 @@ export default function Dashboard() {
   return (
     <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
-      <div className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:block">
-        <div className="bg-gradient-to-r from-[#6800E9] to-[#3a0a73] h-48 flex items-center px-8 relative">
-          <div className="absolute inset-0 bg-[url('/molecules-bg.png')] opacity-20" />
+      <div
+        className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:hidden md:block"
+        style={{
+          backgroundImage: `url(${avatar.src})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="h-48 flex items-center px-8 relative">
           <div className="flex items-center justify-between gap-8 z-10">
-            <div className="w-40 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
+            <div className="w-20 h-20 sm:w-32 sm:h-32 md:w-22 md:h-22 lg:w-32 lg:h-32 rounded-full overflow-hidden border-4 border-white shadow-lg z-10">
               <Image
                 src={doctor}
                 alt="Doctor"
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
               />
             </div>
+
             <div>
-            <h1 className="text-3xl font-bold text-white">YOUR HEALTH IS OUR PRIORITY</h1>
-            <p>We always give the best for you life and health. Let's take better care of our own health from and early age.</p>
+              <h1 className="text-3xl font-bold text-white">YOUR HEALTH IS OUR PRIORITY</h1>
+              <p className="text-white">
+                We always give the best for your life and health. Let's take better care of our own health from an early age.
+              </p>
             </div>
-            
           </div>
         </div>
       </div>
-    
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[
-          { title: "Total Doctors", value: "10+", icon: "👨‍⚕️" },
-          { title: "Total Nurses", value: "20+", icon: "👩‍⚕️" },
-          { title: "Total Patients", value: "300+", icon: "🏥" },
-          { title: "Total Staff", value: "60+", icon: "👥" },
+          { name: "Doctor", title: "Total Doctors", value: "10+", icon: "👨‍⚕️" },
+          { name: "Nurse", title: "Total Nurses", value: "20+", icon: "👩‍⚕️" },
+          { name: "Patient", title: "Total Patients", value: "300+", icon: "🏥" },
+          { name: "Staff", title: "Total Staff", value: "60+", icon: "👥" },
         ].map((stat, index) => (
           <StatsCard key={index} {...stat} trend={80} />
         ))}
