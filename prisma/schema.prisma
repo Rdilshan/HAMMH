@@ -46,6 +46,7 @@ model Patients {
   injection_type String?
   special_note   String?
   Hospital_Admit Hospitaladmit[]
+  Injection Injection[]
   is_admit Choice @default(No)
   created_at     DateTime @default(now())
   Updated_at     DateTime @default(now())
@@ -68,6 +69,19 @@ model Hospitaladmit{
   discharge_date DateTime?
 }
 
+model Injection{
+  id Int @id @default(autoincrement())
+  doctorName String?
+  nurseName String?
+  socialWorkers String?
+  drugType String
+  Date DateTime
+  NextDate DateTime
+  Status InjectionType
+  patient Patients @relation(fields: [patient_id],references: [id])
+  patient_id Int
+}
+
 enum Gender {
   male
   female
@@ -82,4 +96,10 @@ enum Role {
   admin
   doctor
   nurse
+}
+
+enum InjectionType {
+  done 
+  processing
+
 }
