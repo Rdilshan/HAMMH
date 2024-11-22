@@ -1,6 +1,5 @@
 'use client'
-import { FaChevronDown, FaEdit } from 'react-icons/fa';
-
+import { FaEdit } from 'react-icons/fa';
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from 'react';
@@ -73,7 +72,7 @@ const PatientsDetails = () => {
                 <input
                     type="text"
                     placeholder={`Search by ${selectedCategory === 'All' ? 'Name or NIC' : selectedCategory}`}
-                    className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none"
+                    className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -93,7 +92,7 @@ const PatientsDetails = () => {
                 <table className="min-w-full text-left text-sm text-black">
                     <thead>
                         <tr className="border-b bg-[#F8F3FF]">
-                            <th className="px-4 py-3 text-center">Patient Name</th>
+                            <th className="px-4 py-3 text-left">Patient Name</th>
                             <th className="px-4 py-3 text-center hidden md:table-cell">NIC</th>
                             <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
                             <th className="px-4 py-3 text-center hidden md:table-cell">Address</th>
