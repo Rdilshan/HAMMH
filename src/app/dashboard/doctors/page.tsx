@@ -112,12 +112,7 @@ function DoctorProfilePage() {
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
-        <button
-          className="bg-purple-600 text-white rounded-md py-2 px-4 w-full md:w-auto"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
+       
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
