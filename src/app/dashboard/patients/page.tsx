@@ -53,15 +53,15 @@ const PatientsDetails = () => {
     };
 
     return (
-        <div className="px-4 py-4">
-            <div className='flex flex-col md:flex-row justify-between items-center mb-5'>
+        <div className="py-5 bg-[#F8F3FF] ">
+            <div className='flex flex-col md:flex-row justify-between items-center mb-5 '>
                 <h2 className='text-2xl font-bold text-black uppercase'>Patients Details</h2>
                 <button className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
                     Add New
                 </button>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow-sm">
+            <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow-sm ">
                 <input
                     type="text"
                     placeholder={`Search by ${selectedCategory === 'All' ? 'Name or NIC' : selectedCategory}`}
@@ -80,17 +80,12 @@ const PatientsDetails = () => {
                     <option value="Risk">Male</option>
                     <option value="Risk">Female</option>
                 </select>
-                <button
-                    className="bg-purple-600 text-white rounded-md py-2 px-4 w-full md:w-auto"
-                    onClick={handleSearch}
-                >
-                    Search
-                </button>
+               
             </div>
 
-            <div className="bg-white shadow-sm rounded-md overflow-x-auto p-4">
+            <div className="bg-white shadow-sm rounded-md overflow-x-auto p-4 ">
             <h2 className='text-[15px] font-bold text-black uppercase mb-3'>Details <span>(All)</span></h2> 
-                <table className="w-full table-auto text-left text-sm text-black">
+                <table className="min-w-full  text-left text-sm text-black ">
                     <thead>
                         <tr className="border-b bg-[#F8F3FF]">
                             <th className="px-4 py-3 text-center">Patient Name</th>
@@ -104,11 +99,12 @@ const PatientsDetails = () => {
                         {currentRows.length > 0 ? (
                             currentRows.map((patient, index) => (
                                 <tr key={index} className="border-b hover:bg-gray-50">
-                                    <td className="px-4 py-2 text-center">{patient.patientName}</td>
-                                    <td className="px-4 py-2 text-center">{patient.NIC}</td>
-                                    <td className="px-4 py-2 text-center">{patient.contactNumber}</td>
-                                    <td className="px-4 py-2 text-center">{patient.address}</td>
-                                    <td className="px-4 py-2 text-center">
+                                    <td className="px-4 py-6 text-center">{patient.patientName}</td>
+                                    <td className="px-4 py-6 text-center">{patient.NIC}</td>
+                                    <td className="px-4 py-6 text-center">{patient.address}</td>
+                                    <td className="px-4 py-6 text-center">{patient.contactNumber}</td>
+                                  
+                                    <td className="px-4 py-6 text-center">
                                     <div className="flex items-center justify-center">
                                     <button className="text-yellow-600">
                         <FaEdit />
@@ -126,7 +122,7 @@ const PatientsDetails = () => {
                 </table>
             </div>
 
-            <div className="flex justify-center items-center py-4">
+            <div className="flex justify-center items-center py-4 ">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <button
                         key={page}

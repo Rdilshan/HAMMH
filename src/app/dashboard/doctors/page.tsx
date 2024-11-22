@@ -83,7 +83,7 @@ function DoctorProfilePage() {
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 bg-[#F8F3FF]">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
         <h2 className="text-2xl font-bold text-black uppercase">
           Doctor Details
@@ -139,20 +139,20 @@ function DoctorProfilePage() {
             {currentRows.length > 0 ? (
               currentRows.map((doctor, index) => (
                 <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-4 text-center">
                     <img
                       src={doctor.profileImage}
                       alt={doctor.name}
                       className="w-10 h-10 rounded-full"
                     />
                   </td>
-                  <td className="px-4 py-2 text-center">{doctor.name}</td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-4 text-center">{doctor.name}</td>
+                  <td className="px-4 py-4 text-center">
                     {doctor.contactNumber}
                   </td>
-                  <td className="px-4 py-2 text-center">{doctor.specialist}</td>
-                  <td className="px-4 py-2 text-center">{doctor.gender}</td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-4 text-center">{doctor.specialist}</td>
+                  <td className="px-4 py-4 text-center">{doctor.gender}</td>
+                  <td className="px-4 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       
                       <button className="text-yellow-600">

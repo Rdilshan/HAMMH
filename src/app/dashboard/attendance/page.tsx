@@ -58,7 +58,7 @@ function Page() {
   };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 bg-[#F8F3FF]">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
         <h2 className="text-2xl font-bold text-black uppercase">Patients Attendance sheet</h2>
       </div>
@@ -79,7 +79,8 @@ function Page() {
         <h2 className="text-[15px] font-bold text-black uppercase mb-3">
           Patient Details
         </h2>
-        <table className="w-full table-auto text-left text-sm text-black">
+        <div className="overflow-x-auto">
+        <table className="min-w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
               <th className="px-4 py-3 text-center">Patient Name</th>
@@ -92,10 +93,10 @@ function Page() {
             {currentRows.length > 0 ? (
               currentRows.map((patient) => (
                 <tr key={patient.id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2 text-center">{patient.name}</td>
-                  <td className="px-4 py-2 text-center">{patient.contactNumber}</td>
-                  <td className="px-4 py-2 text-center">{patient.location}</td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-4 text-center">{patient.name}</td>
+                  <td className="px-4 py-4 text-center">{patient.contactNumber}</td>
+                  <td className="px-4 py-4 text-center">{patient.location}</td>
+                  <td className="px-4 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       <button className="text-green-900">
                         <FaEye className="inline-block" />
@@ -125,6 +126,7 @@ function Page() {
             {page}
           </button>
         ))}
+      </div>
       </div>
     </div>
   );
