@@ -132,7 +132,7 @@ function Page() {
               currentRows.map((patient, index) => (
                 <>
                   <tr
-                    key={patient.id}
+                   key={index}
                     className="border-b hover:bg-gray-50"
                   >
                     <td className="px-4 py-6 flex items-center gap-2">
