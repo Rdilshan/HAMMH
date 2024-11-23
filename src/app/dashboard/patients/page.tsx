@@ -124,7 +124,7 @@ const PatientsDetails = () => {
                                     </tr>
                                     {expandedRow === index && (
                                         <tr key={`expanded-${index}`}>
-                                            <td  className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                                            <td  className="px-4 py-4 bg-gray-50 text-sm text-gray-600 md:hidden">
                                                 <div className='flex items-center justify-between py-2'>
                                                     <p className='font-bold'>NIC</p>
                                                     <p>{patient.NIC}</p>

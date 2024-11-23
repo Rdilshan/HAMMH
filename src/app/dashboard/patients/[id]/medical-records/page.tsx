@@ -36,7 +36,7 @@ const MedicalRecordsGrid: React.FC = () => {
   return (
     <div className="w-full p-4">
       {/* Grid Layout */}
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
         {records.map((record: MedicalRecord) => (
           <div
             key={record.id}

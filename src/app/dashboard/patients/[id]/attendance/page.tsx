@@ -10,18 +10,18 @@ const AttendanceSheet = () => {
   ];
 
   return (
-    <div className="w-full max-w-3xl">
+    <div className="w-full ">
       {/* Next Clinic Date Notice */}
-      <div className="mb-6 p-4 bg-purple-50 rounded-lg">
-        <p className="text-purple-700">
+      <div className="mb-6 p-4 bg-red-500 rounded-lg">
+        <p className="text-white">
           Next Clinic date: <span className="font-semibold">11:27 AM Thursday, October 31, 2024</span>
         </p>
       </div>
 
       {/* Attendance Sheet Card */}
-      <div className="bg-white rounded-lg shadow-md">
+      <div className="bg-white rounded-lg shadow-lg">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-bold">ATTENDANCE SHEET</h2>
+          <h2 className="text-lg font-bold text-black">ATTENDANCE SHEET</h2>
         </div>
         <div className="p-6">
           <div className="grid grid-cols-2 gap-4">
@@ -33,9 +33,9 @@ const AttendanceSheet = () => {
                 <div className="text-gray-700">{record.date}</div>
                 <div>
                   {record.present ? (
-                    <Check className="text-green-500 w-5 h-5" />
+                    <Check className="text-white font-bold w-6 h-6 bg-red-500 rounded-full" />
                   ) : (
-                    <X className="text-red-500 w-5 h-5" />
+                    <X className=" w-6 h-6 bg-green-500 text-white rounded-full" />
                   )}
                 </div>
               </React.Fragment>
