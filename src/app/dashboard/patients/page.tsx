@@ -1,11 +1,14 @@
 'use client'
-import { FaEye , FaEdit } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
+import { BiSolidRightArrow } from "react-icons/bi";
+import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from 'react';
 
 const PatientsDetails = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
+    const [expandedRow, setExpandedRow] = useState<number | null>(null);
     const rowsPerPage = 5;
 
     const patientData = [
@@ -52,10 +55,14 @@ const PatientsDetails = () => {
         setCurrentPage(pageNumber);
     };
 
+    const toggleRow = (index: number) => {
+        setExpandedRow(expandedRow === index ? null : index);
+    };
+
     return (
-        <div className="px-4 py-4">
-            <div className='flex flex-col md:flex-row justify-between items-center mb-5'>
-                <h2 className='text-2xl font-bold text-black uppercase'>Patients Details</h2>
+        <div className="px-4 py-4 bg-[#F8F3FF]">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-5">
+                <h2 className="text-2xl font-bold text-black uppercase">Patients Details</h2>
                 <button className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
                     Add New
                 </button>
@@ -65,7 +72,7 @@ const PatientsDetails = () => {
                 <input
                     type="text"
                     placeholder={`Search by ${selectedCategory === 'All' ? 'Name or NIC' : selectedCategory}`}
-                    className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none"
+                    className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -75,47 +82,70 @@ const PatientsDetails = () => {
                     className="bg-[#F8F3FF] text-black rounded-md py-2 px-3 w-full md:w-1/4 mb-2 md:mb-0 md:mr-4"
                 >
                     <option value="All">All</option>
-                    <option value="Injection">Patient Name</option>
-                    <option value="Risk">NIC</option>
-                    <option value="Risk">Male</option>
-                    <option value="Risk">Female</option>
+                    <option value="Patient Name">Patient Name</option>
+                    <option value="NIC">NIC</option>
                 </select>
-                <button
-                    className="bg-purple-600 text-white rounded-md py-2 px-4 w-full md:w-auto"
-                    onClick={handleSearch}
-                >
-                    Search
-                </button>
             </div>
 
             <div className="bg-white shadow-sm rounded-md overflow-x-auto p-4">
-            <h2 className='text-[15px] font-bold text-black uppercase mb-3'>Details <span>(All)</span></h2> 
-                <table className="w-full table-auto text-left text-sm text-black">
+                <h2 className="text-[15px] font-bold text-black uppercase mb-3">Details <span>(All)</span></h2> 
+                <table className="min-w-full text-left text-sm text-black">
                     <thead>
                         <tr className="border-b bg-[#F8F3FF]">
-                            <th className="px-4 py-3 text-center">Patient Name</th>
-                            <th className="px-4 py-3 text-center">NIC</th>
-                            <th className="px-4 py-3 text-center">Contact Number</th>
-                            <th className="px-4 py-3 text-center">Address</th>
-                            <th className="px-4 py-3 text-center">Action</th>
+                            <th className="px-4 py-3 text-left">Patient Name</th>
+                            <th className="px-4 py-3 text-center hidden md:table-cell">NIC</th>
+                            <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
+                            <th className="px-4 py-3 text-center hidden md:table-cell">Address</th>
+                            <th className="px-4 py-3 text-center ">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentRows.length > 0 ? (
                             currentRows.map((patient, index) => (
-                                <tr key={index} className="border-b hover:bg-gray-50">
-                                    <td className="px-4 py-2 text-center">{patient.patientName}</td>
-                                    <td className="px-4 py-2 text-center">{patient.NIC}</td>
-                                    <td className="px-4 py-2 text-center">{patient.contactNumber}</td>
-                                    <td className="px-4 py-2 text-center">{patient.address}</td>
-                                    <td className="px-4 py-2 text-center">
-                                    <div className="flex items-center justify-center">
-                                    <button className="text-yellow-600">
-                        <FaEdit />
-                      </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <>
+                                    <tr key={index} className="border-b hover:bg-gray-50">
+                                        <td className="px-4 py-6 flex items-center gap-2 ">
+                                            <button
+                                                className="text-black md:hidden text-[15px]"
+                                                onClick={() => toggleRow(index)}
+                                            >
+                                                {expandedRow === index ? <BiSolidDownArrow /> :<BiSolidRightArrow />}
+                                            </button>
+                                            {patient.patientName}
+                                        </td>
+                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.NIC}</td>
+                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.contactNumber}</td>
+                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.address}</td>
+                                        <td className="px-4 py-6 text-center">
+                                            <button className="text-yellow-600">
+                                                <FaEdit />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {expandedRow === index && (
+                                        <tr key={`expanded-${index}`}>
+                                            <td  className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>NIC</p>
+                                                    <p>{patient.NIC}</p>
+
+                                                </div>
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>Contact</p>
+                                                    <p>{patient.contactNumber}</p>
+
+                                                </div>
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>Address</p>
+                                                    <p>{patient.address}</p>
+
+                                                </div>
+                                               
+                                                
+                                            </td>
+                                        </tr>
+                                    )}
+                                </>
                             ))
                         ) : (
                             <tr>

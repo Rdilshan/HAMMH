@@ -1,7 +1,9 @@
 "use client"
 
+import { FaEdit } from "react-icons/fa";
 import { FaEye } from 'react-icons/fa';
 import { useState } from 'react';
+import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 
 const patientData = [
   {
@@ -37,6 +39,7 @@ const patientData = [
 function Page() {
   const [selectedDate, setSelectedDate] = useState('2024-11-15'); 
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
   const handleDateChange = (e:any) => {
@@ -56,11 +59,14 @@ function Page() {
   const handlePageChange = (pageNumber:number) => {
     setCurrentPage(pageNumber);
   };
+  const toggleRow = (index: number) => {
+    setExpandedRow(expandedRow === index ? null : index);
+  };
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 bg-[#F8F3FF]">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold text-black uppercase">Patients Attendance sheet</h2>
+        <h2 className="text-2xl font-bold text-black text-center uppercase">Patients Attendance sheet</h2>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow-sm">
@@ -70,7 +76,7 @@ function Page() {
           onChange={handleDateChange}
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-1/3 mb-2 md:mb-0 text-black"
         />
-        <div className="text-xl font-bold text-red-950">
+        <div className="text-xl font-bold text-white bg-red-500 py-2 px-4 rounded">
           {filteredPatients.length} Patient{filteredPatients.length === 1 ? '' : 's'} for {selectedDate}
         </div>
       </div>
@@ -79,30 +85,66 @@ function Page() {
         <h2 className="text-[15px] font-bold text-black uppercase mb-3">
           Patient Details
         </h2>
-        <table className="w-full table-auto text-left text-sm text-black">
+        <div className="overflow-x-auto">
+        <table className="min-w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
               <th className="px-4 py-3 text-center">Patient Name</th>
-              <th className="px-4 py-3 text-center">Contact Number</th>
-              <th className="px-4 py-3 text-center">Location</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Location</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRows.length > 0 ? (
-              currentRows.map((patient) => (
-                <tr key={patient.id} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2 text-center">{patient.name}</td>
-                  <td className="px-4 py-2 text-center">{patient.contactNumber}</td>
-                  <td className="px-4 py-2 text-center">{patient.location}</td>
-                  <td className="px-4 py-2 text-center">
+              currentRows.map((patient,index) => (
+                <>
+                <tr key={index} className="border-b hover:bg-gray-50">
+                <td className="px-4 py-6 flex items-center gap-2">
+                      <button
+                        className="text-black md:hidden text-[15px]"
+                        onClick={() => toggleRow(index)}
+                      >
+                        {expandedRow === index ? (
+                          <BiSolidDownArrow />
+                        ) : (
+                          <BiSolidRightArrow />
+                        )}
+                      </button>
+                      {patient.name}
+                    </td>
+                  <td className="px-4 py-4 text-center hidden md:table-cell">{patient.contactNumber}</td>
+                  <td className="px-4 py-4 text-center hidden md:table-cell">{patient.location}</td>
+                  <td className="px-4 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       <button className="text-green-900">
-                        <FaEye className="inline-block" />
+                      <FaEdit />
                       </button>
                     </div>
                   </td>
                 </tr>
+                {expandedRow === index && (
+                    <tr key={`expanded-${patient.id}`}>
+                      <td
+                        className="px-4 py-4 bg-gray-50 text-sm text-gray-600"
+                       
+                      >
+                        <div className="flex flex-col gap-2">
+                          <div className="flex justify-between">
+                            <p className="font-bold">Contact Number</p>
+                            <p>{patient.contactNumber}</p>
+                          </div>
+                          <div className="flex justify-between">
+                            <p className="font-bold">Location</p>
+                            <p>{patient.location}</p>
+                          </div>
+                          
+                          
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </>
               ))
             ) : (
               <tr>
@@ -125,6 +167,7 @@ function Page() {
             {page}
           </button>
         ))}
+      </div>
       </div>
     </div>
   );

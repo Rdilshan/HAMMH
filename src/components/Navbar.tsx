@@ -143,7 +143,7 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
         type="button"
         aria-label="Toggle notifications"
       >
-        <Bell className="h-5 w-5 text-purple-600" />
+        <Bell className="h-5 w-5 text-black" />
         <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
           {unreadCount}
         </span>
@@ -152,11 +152,11 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
 
       {showNotifications && (
         <div className={`
-          bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden
+        bg-[#6800E9] rounded-lg shadow-lg border border-gray-100 overflow-hidden 
           ${isMobile ? 'w-full mt-2' : 'absolute right-0 mt-2 w-80'}
         `}>
           <div className="p-4 border-b border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800">Notifications</h3>
+            <h3 className="text-lg font-semibold text-white text-center">Notifications</h3>
           </div>
           <div className="max-h-96 overflow-y-auto">
             {notifications.map((notification) => (
@@ -168,8 +168,10 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
                 <div className="flex justify-between items-start">
                   <h4 className="text-sm font-semibold text-gray-800">{notification.title}</h4>
                   <span className="text-xs text-gray-500">{notification.time}</span>
+                 
                 </div>
                 <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                <hr />
               </div>
             ))}
           </div>

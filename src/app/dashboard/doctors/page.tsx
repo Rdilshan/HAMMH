@@ -1,11 +1,14 @@
 "use client";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { BiSolidRightArrow } from "react-icons/bi";
+import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
 
 function DoctorProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
   
@@ -81,9 +84,13 @@ function DoctorProfilePage() {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  const toggleRow = (index: number) => {
+    setExpandedRow(expandedRow === index ? null : index);
+};
+
 
   return (
-    <div className="px-4 py-4">
+    <div className="px-4 py-4 bg-[#F8F3FF]">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
         <h2 className="text-2xl font-bold text-black uppercase">
           Doctor Details
@@ -112,12 +119,7 @@ function DoctorProfilePage() {
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
-        <button
-          className="bg-purple-600 text-white rounded-md py-2 px-4 w-full md:w-auto"
-          onClick={handleSearch}
-        >
-          Search
-        </button>
+       
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
@@ -129,30 +131,38 @@ function DoctorProfilePage() {
             <tr className="border-b bg-[#F8F3FF]">
               <th className="px-4 py-3 text-center">Profile</th>
               <th className="px-4 py-3 text-center">Name</th>
-              <th className="px-4 py-3 text-center">Contact Number</th>
-              <th className="px-4 py-3 text-center">Specialist</th>
-              <th className="px-4 py-3 text-center">Gender</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Specialist</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Gender</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRows.length > 0 ? (
               currentRows.map((doctor, index) => (
+                <>
                 <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-2 text-center">
-                    <img
+                  <td className="px-4 py-6 flex items-center gap-2 ">
+                                            <button
+                                                className="text-black md:hidden text-[15px]"
+                                                onClick={() => toggleRow(index)}
+                                            >
+                                                {expandedRow === index ? <BiSolidDownArrow /> :<BiSolidRightArrow />}
+                                            </button>
+                                            <img
                       src={doctor.profileImage}
                       alt={doctor.name}
                       className="w-10 h-10 rounded-full"
                     />
-                  </td>
-                  <td className="px-4 py-2 text-center">{doctor.name}</td>
-                  <td className="px-4 py-2 text-center">
+                                        </td>
+                 
+                  <td className="px-4 py-4 text-center">{doctor.name}</td>
+                  <td className="px-4 py-4 text-center hidden md:table-cell">
                     {doctor.contactNumber}
                   </td>
-                  <td className="px-4 py-2 text-center">{doctor.specialist}</td>
-                  <td className="px-4 py-2 text-center">{doctor.gender}</td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.specialist}</td>
+                  <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.gender}</td>
+                  <td className="px-4 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       
                       <button className="text-yellow-600">
@@ -164,6 +174,31 @@ function DoctorProfilePage() {
                     </div>
                   </td>
                 </tr>
+
+                {expandedRow === index && (
+                                        <tr key={`expanded-${index}`}>
+                                            <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>Contact Number</p>
+                                                    <p>{doctor.contactNumber}</p>
+
+                                                </div>
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>Specialist</p>
+                                                    <p>{doctor.specialist}</p>
+
+                                                </div>
+                                                <div className='flex items-center justify-between py-2'>
+                                                    <p className='font-bold'>Gender</p>
+                                                    <p>{doctor.gender}</p>
+
+                                                </div>
+                                               
+                                                
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </>
               ))
             ) : (
               <tr>

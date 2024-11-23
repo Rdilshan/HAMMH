@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <Sidebar />
       <div className="flex flex-col flex-grow">
         <Navbar />
-        <main className="ml-14 sm:ml-64 pt-16 pl-1">
+        <main className="ml-14 md:ml-64 pt-16 pl-1">
           {children}
         </main>
       </div>

@@ -21,7 +21,7 @@ export default function Sidebar() {
     { title: 'Doctors', path: '/dashboard/doctors', icon: UserCog },
     { title: 'Nurses', path: '/dashboard/nurses', icon: Stethoscope },
     { title: 'Attendance', path: '/dashboard/attendance', icon: ClipboardCheck },
-    { title: 'Injection', path: '/dashboard/injections', icon: Syringe },
+    { title: 'Injection', path: '/dashboard/injection', icon: Syringe },
     { title: 'Report', path: '/dashboard/report', icon: FileText },
   ]
 
@@ -53,7 +53,7 @@ export default function Sidebar() {
                 href={item.path}
                 className={`
                   flex items-center h-12 px-4 relative group
-                  ${isActive ? 'text-white bg-[#6800E9] font-medium' : 'text-gray-600 hover:bg-gray-50'}
+                  ${isActive ? 'text-white bg-[#6800E9] font-medium ' : 'text-gray-600 hover:bg-gray-50'}
                 `}
               >
                 <Icon className="h-5 w-5 min-w-[20px]" />
