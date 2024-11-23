@@ -11,6 +11,7 @@
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
     "@prisma/client": "^5.22.0",
+    "@react-google-maps/api": "^2.20.3",
     "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
     "jose": "^5.9.6",
