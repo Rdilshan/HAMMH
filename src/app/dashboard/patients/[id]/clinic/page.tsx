@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Calendar } from 'lucide-react';
+
 
 const PrescriptionUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -20,10 +20,10 @@ const PrescriptionUpload = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="space-y-6">
         <div className="text-center mb-4">
-          <h2 className="text-lg font-semibold mb-2">ADD PRESCRIPTION IMAGE</h2>
+          <h2 className="text-lg font-semibold mb-2 text-black">ADD PRESCRIPTION IMAGE</h2>
         </div>
 
         {/* Upload Area */}
@@ -35,7 +35,7 @@ const PrescriptionUpload = () => {
             accept=".png,.jpg,.jpeg"
             onChange={handleFileUpload}
           />
-          <p className="text-gray-600 mb-2">Upload Prescription Image in here</p>
+          <p className="text-black mb-2">Upload Prescription Image in here</p>
           <p className="text-sm text-gray-400 mb-4">File Supported: png,jpg,jpeg</p>
           <p className="text-gray-500 mb-4">OR</p>
           <button
@@ -55,9 +55,9 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={clinicDate}
                 onChange={(e) => setClinicDate(e.target.value)}
-                className="w-full p-2 border border-gray-200 rounded-lg pr-10"
+                className="w-full p-2 border border-gray-200 rounded-lg pr-10 text-gray-500"
               />
-              <Calendar className="absolute right-3 top-2.5 text-gray-400 h-5 w-5" />
+             
             </div>
           </div>
 
@@ -68,9 +68,9 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={nextClinicDate}
                 onChange={(e) => setNextClinicDate(e.target.value)}
-                className="w-full p-2 border border-gray-200 rounded-lg pr-10"
+                className="w-full p-2 border border-gray-200 rounded-lg pr-10 text-gray-500"
               />
-              <Calendar className="absolute right-3 top-2.5 text-gray-400 h-5 w-5" />
+              
             </div>
           </div>
         </div>
