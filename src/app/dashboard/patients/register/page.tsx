@@ -22,7 +22,7 @@ const PatientRegister = () => {
       sourceOfReferral,
     });
   };
-
+//ugug
   return (
     <div className="px-6 py-4 text-black">
       <h2 className="text-2xl font-bold mb-4">PATIENT REGISTER</h2>
