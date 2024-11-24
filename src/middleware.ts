@@ -57,7 +57,7 @@ export async function middleware(request: NextRequest) {
     
   } catch (error) {
     return NextResponse.json(
-      { message: "Invalid or expired token" },
+      { message: "Invalid or expired token",error:error },
       { status: 403 }
     );
   }

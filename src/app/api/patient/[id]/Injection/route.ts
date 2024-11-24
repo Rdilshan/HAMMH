@@ -55,7 +55,7 @@ export async function POST(
         );
       }
     
-    const updateinjection = await prisma.injection.updateMany({
+    await prisma.injection.updateMany({
       where: { patient_id: Number(id), Status: "processing" }, 
       data: { Status: "done" },
     });

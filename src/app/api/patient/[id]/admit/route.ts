@@ -41,7 +41,7 @@ export async function POST(
       );
     }
 
-    const records = await prisma.hospitaladmit.create({
+    await prisma.hospitaladmit.create({
       data: {
         ward: data.ward,
         BHT_no: data.BHT_no,
@@ -92,7 +92,7 @@ export async function PUT(
       where: { id: Number(id), is_admit: "Yes" },
     });
     if (checkingData.length > 0) {
-      const records = await prisma.hospitaladmit.update({
+      await prisma.hospitaladmit.update({
         where: { id: Number(data.admit_id) },
         data: {
           made_of_discharge: data.made_of_discharge,

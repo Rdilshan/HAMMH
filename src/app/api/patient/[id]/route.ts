@@ -34,7 +34,7 @@ export async function DELETE(request: Request,
 ) {
     try {
         const id = (await params).id; 
-        const patients = await prisma.patients.delete({
+        await prisma.patients.delete({
             where: {
                 id: Number(id)
             },
@@ -55,7 +55,7 @@ export async function PUT(request: Request,
     try {
         const id = (await params).id; 
         const data = await request.json();
-        const patients = await prisma.patients.update({
+         await prisma.patients.update({
             where: {
                 id: Number(id)
             },

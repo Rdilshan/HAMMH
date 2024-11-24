@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     const salt = genSaltSync(Number(process.env.PWD_SALT!));
     const hash = hashSync(data.password, salt);
-    const newDoctor = await prisma.user.create({
+     await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,

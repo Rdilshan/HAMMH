@@ -31,7 +31,7 @@ export async function POST(
     const data = await request.json();
     const id = (await params).id;
 
-    const records = await prisma.clinic.create({
+    await prisma.clinic.create({
       data: {
         Images: data.Images,
         clinc_data: data.clinc_data,
@@ -54,13 +54,11 @@ export async function POST(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  request: Request
 ) {
   try {
     const data = await request.json();
-    const id = (await params).id;
-    const deleteclinic = await prisma.clinic.delete({
+    await prisma.clinic.delete({
       where: {
         id: data.id,
       },
