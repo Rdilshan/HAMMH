@@ -42,12 +42,12 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
   const activeItem = navItems.find(item => pathname === item.href)
 
   return (
-    <div className="w-full max-w-5xl mx-auto bg-white rounded-full shadow-sm p-1.5">
+    <div className="w-full max-w-5xl mx-auto bg-white rounded-md shadow-md p-1.5">
       {/* Mobile View - Dropdown */}
       <div className="relative md:hidden">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-6 py-2 text-sm font-medium rounded-full border border-gray-200 bg-white text-gray-700 flex items-center justify-between"
+          className="w-full px-6 py-2 text-sm font-medium rounded-md border border-gray-200 bg-white text-gray-700 flex items-center justify-between"
         >
           <span>{activeItem?.label || 'Menu'}</span>
           <svg
@@ -67,7 +67,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 py-1 bg-white rounded-lg shadow-lg border border-gray-100 z-50">
+          <div className="absolute top-full left-0 right-0 mt-1 py-1 bg-white rounded-md shadow-lg border border-gray-100 z-50">
             {navItems.map((item) => {
               const isActive = pathname === item.href
               return (
@@ -79,7 +79,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
                     block px-4 py-2 text-sm transition-colors
                     ${
                       isActive
-                        ? 'bg-violet-50 text-violet-600'
+                        ? 'bg-violet-50 text-violet-600 rounded-md'
                         : 'text-gray-500 hover:bg-gray-50 hover:text-gray-700'
                     }
                   `}
@@ -101,7 +101,7 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
               key={item.href}
               href={item.href}
               className={`
-                px-6 py-2 text-sm font-medium rounded-full transition-colors
+                px-6 py-2 text-sm font-medium rounded-md transition-colors
                 ${
                   isActive
                     ? 'bg-violet-600 text-white'

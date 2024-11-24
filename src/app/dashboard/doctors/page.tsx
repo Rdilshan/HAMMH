@@ -3,6 +3,7 @@ import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 function DoctorProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -10,6 +11,8 @@ function DoctorProfilePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
+
+  const router = useRouter();
 
   
 
@@ -95,7 +98,10 @@ function DoctorProfilePage() {
         <h2 className="text-2xl font-bold text-black uppercase">
           Doctor Details
         </h2>
-        <button className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
+        <button
+        onClick={() => router.push('/dashboard/doctors/register')}
+        
+        className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
           Add New Doctor
         </button>
       </div>
