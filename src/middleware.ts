@@ -23,31 +23,41 @@ export async function middleware(request: NextRequest) {
   try {
     const decodedToken = await jose.jwtVerify(token, secret);
 
-    const payloadData = decodedToken.payload.data as { role: string };
+    const payloadData = decodedToken.payload.data as {
+      role: string;
+      id: string;
+    };
     const role: string = payloadData.role;
+    const userid: string = payloadData.id;
 
     // Allow access to these dynamic routes
     if (
       routepath.startsWith("/api/doctor/") ||
-      routepath.startsWith("/api/nurse/") 
+      routepath.startsWith("/api/Nurse/")
     ) {
-      return NextResponse.next(); 
+      const response = NextResponse.next();
+      response.headers.set("x-user-id", userid); 
+      return response;
     }
 
     //Block access doctor and nurse
-    if (role == "doctor" || "nurse") {
-      if (routepath == "/api/doctor" || "/api/Nurse/" || "/api/Admin") {
+    if (role != "admin") {
+      
+      if (routepath == "/api/doctor" || routepath =="/api/Nurse/" || routepath =="/api/Admin") {
         return NextResponse.json(
-          { message: "Unauthorized access" },
+          { message: "Unauthorized access here" },
           { status: 401 }
         );
       }
     }
 
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set("x-user-id", userid); 
+    return response;
+    
   } catch (error) {
     return NextResponse.json(
-      { message: "Invalid or expired token" },
+      { message: "Invalid or expired token",error:error },
       { status: 403 }
     );
   }

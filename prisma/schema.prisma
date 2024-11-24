@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id             Int      @id @default(autoincrement())
-  email          String   @unique
+  id             Int        @id @default(autoincrement())
+  email          String     @unique
   name           String
   role           Role
   telephone      String
@@ -23,8 +23,78 @@ model User {
   profile        String?
   gender         Gender
   password       String
-  created_at     DateTime @default(now())
-  Updated_at     DateTime @default(now())
+  created_at     DateTime   @default(now())
+  Updated_at     DateTime   @default(now())
+  Patients       Patients[]
+}
+
+model Patients {
+  id             Int             @id @default(autoincrement())
+  name           String
+  telephone      String?
+  address        String
+  age            Int
+  nic            String
+  gender         Gender
+  source_reffern String
+  creator        User            @relation(fields: [created_by], references: [id])
+  created_by     Int
+  clinic_session String?
+  condition      String?
+  diagonsis      String?
+  use_injection  Choice?
+  injection_type String?
+  special_note   String?
+  Hospital_Admit Hospitaladmit[]
+  Injection      Injection[]
+  Clinc          Clinic[]
+  is_admit       Choice          @default(No)
+  created_at     DateTime        @default(now())
+  Updated_at     DateTime        @default(now())
+}
+
+model Hospitaladmit {
+  id                  Int       @id @default(autoincrement())
+  ward                String
+  BHT_no              String
+  principal_diagnosis String
+  procedures          String
+  mode_of_admission   String
+  special_note        String
+  made_of_discharge   String?
+  dischagre_note      String?
+  patient             Patients  @relation(fields: [patient_id], references: [id])
+  patient_id          Int
+  admit_date          DateTime
+  discharge_date      DateTime?
+}
+
+model Injection {
+  id            Int           @id @default(autoincrement())
+  doctorName    String?
+  nurseName     String?
+  socialWorkers String?
+  drugType      String
+  Date          DateTime
+  NextDate      DateTime
+  Status        InjectionType
+  patient       Patients      @relation(fields: [patient_id], references: [id])
+  patient_id    Int
+}
+
+model Clinic {
+  id         Int      @id @default(autoincrement())
+  Images     String
+  clinc_data DateTime
+  next_data  DateTime
+  patient    Patients @relation(fields: [patient_id], references: [id])
+  patient_id Int
+  status     Attence  @default(booking)
+}
+model Diagonsis {
+  id Int @id @default(autoincrement())
+  name String
+  Icd_code String? 
 }
 
 enum Gender {
@@ -32,8 +102,24 @@ enum Gender {
   female
 }
 
+enum Choice {
+  Yes
+  No
+}
+
 enum Role {
   admin
   doctor
   nurse
+}
+
+enum InjectionType {
+  done
+  processing
+}
+
+enum Attence {
+  Not_attence
+  Attend
+  booking
 }
