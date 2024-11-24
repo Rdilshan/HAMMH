@@ -3,6 +3,7 @@ import { FaEdit } from 'react-icons/fa';
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const PatientsDetails = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -24,9 +25,9 @@ const PatientsDetails = () => {
         { patientName: 'Ishara Kumara', NIC: '20003218765', contactNumber: '0768765432', address: 'Gampaha' },
     ];
 
-    const handleSearch = () => {
-        setCurrentPage(1);
-    };
+
+    
+       
 
     const handleCategoryChange = (e: any) => {
         setSelectedCategory(e.target.value);
@@ -59,11 +60,16 @@ const PatientsDetails = () => {
         setExpandedRow(expandedRow === index ? null : index);
     };
 
+    const router = useRouter();
+      
+
     return (
         <div className="px-4 py-4 bg-[#F8F3FF]">
             <div className="flex flex-col md:flex-row justify-between items-center mb-5">
                 <h2 className="text-2xl font-bold text-black uppercase">Patients Details</h2>
-                <button className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
+                <button 
+               onClick={() => router.push('/dashboard/patients/register')}
+                className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
                     Add New
                 </button>
             </div>
@@ -117,7 +123,9 @@ const PatientsDetails = () => {
                                         <td className="px-4 py-6 text-center hidden md:table-cell">{patient.contactNumber}</td>
                                         <td className="px-4 py-6 text-center hidden md:table-cell">{patient.address}</td>
                                         <td className="px-4 py-6 text-center">
-                                            <button className="text-yellow-600">
+                                            <button className="text-yellow-600"
+                                            onClick={() => router.push(`/dashboard/patients/${patient.NIC}`)}
+                                            >
                                                 <FaEdit />
                                             </button>
                                         </td>

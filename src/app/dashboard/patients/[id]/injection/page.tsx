@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from 'react-icons/bi';
+import { useRouter } from 'next/navigation';
 
 const InjectionRecordsSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +33,7 @@ const InjectionRecordsSection = () => {
   };
 
   const nextInjectionDate = '11:27 AM, Thursday, October 31, 2024';
+  const router = useRouter();
 
   return (
     <div className="p-6 space-y-6">
@@ -47,7 +49,9 @@ const InjectionRecordsSection = () => {
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-semibold text-gray-800">INJECTION RECORDS</h2>
-          <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
+          <button
+           onClick={() => router.push('/dashboard/patients/20007876887/injection/responsibility')}
+          className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
             Add new records
           </button>
         </div>

@@ -24,10 +24,10 @@ const PatientRegister = () => {
   };
 //ugug
   return (
-    <div className="px-6 py-4 text-black">
+    <div className="px-6 py-4 text-black ">
       <h2 className="text-2xl font-bold mb-4">PATIENT REGISTER</h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4 bg-white p-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 p-4 bg-white p-4 shadow-md rounded-md">
           <div>
             <label htmlFor="fullName" className="block mb-2">
               Full Name
@@ -36,7 +36,7 @@ const PatientRegister = () => {
               type="text"
               id="fullName"
               placeholder="Enter full name of patient"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="w-full bg-[#F8F3FF] rounded-md py-2 px-4"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -49,7 +49,7 @@ const PatientRegister = () => {
               type="text"
               id="contactNumber"
               placeholder="Enter Contact Number"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="w-full bg-[#F8F3FF] rounded-md py-2 px-4"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
             />
@@ -62,7 +62,7 @@ const PatientRegister = () => {
               type="text"
               id="address"
               placeholder="Enter the address"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="w-full bg-[#F8F3FF] rounded-md py-2 px-4"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
@@ -75,7 +75,7 @@ const PatientRegister = () => {
               type="number"
               id="age"
               placeholder="Enter the age"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="w-full bg-[#F8F3FF] rounded-md py-2 px-4"
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
@@ -88,7 +88,7 @@ const PatientRegister = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="w-full bg-[#F8F3FF] rounded-md py-2 px-4"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
