@@ -2,6 +2,9 @@
   "name": "hammh",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "seed": "node prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
