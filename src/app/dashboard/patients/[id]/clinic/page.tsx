@@ -55,7 +55,7 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={clinicDate}
                 onChange={(e) => setClinicDate(e.target.value)}
-                className="w-full p-2 border border-gray-200 rounded-lg pr-10 text-gray-500"
+                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               />
              
             </div>
@@ -68,7 +68,7 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={nextClinicDate}
                 onChange={(e) => setNextClinicDate(e.target.value)}
-                className="w-full p-2 border border-gray-200 rounded-lg pr-10 text-gray-500"
+                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               
             </div>

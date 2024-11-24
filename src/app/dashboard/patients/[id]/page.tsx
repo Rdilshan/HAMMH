@@ -112,7 +112,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -133,7 +133,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -154,7 +154,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -175,7 +175,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -195,7 +195,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -214,7 +214,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
               placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-purple-500 transition duration-150"
+              focus:ring-gray-400 transition duration-150 outline-none"
             >
               <option value="" disabled>
                 Select Gender
@@ -238,7 +238,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
               placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-purple-500 transition duration-150"
+              focus:ring-gray-400 transition duration-150 outline-none"
             >
               <option value="" disabled>
               Source Of Referral
@@ -269,7 +269,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
               placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-purple-500 transition duration-150"
+              focus:ring-gray-400 transition duration-150 outline-none"
             >
               <option value="" disabled>
               Clinic Session
@@ -297,7 +297,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
               placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-purple-500 transition duration-150"
+              focus:ring-gray-400 transition duration-150 outline-none"
             >
               <option value="" disabled>
               Patient Condition
@@ -322,7 +322,9 @@ const PatientDetails = () => {
               options={options}
               value={options.find((option) => option.label === formData.diagnosis) || null}
               onChange={handleSelectChange}
-              className="w-full text-black"
+              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
+              placeholder-gray-400 text-gray-900 focus:ring-2 
+              focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
@@ -360,7 +362,7 @@ const PatientDetails = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                 placeholder-gray-400 text-gray-900 focus:ring-2 
-                focus:ring-purple-500 transition duration-150"
+                focus:ring-gray-400 transition duration-150 outline-none"
               >
                 <option value="" disabled>
                   Select Type
@@ -395,7 +397,7 @@ const PatientDetails = () => {
               onChange={handleChange}
               className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
                         placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-purple-500 transition duration-150"
+                        focus:ring-gray-400 transition duration-150 outline-none"
             />
           </div>
 
