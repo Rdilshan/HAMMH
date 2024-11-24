@@ -1,14 +1,24 @@
 const { PrismaClient } = require("@prisma/client");
+const { genSaltSync, hashSync } = require("../node_modules/bcrypt-ts");
+
+require('dotenv').config();
+const val = process.env.PWD_SALT;
+const pwd = process.env.ADMIN_PWD;
+
+
 
 const prisma = new PrismaClient();
 
 const createData = async () => {
   try {
+    const salt = genSaltSync(Number(val));
+    const hash = hashSync(pwd, salt);
+
     await prisma.user.create({
       data: {
         name: "admin",
         email: "admin@gmail.com",
-        password: "admin",
+        password: hash,
         role: "admin",
         telephone: "12345678",
         gender: "male",
