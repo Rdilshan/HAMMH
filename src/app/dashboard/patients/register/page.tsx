@@ -1,6 +1,11 @@
 'use client'
 
 import React, { useState } from 'react';
+import dynamic from "next/dynamic";
+
+const MapWithSearch = dynamic(() => import("../../../../components/GoogleMapWithSearch"), {
+  ssr: false,
+});
 
 const PatientRegister = () => {
   const [fullName, setFullName] = useState('');
@@ -13,6 +18,9 @@ const PatientRegister = () => {
   const [location, setLocation] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+ 
+
+  const mapCenter = { lat: 6.127194, lng: 81.122452 }; 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -147,20 +155,12 @@ const PatientRegister = () => {
             </div>
 
             {isModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-md w-full max-w-4xl relative">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center mt-9">
+              <div className="bg-white p-6 rounded-md  w-[400px] h-auto relative">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Select Location</h3>
-                {/* Google Maps Iframe */}
-                <iframe
-               src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=Hambantota+Hospital`}
-
-
-                  width="100%"
-                  height="400"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                ></iframe>
+               
+               
+                 <MapWithSearch initialCenter={mapCenter} />
                 <button
                   className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
                   onClick={() => setIsModalOpen(false)}
@@ -179,7 +179,7 @@ const PatientRegister = () => {
           className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
           hover:bg-purple-700 focus:outline-none focus:ring-2 
           focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
-          w-1/2 my-6"
+          w-full lg:w-1/2 my-6"
         >
           Register Patient
         </button>
