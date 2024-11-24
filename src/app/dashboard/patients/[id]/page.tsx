@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Select from 'react-select'
 
 interface PatientDetailsFormData {
   fullName: string;
@@ -12,12 +13,28 @@ interface PatientDetailsFormData {
   source:string;
   clinic:string;
   condition:string;
-  Diagonsis:string;
+  diagnosis:string;
   special:string;
   choice:string;
   injectionType: string;
+ 
   
 }
+
+const options = [
+  {value : "1",label : "A"},
+  {value : "2",label : "B"},
+  {value : "3",label : "C"},
+  {value : "4",label : "D"},
+  {value : "5",label : "E"},
+  {value : "6",label : "F"},
+  {value : "1",label : "A"},
+  {value : "2",label : "B"},
+  {value : "3",label : "C"},
+  {value : "4",label : "D"},
+  {value : "5",label : "E"},
+  {value : "6",label : "F"},
+]
 
 const PatientDetails = () => {
   const [formData, setFormData] = useState<PatientDetailsFormData>({
@@ -30,7 +47,7 @@ const PatientDetails = () => {
     source:"",
     clinic:"",
     condition:"",
-    Diagonsis:"",
+    diagnosis:"",
     special:"",
     choice:"",
     injectionType: "",
@@ -52,6 +69,13 @@ const PatientDetails = () => {
       ...prev,
       choice: isChecked ? "yes" : "no",
       injectionType: isChecked ? "" : "", // Reset injection type if "No"
+    }));
+  };
+
+  const handleSelectChange = (selectedOption: { value: string; label: string } | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      diagnosis: selectedOption ? selectedOption.label : "",
     }));
   };
   
@@ -294,25 +318,12 @@ const PatientDetails = () => {
             >
             Diagonsis
             </label>
-            <select
-              id="Diagonsis"
-              name="Diagonsis"
-              value={formData.Diagonsis}
-              onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-purple-500 transition duration-150"
-            >
-              <option value="" disabled>
-              Diagonsis
-              </option>
-              <option value="Consaltant">Delebrte self-harm</option>
-              <option value="OPD">suicides</option>
-              <option value="Other wards">Substance abuse clinic</option>
-              <option value="Other health institution">Gender based violence clinic</option>
-              <option value="Public">Elderly clinic</option>
-              <option value="Other">Other</option>
-            </select>
+            <Select
+              options={options}
+              value={options.find((option) => option.label === formData.diagnosis) || null}
+              onChange={handleSelectChange}
+              className="w-full text-black"
+            />
           </div>
 
           <div>
