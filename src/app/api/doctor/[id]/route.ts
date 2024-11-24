@@ -35,7 +35,7 @@ export async function DELETE(request: Request,
 ) {
     try {
         const id = (await params).id; 
-        const doctor = await prisma.user.delete({
+        await prisma.user.delete({
             where: {
                 id: Number(id),
                 role: "doctor"
@@ -57,7 +57,7 @@ export async function PUT(request: Request,
     try {
         const id = (await params).id; 
         const data = await request.json();
-        const doctor = await prisma.user.update({
+        await prisma.user.update({
             where: {
                 id: Number(id),
                 role: "doctor"

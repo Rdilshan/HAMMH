@@ -91,6 +91,11 @@ model Clinic {
   patient_id Int
   status     Attence  @default(booking)
 }
+model Diagonsis {
+  id Int @id @default(autoincrement())
+  name String
+  Icd_code String? 
+}
 
 enum Gender {
   male
