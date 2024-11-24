@@ -47,7 +47,7 @@ const PrescriptionUpload = () => {
         </div>
 
         {/* Date Selection */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-600 mb-2">CLINIC DATE</label>
             <div className="relative">
@@ -55,7 +55,7 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={clinicDate}
                 onChange={(e) => setClinicDate(e.target.value)}
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               />
              
             </div>
@@ -68,7 +68,7 @@ const PrescriptionUpload = () => {
                 type="date"
                 value={nextClinicDate}
                 onChange={(e) => setNextClinicDate(e.target.value)}
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               />
               
             </div>
