@@ -10,6 +10,8 @@ const PatientRegister = () => {
   const [gender, setGender] = useState('Male');
   const [nic, setnic] = useState('nic');
   const [sourceOfReferral, setSourceOfReferral] = useState('OPD');
+  const [location, setLocation] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -127,6 +129,48 @@ const PatientRegister = () => {
               <option value="Walk-in">Walk-in</option>
             </select>
           </div>
+
+
+          <div>
+              <label htmlFor="location" className="block mb-2">
+                Location
+              </label>
+              <input
+                type="text"
+                id="location"
+                placeholder="Select Location"
+                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400 cursor-pointer"
+                value={location}
+                readOnly
+                onClick={() => setIsModalOpen(true)} // Open the modal
+              />
+            </div>
+
+            {isModalOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+              <div className="bg-white p-6 rounded-md w-full max-w-4xl relative">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Select Location</h3>
+                {/* Google Maps Iframe */}
+                <iframe
+               src={`https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=Hambantota+Hospital`}
+
+
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
+                <button
+                  className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded-md"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          )}
+
 
          
           </div>
