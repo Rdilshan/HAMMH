@@ -110,9 +110,7 @@ const PatientDetails = () => {
               placeholder="Enter full name of patient"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -131,9 +129,7 @@ const PatientDetails = () => {
               placeholder="Enter Contact Number"
               value={formData.contactNumber}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -152,9 +148,7 @@ const PatientDetails = () => {
               placeholder="Enter the address"
               value={formData.address}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -173,9 +167,7 @@ const PatientDetails = () => {
               placeholder="Enter Patient Age"
               value={formData.age}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -193,9 +185,7 @@ const PatientDetails = () => {
               placeholder="Enter Patient NIC number"
               value={formData.nic}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -212,9 +202,7 @@ const PatientDetails = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
                 Select Gender
@@ -236,9 +224,7 @@ const PatientDetails = () => {
               name="source"
               value={formData.source}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
               Source Of Referral
@@ -267,9 +253,7 @@ const PatientDetails = () => {
               name="clinic"
               value={formData.clinic}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
               Clinic Session
@@ -295,9 +279,7 @@ const PatientDetails = () => {
               name="condition"
               value={formData.condition}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
               Patient Condition
@@ -322,9 +304,7 @@ const PatientDetails = () => {
               options={options}
               value={options.find((option) => option.label === formData.diagnosis) || null}
               onChange={handleSelectChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 
@@ -360,9 +340,7 @@ const PatientDetails = () => {
                 name="injectionType"
                 value={formData.injectionType}
                 onChange={handleChange}
-                className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                placeholder-gray-400 text-gray-900 focus:ring-2 
-                focus:ring-gray-400 transition duration-150 outline-none"
+                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               >
                 <option value="" disabled>
                   Select Type
@@ -395,9 +373,7 @@ const PatientDetails = () => {
               placeholder="Enter the address"
               value={formData.special}
               onChange={handleChange}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-                        placeholder-gray-400 text-gray-900 focus:ring-2 
-                        focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
           </div>
 

@@ -40,9 +40,7 @@ const PatientRegister = () => {
               type="text"
               id="fullName"
               placeholder="Enter full name of patient"
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -55,9 +53,7 @@ const PatientRegister = () => {
               type="text"
               id="contactNumber"
               placeholder="Enter Contact Number"
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
             />
@@ -70,9 +66,7 @@ const PatientRegister = () => {
               type="text"
               id="address"
               placeholder="Enter the address"
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
@@ -85,9 +79,7 @@ const PatientRegister = () => {
               type="number"
               id="age"
               placeholder="Enter the age"
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               value={age}
               onChange={(e) => setAge(e.target.value)}
             />
@@ -100,9 +92,7 @@ const PatientRegister = () => {
               type="number"
               id="nic"
               placeholder="Enter the NIC number"
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               value={nic}
               onChange={(e) => setnic(e.target.value)}
             />
@@ -115,9 +105,7 @@ const PatientRegister = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -132,9 +120,7 @@ const PatientRegister = () => {
               id="sourceOfReferral"
               value={sourceOfReferral}
               onChange={(e) => setSourceOfReferral(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-[#F8F3FF] border-0 
-              placeholder-gray-400 text-gray-900 focus:ring-2 
-              focus:ring-gray-400 transition duration-150 outline-none"
+              className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="OPD">OPD</option>
               <option value="Emergency">Emergency</option>
