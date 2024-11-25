@@ -4,6 +4,7 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 const PatientsDetails = () => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -108,7 +109,7 @@ const PatientsDetails = () => {
                     <tbody>
                         {currentRows.length > 0 ? (
                             currentRows.map((patient, index) => (
-                                <>
+                                <React.Fragment key={index}>
                                     <tr key={index} className="border-b hover:bg-gray-50">
                                         <td className="px-4 py-6 flex items-center gap-2 ">
                                             <button
@@ -153,7 +154,7 @@ const PatientsDetails = () => {
                                             </td>
                                         </tr>
                                     )}
-                                </>
+                                </React.Fragment>
                             ))
                         ) : (
                             <tr>
