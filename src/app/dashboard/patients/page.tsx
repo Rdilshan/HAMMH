@@ -30,7 +30,7 @@ const PatientsDetails = () => {
     
        
 
-    const handleCategoryChange = (e: any) => {
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(e.target.value);
     };
 

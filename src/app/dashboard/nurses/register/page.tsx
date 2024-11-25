@@ -8,7 +8,7 @@ const NurseRegister = () => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('Male');
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log({

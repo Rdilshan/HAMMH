@@ -11,7 +11,7 @@ const DischargeForm = () => {
   const [bhtNo, setbhtNo] = useState('');
   const [diagonisis, setdiagonisis] = useState('');
   const [procedures, setprocedures] = useState('');
-  const [mode, setmode] = useState('');
+  // const [mode, setmode] = useState('');
 
   const handleSave = () => {
     // Logic for saving data (e.g., API call)

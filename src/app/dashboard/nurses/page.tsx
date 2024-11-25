@@ -52,11 +52,11 @@ function NursePage() {
     },
   ];
 
-  const handleSearch = () => {
-    setCurrentPage(1);
-  };
+  // const handleSearch = () => {
+  //   setCurrentPage(1);
+  // };
 
-  const handleCategoryChange = (e: any) => {
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
   };
 

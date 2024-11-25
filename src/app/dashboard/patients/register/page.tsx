@@ -15,13 +15,13 @@ const PatientRegister = () => {
   const [gender, setGender] = useState('Male');
   const [nic, setnic] = useState('nic');
   const [sourceOfReferral, setSourceOfReferral] = useState('OPD');
-  const [location, setLocation] = useState('');
+  const [location] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
  
 
   const mapCenter = { lat: 6.127194, lng: 81.122452 }; 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log({

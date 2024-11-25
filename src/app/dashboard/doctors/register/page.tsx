@@ -9,9 +9,9 @@ const DoctorRegister = () => {
   const [email, setEmail] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [gender, setGender] = useState('Male');
-  const [profileImage, setProfileImage] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     console.log({
@@ -24,8 +24,8 @@ const DoctorRegister = () => {
     });
   };
 
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       setProfileImage(URL.createObjectURL(file)); 
     }

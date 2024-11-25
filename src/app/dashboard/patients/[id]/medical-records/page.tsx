@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
+import mediImage from "../../../../../../public/images.jpg";
 interface MedicalRecord {
   id: number;
   date: string;
-  imageUrl: string;
+  imageUrl: StaticImageData;
   type: string;
 }
 
@@ -18,7 +19,7 @@ const MedicalRecordsGrid: React.FC = () => {
     return Array.from({ length: 15 }, (_, index): MedicalRecord => ({
       id: index + 1,
       date: new Date(2024, 0, index + 1).toISOString().split('T')[0],
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN5_k_vpQPhWUN3825vLDSqCUx4Dk227i8iQ&s',
+      imageUrl: mediImage,
       type: 'Medical Record'
     }));
   };

@@ -4,14 +4,15 @@ import React, { useState } from 'react';
 
 
 const PrescriptionUpload = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [clinicDate, setClinicDate] = useState('');
   const [nextClinicDate, setNextClinicDate] = useState('');
 
-  const handleFileUpload = (event :any) => {
-    const file = event.target.files[0];
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file && (file.type === 'image/png' || file.type === 'image/jpeg')) {
       setSelectedFile(file);
+      console.log(selectedFile)
     }
   };
 
