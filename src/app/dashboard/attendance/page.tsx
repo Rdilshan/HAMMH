@@ -1,7 +1,6 @@
 "use client"
 
 import { FaEdit } from "react-icons/fa";
-import { FaEye } from 'react-icons/fa';
 import { useState } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 import React from "react";
@@ -43,10 +42,11 @@ function Page() {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
-  const handleDateChange = (e: any) => {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     setCurrentPage(1);
   };
+  
 
   const filteredPatients = patientData.filter(
     (patient) => patient.date === selectedDate

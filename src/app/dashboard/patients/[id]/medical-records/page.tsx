@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-
+import Image from 'next/image';
 interface MedicalRecord {
   id: number;
   date: string;
@@ -45,7 +45,7 @@ const MedicalRecordsGrid: React.FC = () => {
           >
             <div className="aspect-square bg-gray-800 rounded-lg shadow-md cursor-pointer overflow-hidden transition-transform duration-200 hover:scale-105">
               {/* Hidden Image */}
-              <img
+              <Image
                 src={record.imageUrl}
                 alt={`Medical Record ${record.date}`}
                 className="w-full h-full object-cover opacity-30"
@@ -96,7 +96,7 @@ const MedicalRecordsGrid: React.FC = () => {
                   })}
                 </h3>
               </div>
-              <img
+              <Image
                 src={selectedRecord.imageUrl}
                 alt={`Medical Record ${selectedRecord.date}`}
                 className="w-full h-auto rounded-lg"

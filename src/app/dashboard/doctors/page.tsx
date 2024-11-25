@@ -1,10 +1,11 @@
 "use client";
-import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import React from "react";
+import Image from "next/image";
 
 function DoctorProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,9 +58,9 @@ function DoctorProfilePage() {
     },
   ];
 
-  const handleSearch = () => {
-    setCurrentPage(1);
-  };
+  // const handleSearch = () => {
+  //   setCurrentPage(1);
+  // };
 
   const handleCategoryChange = (e: any) => {
     setSelectedCategory(e.target.value);
@@ -155,7 +156,7 @@ function DoctorProfilePage() {
                       >
                         {expandedRow === index ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
                       </button>
-                      <img
+                      <Image
                         src={doctor.profileImage}
                         alt={doctor.name}
                         className="w-10 h-10 rounded-full"

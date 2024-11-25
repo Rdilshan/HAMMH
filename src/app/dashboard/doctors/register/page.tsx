@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const DoctorRegister = () => {
   const [fullName, setFullName] = useState('');
@@ -120,7 +121,7 @@ const DoctorRegister = () => {
             />
             {profileImage && (
               <div className="mt-2">
-                <img
+                <Image
                   src={profileImage}
                   alt="Profile Preview"
                   className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
