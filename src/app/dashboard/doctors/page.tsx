@@ -4,6 +4,7 @@ import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import React from "react";
 
 function DoctorProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,9 +15,9 @@ function DoctorProfilePage() {
 
   const router = useRouter();
 
-  
 
-  
+
+
   const doctorData = [
     {
       id: "1",
@@ -89,7 +90,7 @@ function DoctorProfilePage() {
   };
   const toggleRow = (index: number) => {
     setExpandedRow(expandedRow === index ? null : index);
-};
+  };
 
 
   return (
@@ -99,9 +100,9 @@ function DoctorProfilePage() {
           Doctor Details
         </h2>
         <button
-        onClick={() => router.push('/dashboard/doctors/register')}
-        
-        className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
+          onClick={() => router.push('/dashboard/doctors/register')}
+
+          className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
           Add New Doctor
         </button>
       </div>
@@ -109,9 +110,8 @@ function DoctorProfilePage() {
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow">
         <input
           type="text"
-          placeholder={`Search by ${
-            selectedCategory === "All" ? "Name or Contact" : selectedCategory
-          }`}
+          placeholder={`Search by ${selectedCategory === "All" ? "Name or Contact" : selectedCategory
+            }`}
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -125,7 +125,7 @@ function DoctorProfilePage() {
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
-       
+
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
@@ -146,65 +146,65 @@ function DoctorProfilePage() {
           <tbody>
             {currentRows.length > 0 ? (
               currentRows.map((doctor, index) => (
-                <>
-                <tr key={index} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-6 flex items-center gap-2 ">
-                                            <button
-                                                className="text-black md:hidden text-[15px]"
-                                                onClick={() => toggleRow(index)}
-                                            >
-                                                {expandedRow === index ? <BiSolidDownArrow /> :<BiSolidRightArrow />}
-                                            </button>
-                                            <img
-                      src={doctor.profileImage}
-                      alt={doctor.name}
-                      className="w-10 h-10 rounded-full"
-                    />
-                                        </td>
-                 
-                  <td className="px-4 py-4 text-center">{doctor.name}</td>
-                  <td className="px-4 py-4 text-center hidden md:table-cell">
-                    {doctor.contactNumber}
-                  </td>
-                  <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.specialist}</td>
-                  <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.gender}</td>
-                  <td className="px-4 py-4 text-center">
-                    <div className="flex items-center justify-center space-x-2">
-                      
-                      <button className="text-yellow-600">
-                        <FaEdit />
+                <React.Fragment key={index}>
+                  <tr key={index} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-6 flex items-center gap-2 ">
+                      <button
+                        className="text-black md:hidden text-[15px]"
+                        onClick={() => toggleRow(index)}
+                      >
+                        {expandedRow === index ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
                       </button>
-                      <button className="text-red-600">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                      <img
+                        src={doctor.profileImage}
+                        alt={doctor.name}
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </td>
 
-                {expandedRow === index && (
-                                        <tr key={`expanded-${index}`}>
-                                            <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Contact Number</p>
-                                                    <p>{doctor.contactNumber}</p>
+                    <td className="px-4 py-4 text-center">{doctor.name}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">
+                      {doctor.contactNumber}
+                    </td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.specialist}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{doctor.gender}</td>
+                    <td className="px-4 py-4 text-center">
+                      <div className="flex items-center justify-center space-x-2">
 
-                                                </div>
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Specialist</p>
-                                                    <p>{doctor.specialist}</p>
+                        <button className="text-yellow-600">
+                          <FaEdit />
+                        </button>
+                        <button className="text-red-600">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
 
-                                                </div>
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Gender</p>
-                                                    <p>{doctor.gender}</p>
+                  {expandedRow === index && (
+                    <tr key={`expanded-${index}`}>
+                      <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Contact Number</p>
+                          <p>{doctor.contactNumber}</p>
 
-                                                </div>
-                                               
-                                                
-                                            </td>
-                                        </tr>
-                                    )}
-                                    </>
+                        </div>
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Specialist</p>
+                          <p>{doctor.specialist}</p>
+
+                        </div>
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Gender</p>
+                          <p>{doctor.gender}</p>
+
+                        </div>
+
+
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))
             ) : (
               <tr>
@@ -221,11 +221,10 @@ function DoctorProfilePage() {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === page
+            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
                 ? "bg-purple-600 text-white"
                 : "bg-gray-200 text-gray-700"
-            }`}
+              }`}
             onClick={() => handlePageChange(page)}
           >
             {page}
