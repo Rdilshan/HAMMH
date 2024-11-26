@@ -7,12 +7,33 @@ export default function LoginPage() {
   const router = useRouter()
   const [user, setUser] = useState<User>({ email: '', password: '' })
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Simulate login - in real app, this would be an API call
-    if (user.email && user.password) {
+
+    const baseUrl = `/api/Auth`;
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "email": user.email,
+        "password": user.password
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+      localStorage.setItem("authToken", `Bearer ${data.token}`);
       router.push('/dashboard')
+    } else {
+      console.log("show the error msg..")
     }
+
+    // if (user.email && user.password) {
+    //   router.push('/dashboard')
+    // }
   }
 
   return (
@@ -22,7 +43,7 @@ export default function LoginPage() {
           <h1 className="text-left text-3xl font-extrabold text-gray-900">
             Login to Your account
           </h1>
-          
+
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           <div className="rounded-md shadow-sm space-y-4">
