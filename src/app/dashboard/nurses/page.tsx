@@ -1,9 +1,10 @@
 "use client";
-import {  FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import React from "react";
 
 function NursePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,10 +12,10 @@ function NursePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const router = useRouter();
-  
+
   const rowsPerPage = 5;
 
-  
+
   const nurseData = [
     {
       id: "1",
@@ -31,7 +32,7 @@ function NursePage() {
       contactNumber: "234-567-8901",
       email: "Cardiologist@gmail.com",
       gender: "Female",
-     
+
     },
     {
       id: "3",
@@ -39,7 +40,7 @@ function NursePage() {
       contactNumber: "345-678-9012",
       email: "Cardiologist@gmail.com",
       gender: "Male",
-      
+
     },
     {
       id: "4",
@@ -47,15 +48,15 @@ function NursePage() {
       contactNumber: "456-789-0123",
       email: "Cardiologist@gmail.com",
       gender: "Female",
-      
+
     },
   ];
 
-  const handleSearch = () => {
-    setCurrentPage(1);
-  };
+  // const handleSearch = () => {
+  //   setCurrentPage(1);
+  // };
 
-  const handleCategoryChange = (e: any) => {
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
   };
 
@@ -84,7 +85,7 @@ function NursePage() {
   };
   const toggleRow = (index: number) => {
     setExpandedRow(expandedRow === index ? null : index);
-};
+  };
 
   return (
     <div className="px-4 py-4 bg-[#F8F3FF]">
@@ -93,8 +94,8 @@ function NursePage() {
           Nurses Details
         </h2>
         <button
-         onClick={() => router.push('/dashboard/nurses/register')}
-         className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
+          onClick={() => router.push('/dashboard/nurses/register')}
+          className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4">
           Add New Nurse
         </button>
       </div>
@@ -102,9 +103,8 @@ function NursePage() {
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow">
         <input
           type="text"
-          placeholder={`Search by ${
-            selectedCategory === "All" ? "Name or Contact" : selectedCategory
-          }`}
+          placeholder={`Search by ${selectedCategory === "All" ? "Name or Contact" : selectedCategory
+            }`}
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -118,7 +118,7 @@ function NursePage() {
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
-        
+
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
@@ -128,7 +128,7 @@ function NursePage() {
         <table className="w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
-              
+
               <th className="px-4 py-3 text-center">Name</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Email</th>
@@ -138,62 +138,62 @@ function NursePage() {
           </thead>
           <tbody>
             {currentRows.length > 0 ? (
-             
+
               currentRows.map((nurse, index) => (
-                <>
-                <tr key={index} className="border-b hover:bg-gray-50">
-                <td className="px-4 py-6 flex items-center gap-2 ">
-                                            <button
-                                                className="text-black md:hidden text-[15px]"
-                                                onClick={() => toggleRow(index)}
-                                            >
-                                                {expandedRow === index ? <BiSolidDownArrow /> :<BiSolidRightArrow />}
-                                            </button>
-                                            {nurse.name}
-                                        </td>
-                 
-                 
-                  <td className="px-4 py-4 text-center hidden md:table-cell">
-                    {nurse.contactNumber}
-                  </td>
-                  <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.email}</td>
-                  <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.gender}</td>
-                  <td className="px-4 py-4 text-center">
-                    <div className="flex items-center justify-center space-x-2">
-                      
-                      <button className="text-yellow-600">
-                        <FaEdit />
+                <React.Fragment key={index}>
+                  <tr key={index} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-6 flex items-center gap-2 ">
+                      <button
+                        className="text-black md:hidden text-[15px]"
+                        onClick={() => toggleRow(index)}
+                      >
+                        {expandedRow === index ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
                       </button>
-                      <button className="text-red-600">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                {expandedRow === index && (
-                                        <tr key={`expanded-${index}`}>
-                                            <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Contact Number</p>
-                                                    <p>{nurse.contactNumber}</p>
+                      {nurse.name}
+                    </td>
 
-                                                </div>
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Email</p>
-                                                    <p>{nurse.email}</p>
 
-                                                </div>
-                                                <div className='flex items-center justify-between py-2'>
-                                                    <p className='font-bold'>Gender</p>
-                                                    <p>{nurse.gender}</p>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">
+                      {nurse.contactNumber}
+                    </td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.email}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.gender}</td>
+                    <td className="px-4 py-4 text-center">
+                      <div className="flex items-center justify-center space-x-2">
 
-                                                </div>
-                                               
-                                                
-                                            </td>
-                                        </tr>
-                                    )}
-                                    </>
+                        <button className="text-yellow-600">
+                          <FaEdit />
+                        </button>
+                        <button className="text-red-600">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  {expandedRow === index && (
+                    <tr key={`expanded-${index}`}>
+                      <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Contact Number</p>
+                          <p>{nurse.contactNumber}</p>
+
+                        </div>
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Email</p>
+                          <p>{nurse.email}</p>
+
+                        </div>
+                        <div className='flex items-center justify-between py-2'>
+                          <p className='font-bold'>Gender</p>
+                          <p>{nurse.gender}</p>
+
+                        </div>
+
+
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))
             ) : (
               <tr>
@@ -210,11 +210,10 @@ function NursePage() {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === page
+            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
                 ? "bg-purple-600 text-white"
                 : "bg-gray-200 text-gray-700"
-            }`}
+              }`}
             onClick={() => handlePageChange(page)}
           >
             {page}

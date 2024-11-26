@@ -34,6 +34,10 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
       href: `/dashboard/patients/${patientId}/injection`,
     },
     { 
+      label: 'Discharge', 
+      href: `/dashboard/patients/${patientId}/discharge`,
+    },
+    { 
       label: 'Admit', 
       href: `/dashboard/patients/${patientId}/admit`,
     },

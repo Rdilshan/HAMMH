@@ -8,7 +8,7 @@ const NurseRegister = () => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('Male');
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
     console.log({
@@ -21,9 +21,11 @@ const NurseRegister = () => {
 
   return (
     <div className="px-6 py-4 text-black">
-      <h2 className="text-2xl font-bold mb-4">NURSE REGISTER</h2>
+     
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4 bg-white p-4">
+        <div className="bg-white p-8 shadow-md">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">NURSE REGISTER</h2>
+          <div className='grid md:grid-cols-2 gap-4'>
           <div>
             <label htmlFor="fullName" className="block mb-2">
               Full Name
@@ -32,7 +34,7 @@ const NurseRegister = () => {
               type="text"
               id="fullName"
               placeholder="Enter full name of nurse"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -45,7 +47,7 @@ const NurseRegister = () => {
               type="text"
               id="contactNumber"
               placeholder="Enter Contact Number"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
             />
@@ -58,7 +60,7 @@ const NurseRegister = () => {
               type="email"
               id="email"
               placeholder="Enter the email"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -71,7 +73,7 @@ const NurseRegister = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -84,6 +86,7 @@ const NurseRegister = () => {
           >
             Register Nurse
           </button>
+        </div>
         </div>
       </form>
     </div>

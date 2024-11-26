@@ -52,13 +52,13 @@ const InjectionRecordsSection = () => {
           <button
            onClick={() => router.push('/dashboard/patients/20007876887/injection/responsibility')}
           className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-            Add new records
+            Add new
           </button>
         </div>
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full text-sm ">
             <thead>
               <tr className="border-b bg-[#F8F3FF] ">
                 <th className="text-left py-3 px-4 font-bold text-gray-700">Date</th>

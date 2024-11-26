@@ -3,6 +3,7 @@
 import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
+import React from "react";
 
 const patientData = [
   {
@@ -46,15 +47,16 @@ function Page() {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
-  const handleDateChange = (e: any) => {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
     setSelectedDate(e.target.value);
     setCurrentPage(1);
   };
 
-  const handleInjectionTypeChange = (e: any) => {
+  const handleInjectionTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedInjectionType(e.target.value);
     setCurrentPage(1);
   };
+  
 
   const filteredPatients = patientData.filter(
     (patient) =>
@@ -130,9 +132,9 @@ function Page() {
           <tbody>
             {currentRows.length > 0 ? (
               currentRows.map((patient, index) => (
-                <>
+                <React.Fragment key={index}>
                   <tr
-                   key={index}
+                    key={index}
                     className="border-b hover:bg-gray-50"
                   >
                     <td className="px-4 py-6 flex items-center gap-2">
@@ -170,7 +172,7 @@ function Page() {
                     <tr key={`expanded-${patient.id}`}>
                       <td
                         className="px-4 py-4 bg-gray-50 text-sm text-gray-600"
-                       
+
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between">
@@ -193,7 +195,7 @@ function Page() {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))
             ) : (
               <tr>
@@ -213,11 +215,10 @@ function Page() {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === page
-                ? "bg-purple-600 text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
+            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
+              ? "bg-purple-600 text-white"
+              : "bg-gray-200 text-gray-700"
+              }`}
             onClick={() => handlePageChange(page)}
           >
             {page}

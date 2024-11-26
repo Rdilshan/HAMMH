@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const DoctorRegister = () => {
   const [fullName, setFullName] = useState('');
@@ -8,9 +9,9 @@ const DoctorRegister = () => {
   const [email, setEmail] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [gender, setGender] = useState('Male');
-  const [profileImage, setProfileImage] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     console.log({
@@ -23,8 +24,8 @@ const DoctorRegister = () => {
     });
   };
 
-  const handleImageChange = (e: any) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       setProfileImage(URL.createObjectURL(file)); 
     }
@@ -32,9 +33,14 @@ const DoctorRegister = () => {
 
   return (
     <div className="px-6 py-4 text-black">
-      <h2 className="text-2xl font-bold mb-4">DOCTOR REGISTER</h2>
+     
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4 bg-white p-4">
+      
+        <div className=" bg-white p-5 rounded-md">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">DOCTOR REGISTER</h2>
+           <div className='grid md:grid-cols-2 gap-4'>
+
+        
           <div>
             <label htmlFor="fullName" className="block mb-2">
               Full Name
@@ -43,7 +49,7 @@ const DoctorRegister = () => {
               type="text"
               id="fullName"
               placeholder="Enter full name of doctor"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
@@ -56,7 +62,7 @@ const DoctorRegister = () => {
               type="text"
               id="contactNumber"
               placeholder="Enter Contact Number"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={contactNumber}
               onChange={(e) => setContactNumber(e.target.value)}
             />
@@ -69,7 +75,7 @@ const DoctorRegister = () => {
               type="email"
               id="email"
               placeholder="Enter the email"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -82,7 +88,7 @@ const DoctorRegister = () => {
               type="text"
               id="specialization"
               placeholder="Enter specialization"
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               value={specialization}
               onChange={(e) => setSpecialization(e.target.value)}
             />
@@ -95,7 +101,7 @@ const DoctorRegister = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -111,14 +117,14 @@ const DoctorRegister = () => {
               id="profileImage"
               accept="image/*"
               onChange={handleImageChange}
-              className="w-full bg-gray-100 rounded-md py-2 px-4"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {profileImage && (
               <div className="mt-2">
-                <img
+                <Image
                   src={profileImage}
                   alt="Profile Preview"
-                  className="w-32 h-32 object-cover rounded-full"
+                  className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
             )}
@@ -129,6 +135,7 @@ const DoctorRegister = () => {
           >
             Register Doctor
           </button>
+        </div>
         </div>
       </form>
     </div>

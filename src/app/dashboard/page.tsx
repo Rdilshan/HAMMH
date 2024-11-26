@@ -58,7 +58,7 @@ export default function Dashboard() {
             <div>
               <h1 className="text-3xl font-bold text-white">YOUR HEALTH IS OUR PRIORITY</h1>
               <p className="text-white">
-                We always give the best for your life and health. Let's take better care of our own health from an early age.
+              We always give the best for your life and health. Let&apos;s take better care of our own health from an early age.
               </p>
             </div>
           </div>
