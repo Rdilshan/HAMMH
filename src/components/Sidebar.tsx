@@ -49,6 +49,7 @@ export default function Sidebar() {
 
             return (
               <Link
+              prefetch={false}
                 key={item.path}
                 href={item.path}
                 className={`
