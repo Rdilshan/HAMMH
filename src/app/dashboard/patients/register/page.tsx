@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import dynamic from "next/dynamic";
+import { locationstore } from '@/store/location';
 
 const MapWithSearch = dynamic(() => import("../../../../components/GoogleMapWithSearch"), {
   ssr: false,
@@ -15,12 +16,12 @@ const PatientRegister = () => {
   const [gender, setGender] = useState('Male');
   const [nic, setnic] = useState('nic');
   const [sourceOfReferral, setSourceOfReferral] = useState('OPD');
-  const [location] = useState('');
+  // const [location] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
- 
+ const location = locationstore((state:any)=>state.location)
 
-  const mapCenter = { lat: 6.127194, lng: 81.122452 }; 
+  const mapCenter = { lat: Number(location.Latitude), lng: Number(location.Longitude) }; 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -148,7 +149,7 @@ const PatientRegister = () => {
                 id="location"
                 placeholder="Select Location"
                 className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400 cursor-pointer"
-                value={location}
+                value={`${location.Latitude}, ${location.Longitude}`} 
                 readOnly
                 onClick={() => setIsModalOpen(true)} // Open the modal
               />

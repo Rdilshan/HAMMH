@@ -5,6 +5,7 @@ import {
   Marker,
   Autocomplete,
 } from "@react-google-maps/api";
+import { locationstore } from "@/store/location";
 
 type GoogleMapProps = {
   initialCenter: {
@@ -23,6 +24,10 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
   initialCenter,
   zoom = 12,
 }) => {
+
+  const updatelocation = locationstore((state:any)=>state.updatelocation);
+
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
     libraries: ["places"], // Load the places library
@@ -63,9 +68,17 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
         lng: event.latLng.lng(),
       };
       console.log(newPosition);
+
+      updatelocation({
+        Latitude:newPosition.lat,
+        Longitude:newPosition.lng
+      })
+
       setMarkerPosition(newPosition);
     }
   };
+
+
 
   return (
     <div>
