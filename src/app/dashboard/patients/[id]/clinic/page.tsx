@@ -6,14 +6,37 @@ const PrescriptionUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [clinicDate, setClinicDate] = useState('');
   const [nextClinicDate, setNextClinicDate] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      setSelectedFiles([...selectedFiles, ...Array.from(files).filter(
-        (file) => file.type === 'image/png' || file.type === 'image/jpeg'
-      )]);
+      addFiles(Array.from(files));
     }
+  };
+
+  const addFiles = (files: File[]) => {
+    const validFiles = files.filter(
+      (file) => file.type === 'image/png' || file.type === 'image/jpeg'
+    );
+    setSelectedFiles([...selectedFiles, ...validFiles]);
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const files = Array.from(event.dataTransfer.files);
+    addFiles(files);
   };
 
   const handleBrowseClick = () => {
@@ -64,7 +87,16 @@ const PrescriptionUpload = () => {
         </div>
 
         {/* Upload Area */}
-        <div className="border-2 border-dashed border-gray-200 rounded-lg p-8 text-center">
+        <div
+          className={`border-2 rounded-lg p-8 text-center ${
+            isDragging
+              ? 'border-purple-500 bg-purple-50'
+              : 'border-dashed border-gray-200'
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
           <input
             type="file"
             id="fileInput"
@@ -73,14 +105,13 @@ const PrescriptionUpload = () => {
             multiple
             onChange={handleFileUpload}
           />
-          <p className="text-black mb-2">Upload Prescription Images here</p>
-          <p className="text-sm text-gray-400 mb-4">File Supported: png,jpg,jpeg</p>
-          <p className="text-gray-500 mb-4">OR</p>
+          <p className="text-black mb-2">Drag and Drop Images Here</p>
+          <p className="text-sm text-gray-400 mb-4">or</p>
           <button
             onClick={handleBrowseClick}
             className="text-purple-600 hover:text-purple-700 font-medium"
           >
-            Browse
+            Browse Files
           </button>
         </div>
 
