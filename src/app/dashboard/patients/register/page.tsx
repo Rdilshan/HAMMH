@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import dynamic from "next/dynamic";
 import { locationstore } from '@/store/location';
+import toast, { Toaster } from 'react-hot-toast';
+ 
 
 const MapWithSearch = dynamic(() => import("../../../../components/GoogleMapWithSearch"), {
   ssr: false,
@@ -24,7 +26,7 @@ const PatientRegister = () => {
   const mapCenter = { lat: Number(location.Latitude), lng: Number(location.Longitude) }; 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
+
     console.log({
       fullName,
       contactNumber,
@@ -34,10 +36,13 @@ const PatientRegister = () => {
       nic,
       sourceOfReferral,
     });
+
+    toast.success('Patient registered successfully!');
   };
 //ugug
   return (
     <div className="px-6 py-4 text-black ">
+       <Toaster position="top-center" reverseOrder={false} />
       
       <form onSubmit={handleSubmit}>
         <div className="p-8 bg-white  shadow-md rounded-md">
