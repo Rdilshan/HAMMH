@@ -28,17 +28,15 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
 
-    const salt = genSaltSync(Number(process.env.PWD_SALT!));
-    const hash = hashSync(data.password, salt);
      await prisma.user.create({
       data: {
         name: data.name,
         email: data.email,
-        password: hash,
         role: "doctor",
         telephone:data.telephone,
         Specialization:data.Specialization,
-        gender:data.gender
+        gender:data.gender,
+        active_status:'Deactive'
       },
     });
 

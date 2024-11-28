@@ -13,15 +13,24 @@ export async function middleware(request: NextRequest) {
     if (routepath == "/api/Auth") {
       return NextResponse.next();
     }
-    const authHeader = request.headers.get("authorization");
+    // const authHeader = request.headers.get("authorization");
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    // if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    //   return NextResponse.json(
+    //     { message: "Authorization header missing or invalid" },
+    //     { status: 401 }
+    //   );
+    // }
+    // const token = authHeader.split(" ")[1];
+    const token = (await cookies()).get("token")?.value;
+
+    if (token === undefined || token === null) {
       return NextResponse.json(
         { message: "Authorization header missing or invalid" },
         { status: 401 }
       );
     }
-    const token = authHeader.split(" ")[1];
+
     try {
       const decodedToken = await jose.jwtVerify(token, secret);
 
@@ -31,6 +40,7 @@ export async function middleware(request: NextRequest) {
       };
       const role: string = payloadData.role;
       const userid: string = payloadData.id;
+      
 
       // Allow access to these dynamic routes
       if (

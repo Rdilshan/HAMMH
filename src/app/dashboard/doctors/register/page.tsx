@@ -8,28 +8,35 @@ const DoctorRegister = () => {
   const [contactNumber, setContactNumber] = useState('');
   const [email, setEmail] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [gender, setGender] = useState('Male');
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [gender, setGender] = useState('male');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
-    console.log({
-      fullName,
-      contactNumber,
-      email,
-      specialization,
-      gender,
-      profileImage,
+    const baseUrl = `/api/doctor`;
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name:fullName,
+        email:email,
+        telephone:contactNumber,
+        Specialization:specialization,
+        gender:gender
+      })
     });
+
+
+    if (response.status === 200) {
+      console.log("success create doctor")
+    } else {
+      console.log("show the error msg..")
+    }
+
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setProfileImage(URL.createObjectURL(file)); 
-    }
-  };
 
   return (
     <div className="px-6 py-4 text-black">
@@ -103,32 +110,12 @@ const DoctorRegister = () => {
               onChange={(e) => setGender(e.target.value)}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
           </div>
-          <div>
-            <label htmlFor="profileImage" className="block mb-2">
-              Profile Image
-            </label>
-            <input
-              type="file"
-              id="profileImage"
-              accept="image/*"
-              onChange={handleImageChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-            {profileImage && (
-              <div className="mt-2">
-                <Image
-                  src={profileImage}
-                  alt="Profile Preview"
-                  className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-            )}
-          </div>
+          <div></div>
           <button
             type="submit"
             className="bg-purple-600 text-white rounded-md py-2 px-4 mt-4"
