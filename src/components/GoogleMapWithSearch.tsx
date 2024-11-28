@@ -5,6 +5,7 @@ import {
   Marker,
   Autocomplete,
 } from "@react-google-maps/api";
+
 import { locationstore } from "@/store/location";
 
 type GoogleMapProps = {
@@ -25,12 +26,11 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
   zoom = 12,
 }) => {
 
-  const updatelocation = locationstore((state:any)=>state.updatelocation);
-
+  const updatelocation = locationstore((state) => state.updatelocation);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-    libraries: ["places"], // Load the places library
+    libraries: ['places'], // Load the places library
   });
 
   const [mapCenter, setMapCenter] = useState(initialCenter);
@@ -55,7 +55,7 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
           lng: place.geometry.location.lng(),
         };
         setMapCenter(newCenter);
-        setMarkerPosition(newCenter); 
+        setMarkerPosition(newCenter);
       }
     }
   };
@@ -68,11 +68,6 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
         lng: event.latLng.lng(),
       };
       console.log(newPosition);
-
-      updatelocation({
-        Latitude:newPosition.lat,
-        Longitude:newPosition.lng
-      })
 
       setMarkerPosition(newPosition);
     }
@@ -88,7 +83,7 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
             type="text"
             placeholder="Search for a place"
             style={{
-                color: "black",
+              color: "black",
               width: "100%",
               height: "40px",
               padding: "10px",
@@ -102,10 +97,15 @@ const MapWithSearch: React.FC<GoogleMapProps> = ({
         mapContainerStyle={containerStyle}
         center={mapCenter}
         zoom={zoom}
-        onClick={(e) =>
-          e.latLng && setMarkerPosition({ lat: e.latLng.lat(), lng: e.latLng.lng() })
-        }
+        onClick={(e) => {
+
+          if (e.latLng) {
+            updatelocation({ Latitude: String(e.latLng.lat()), Longitude: String(e.latLng.lng()) })
+            setMarkerPosition({ lat: e.latLng.lat(), lng: e.latLng.lng() }); // Update marker position
+          }
+        }}
       >
+
 
         <Marker
           position={markerPosition}

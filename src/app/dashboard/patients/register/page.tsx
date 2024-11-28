@@ -19,7 +19,7 @@ const PatientRegister = () => {
   // const [location] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
- const location = locationstore((state:any)=>state.location)
+ const location = locationstore((state)=>state.location)
 
   const mapCenter = { lat: Number(location.Latitude), lng: Number(location.Longitude) }; 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
