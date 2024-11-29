@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation'
+import { FaSpinner } from 'react-icons/fa';
 
 
 interface ApiResponse {
@@ -18,11 +19,12 @@ const DoctorRegister = () => {
   const [email, setEmail] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [gender, setGender] = useState('male');
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const baseUrl = `/api/doctor`;
     const response = await fetch(baseUrl, {
       method: "POST",
@@ -39,13 +41,14 @@ const DoctorRegister = () => {
     });
 
     if (response.status === 200) {
-      toast.success('Patient registered successfully!');
+      toast.success('Doctor registered successfully!');
       router.push('/dashboard/doctors')
 
     } else {
       toast.error('Email already exists or Not filling the required fields!');
 
     }
+    setIsLoading(false);
 
   };
 
@@ -131,8 +134,14 @@ const DoctorRegister = () => {
             <button
               type="submit"
               className="bg-purple-600 text-white rounded-md py-2 px-4 mt-4"
-            >
-              Register Doctor
+            > {isLoading ? (
+              <>
+                <FaSpinner className="animate-spin item-center" />
+                Registering...
+              </>
+            ) : (
+              "Register Doctor"
+            )}
             </button>
           </div>
         </div>
