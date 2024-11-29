@@ -61,20 +61,24 @@ function DoctorProfilePage() {
     }
   };
 
+  
   const filteredData = doctors.filter((doctor) => {
+    const name = doctor?.name?.toLowerCase() || ""; 
+    const contact = doctor?.contactNumber || "";  
+  
     if (selectedCategory === "All") {
       return (
-        doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doctor.contactNumber.includes(searchQuery)
+        name.includes(searchQuery.toLowerCase()) ||
+        contact.includes(searchQuery)
       );
     }
-
+  
     return (
-      doctor.gender === selectedCategory &&
-      (doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doctor.contactNumber.includes(searchQuery))
+      doctor?.gender === selectedCategory &&
+      (name.includes(searchQuery.toLowerCase()) || contact.includes(searchQuery))
     );
   });
+  
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -101,7 +105,7 @@ function DoctorProfilePage() {
       </div>
 
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow">
-        <input
+        {/* <input
           type="text"
           placeholder={`Search by ${
             selectedCategory === "All" ? "Name or Contact" : selectedCategory
@@ -109,7 +113,14 @@ function DoctorProfilePage() {
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        /> */}
+         <input
+        type="text"
+        placeholder={`Search by ${selectedCategory === "All" ? "Name or Contact" : selectedCategory || "Category"}`}
+        className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
