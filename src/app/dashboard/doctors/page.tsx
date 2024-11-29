@@ -179,7 +179,11 @@ function DoctorProfilePage() {
                     </td>
                     <td className="px-4 py-4 text-center">
                       <div className="flex items-center justify-center space-x-2">
-                        <button className="text-yellow-600">
+                        
+                      <button
+                          className="text-yellow-600"
+                          onClick={() => router.push(`/dashboard/doctors/${doctor.id}`)}
+                        >
                           <FaEdit />
                         </button>
                         <button
