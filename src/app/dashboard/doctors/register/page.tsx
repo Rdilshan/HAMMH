@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation'
 
 
 interface ApiResponse {
@@ -18,6 +19,7 @@ const DoctorRegister = () => {
   const [specialization, setSpecialization] = useState('');
   const [gender, setGender] = useState('male');
 
+  const router = useRouter()
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -38,6 +40,7 @@ const DoctorRegister = () => {
 
     if (response.status === 200) {
       toast.success('Patient registered successfully!');
+      router.push('/dashboard/doctors')
 
     } else {
       toast.error('Email already exists or Not filling the required fields!');

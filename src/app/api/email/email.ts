@@ -14,13 +14,13 @@ class EmailService {
     } as nodemailer.TransportOptions);
   }
 
-  async sendEmail(to: string, subject: string, text:string) {
+  async sendEmail(to: string, subject: string, html:string) {
     try {
       await this.transporter.sendMail({
         from: process.env.SMTP_USER, 
         to,                         
         subject,                    
-        text,                       
+        html,                       
       });
     } catch (error) {
       console.error("Error sending email:", error);
