@@ -23,7 +23,6 @@ function DoctorProfilePage() {
     fetchDoctors();
   }, []);
 
-  
   const fetchDoctors = async () => {
     try {
       const response = await fetch(`/api/doctor`, {
@@ -42,7 +41,26 @@ function DoctorProfilePage() {
     }
   };
 
-  
+  const handleDeleteDoctor = async (id: number) => {
+    try {
+      const response = await fetch(`/api/doctor/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the doctor.");
+      }
+
+      const data = await response.json();
+      alert(data.message);
+      fetchDoctors(); // Refresh the list after deletion
+    } catch (error) {
+      console.error("Error deleting doctor:", error);
+      alert("An error occurred while trying to delete the doctor.");
+    }
+  };
+
   const filteredData = doctors.filter((doctor) => {
     if (selectedCategory === "All") {
       return (
@@ -63,7 +81,6 @@ function DoctorProfilePage() {
   const currentRows = filteredData.slice(indexOfFirstRow, indexOfLastRow);
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
-  
   const toggleRow = (index: number) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
@@ -72,7 +89,9 @@ function DoctorProfilePage() {
     <div className="px-4 py-4 bg-[#F8F3FF]">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold text-black uppercase">Doctor Details</h2>
+        <h2 className="text-2xl font-bold text-black uppercase">
+          Doctor Details
+        </h2>
         <button
           onClick={() => router.push("/dashboard/doctors/register")}
           className="mt-2 md:mt-0 bg-purple-600 text-white rounded-md py-2 px-4"
@@ -81,11 +100,12 @@ function DoctorProfilePage() {
         </button>
       </div>
 
-     
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow">
         <input
           type="text"
-          placeholder={`Search by ${selectedCategory === "All" ? "Name or Contact" : selectedCategory}`}
+          placeholder={`Search by ${
+            selectedCategory === "All" ? "Name or Contact" : selectedCategory
+          }`}
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -103,15 +123,23 @@ function DoctorProfilePage() {
 
       {/* Doctor Table */}
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
-        <h2 className="text-[15px] font-bold text-black uppercase mb-3">Doctor Details</h2>
+        <h2 className="text-[15px] font-bold text-black uppercase mb-3">
+          Doctor Details
+        </h2>
         <table className="w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
               <th className="px-4 py-3 text-center">Profile</th>
               <th className="px-4 py-3 text-center">Name</th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">Contact</th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">Specialist</th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">Gender</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Contact
+              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Specialist
+              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Gender
+              </th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
@@ -125,7 +153,11 @@ function DoctorProfilePage() {
                         className="text-black md:hidden text-[15px]"
                         onClick={() => toggleRow(index)}
                       >
-                        {expandedRow === index ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
+                        {expandedRow === index ? (
+                          <BiSolidDownArrow />
+                        ) : (
+                          <BiSolidRightArrow />
+                        )}
                       </button>
                       <Image
                         src={doctor.profileImage || profile}
@@ -150,7 +182,17 @@ function DoctorProfilePage() {
                         <button className="text-yellow-600">
                           <FaEdit />
                         </button>
-                        <button className="text-red-600">
+                        <button
+                          className="text-red-600"
+                          onClick={async () => {
+                            const confirmDelete = window.confirm(
+                              "Are you sure you want to delete this doctor? This action is irreversible."
+                            );
+                            if (confirmDelete) {
+                              await handleDeleteDoctor(doctor.id);
+                            }
+                          }}
+                        >
                           <FaTrash />
                         </button>
                       </div>
@@ -159,7 +201,10 @@ function DoctorProfilePage() {
 
                   {expandedRow === index && (
                     <tr className="md:hidden">
-                      <td colSpan={5} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
+                      <td
+                        colSpan={5}
+                        className="px-4 py-4 bg-gray-50 text-sm text-gray-600"
+                      >
                         <div className="flex items-center justify-between py-2">
                           <p className="font-bold">Contact Number</p>
                           <p> {doctor.telephone}</p>
