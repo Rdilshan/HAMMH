@@ -1,39 +1,21 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ref, uploadBytes, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../../../../../firebase_config'; 
 
 const PrescriptionUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [clinicDate, setClinicDate] = useState('');
   const [nextClinicDate, setNextClinicDate] = useState('');
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      setSelectedFiles([
-        ...selectedFiles,
-        ...Array.from(files).filter(
-          (file) => file.type === 'image/png' || file.type === 'image/jpeg'
-        ),
-      ]);
+  useEffect(() => {
+    if (selectedFiles.length > 0) {
+      uploadImagesToFirebase();
     }
-  };
-
-  const handleBrowseClick = () => {
-    document.getElementById('fileInput')?.click();
-  };
-
-  const handleRemoveFile = (index: number) => {
-    setSelectedFiles(selectedFiles.filter((_, i) => i !== index));
-  };
-
-  const handleSave = async () => {
-    console.log('Saving prescription data:', {
-      selectedFiles,
-      clinicDate,
-      nextClinicDate,
-    });
-  };
+  }, [selectedFiles]);
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -43,12 +25,105 @@ const PrescriptionUpload = () => {
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const files = event.dataTransfer.files;
-    setSelectedFiles([
-      ...selectedFiles,
-      ...Array.from(files).filter(
+    const validFiles = Array.from(files).filter(
+      (file) => file.type === 'image/png' || file.type === 'image/jpeg'
+    );
+    setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+  };
+
+  const uploadImagesToFirebase = async () => {
+    try {
+      // Filter out files that haven't been uploaded yet
+      const filesToUpload = selectedFiles.filter(
+        (file) => !uploadedImageUrls.some((url) => url.includes(file.name))
+      );
+
+      const uploadPromises = filesToUpload.map(async (file) => {
+        const storageRef = ref(storage, `prescriptions/${Date.now()}_${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        return new Promise<string>((resolve, reject) => {
+          uploadTask.on(
+            'state_changed',
+            (snapshot) => {
+              const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              setUploadProgress(prev => ({
+                ...prev,
+                [file.name]: progress
+              }));
+            },
+            (error) => {
+              console.error('Upload error:', error);
+              reject(error);
+            },
+            async () => {
+              try {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                // Remove progress for completed upload
+                setUploadProgress(prev => {
+                  const newProgress = {...prev};
+                  delete newProgress[file.name];
+                  return newProgress;
+                });
+                resolve(downloadURL);
+              } catch (error) {
+                reject(error);
+              }
+            }
+          );
+        });
+      });
+
+      const newUrls = await Promise.all(uploadPromises);
+      
+      // Combine new URLs with existing URLs
+      const updatedUrls = [...uploadedImageUrls, ...newUrls];
+      setUploadedImageUrls(updatedUrls);
+    } catch (error) {
+      console.error('Error uploading images:', error);
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const newFiles = Array.from(files).filter(
         (file) => file.type === 'image/png' || file.type === 'image/jpeg'
-      ),
-    ]);
+      );
+      setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+  };
+
+  const handleBrowseClick = () => {
+    document.getElementById('fileInput')?.click();
+  };
+
+  const handleRemoveFile = (index: number) => {
+    const removedFile = selectedFiles[index];
+    
+    // Remove the file from selected files
+    setSelectedFiles(selectedFiles.filter((_, i) => i !== index));
+    
+    // Remove the corresponding URL from uploaded URLs
+    setUploadedImageUrls(prevUrls => 
+      prevUrls.filter(url => !url.includes(removedFile.name))
+    );
+
+    // Remove any progress for this file
+    setUploadProgress(prev => {
+      const newProgress = {...prev};
+      delete newProgress[removedFile.name];
+      return newProgress;
+    });
+  };
+
+  const handleSave = async () => {
+    console.log('Saving prescription data:', {
+      selectedFiles,
+      clinicDate,
+      nextClinicDate,
+      uploadedImageUrls,
+    });
   };
 
   return (
@@ -66,7 +141,7 @@ const PrescriptionUpload = () => {
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
-          {/* Display Uploaded Files */}
+          {/* Display Uploaded Files with Progress */}
           {selectedFiles.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-60 overflow-y-auto w-full ">
               {selectedFiles.map((file, index) => (
@@ -85,12 +160,22 @@ const PrescriptionUpload = () => {
                   >
                     &times;
                   </button>
+                  
+                  {/* Progress Bar */}
+                  {uploadProgress[file.name] !== undefined && (
+                    <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg h-2">
+                      <div 
+                        className="bg-purple-600 h-2 rounded-b-lg" 
+                        style={{width: `${uploadProgress[file.name]}%`}}
+                      ></div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           )}
 
-          {/* File Input for Upload */}
+          {/* Rest of the component remains the same */}
           <input
             type="file"
             id="fileInput"
@@ -116,7 +201,7 @@ const PrescriptionUpload = () => {
               </button>
             </div>
           )}
-            {selectedFiles.length > 0 && (
+          {selectedFiles.length > 0 && (
             <div className="flex justify-center mt-4 w-full my-7">
               <button
                 onClick={handleBrowseClick}
@@ -145,8 +230,8 @@ const PrescriptionUpload = () => {
         </div>
       </div>
 
-      {/* Fixed Date and Save Button Section */}
-      <div className=" w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[180px] left-0">
+      {/* Date and Save Button Section remains the same */}
+      <div className="w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[180px] left-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-100 mb-2">CLINIC DATE</label>

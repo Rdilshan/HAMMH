@@ -18,6 +18,7 @@
     "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
     "dotenv": "^16.4.5",
+    "firebase": "^11.0.2",
     "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
