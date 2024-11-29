@@ -10,9 +10,10 @@ export async function middleware(request: NextRequest) {
   const routepath = request.nextUrl.pathname;
 
   if (routepath.startsWith("/api/")) {
-    if (routepath == "/api/Auth") {
+    if (routepath == "/api/Auth" || routepath == "/api/doctor/verify") {
       return NextResponse.next();
     }
+
     // const authHeader = request.headers.get("authorization");
 
     // if (!authHeader || !authHeader.startsWith("Bearer ")) {
