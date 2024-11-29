@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ref, uploadBytes, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../../../firebase_config'; 
 
 const PrescriptionUpload = () => {
@@ -9,7 +9,9 @@ const PrescriptionUpload = () => {
   const [clinicDate, setClinicDate] = useState('');
   const [nextClinicDate, setNextClinicDate] = useState('');
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
+  
+  // New state for tracking upload progress
+  const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
 
   useEffect(() => {
     if (selectedFiles.length > 0) {
@@ -40,16 +42,18 @@ const PrescriptionUpload = () => {
 
       const uploadPromises = filesToUpload.map(async (file) => {
         const storageRef = ref(storage, `prescriptions/${Date.now()}_${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
+        
+        // Use uploadBytesResumable for progress tracking
         return new Promise<string>((resolve, reject) => {
-          uploadTask.on(
-            'state_changed',
+          const uploadTask = uploadBytesResumable(storageRef, file);
+
+          // Track upload progress
+          uploadTask.on('state_changed', 
             (snapshot) => {
               const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
               setUploadProgress(prev => ({
                 ...prev,
-                [file.name]: progress
+                [file.name]: Math.round(progress)
               }));
             },
             (error) => {
@@ -79,6 +83,7 @@ const PrescriptionUpload = () => {
       // Combine new URLs with existing URLs
       const updatedUrls = [...uploadedImageUrls, ...newUrls];
       setUploadedImageUrls(updatedUrls);
+      console.log('Uploaded Image URLs:', updatedUrls);
     } catch (error) {
       console.error('Error uploading images:', error);
     }
@@ -109,7 +114,7 @@ const PrescriptionUpload = () => {
       prevUrls.filter(url => !url.includes(removedFile.name))
     );
 
-    // Remove any progress for this file
+    // Remove progress for removed file
     setUploadProgress(prev => {
       const newProgress = {...prev};
       delete newProgress[removedFile.name];
@@ -154,22 +159,21 @@ const PrescriptionUpload = () => {
                     alt={`Uploaded File ${index + 1}`}
                     className="max-w-full max-h-full object-cover"
                   />
+                  {/* Progress Bar */}
+                  {uploadProgress[file.name] !== undefined && (
+                    <div className="absolute bottom-0 left-0 w-full h-2 bg-gray-300">
+                      <div 
+                        className="h-full bg-black" 
+                        style={{width: `${uploadProgress[file.name]}%`}}
+                      ></div>
+                    </div>
+                  )}
                   <button
                     className="absolute top-2 right-2 bg-gray-800 text-white rounded-full w-6 h-6 flex items-center justify-center cursor-pointer"
                     onClick={() => handleRemoveFile(index)}
                   >
                     &times;
                   </button>
-                  
-                  {/* Progress Bar */}
-                  {uploadProgress[file.name] !== undefined && (
-                    <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg h-2">
-                      <div 
-                        className="bg-purple-600 h-2 rounded-b-lg" 
-                        style={{width: `${uploadProgress[file.name]}%`}}
-                      ></div>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -230,8 +234,8 @@ const PrescriptionUpload = () => {
         </div>
       </div>
 
-      {/* Date and Save Button Section remains the same */}
-      <div className="w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[180px] left-0">
+      {/* Fixed Date and Save Button Section */}
+      <div className=" w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[180px] left-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-100 mb-2">CLINIC DATE</label>
