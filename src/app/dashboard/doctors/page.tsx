@@ -61,24 +61,23 @@ function DoctorProfilePage() {
     }
   };
 
-  
   const filteredData = doctors.filter((doctor) => {
-    const name = doctor?.name?.toLowerCase() || ""; 
-    const contact = doctor?.contactNumber || "";  
-  
+    const name = doctor?.name?.toLowerCase() || "";
+    const contact = doctor?.contactNumber || "";
+
     if (selectedCategory === "All") {
       return (
         name.includes(searchQuery.toLowerCase()) ||
         contact.includes(searchQuery)
       );
     }
-  
+
     return (
       doctor?.gender === selectedCategory &&
-      (name.includes(searchQuery.toLowerCase()) || contact.includes(searchQuery))
+      (name.includes(searchQuery.toLowerCase()) ||
+        contact.includes(searchQuery))
     );
   });
-  
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -114,13 +113,17 @@ function DoctorProfilePage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         /> */}
-         <input
-        type="text"
-        placeholder={`Search by ${selectedCategory === "All" ? "Name or Contact" : selectedCategory || "Category"}`}
-        className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
+        <input
+          type="text"
+          placeholder={`Search by ${
+            selectedCategory === "All"
+              ? "Name or Contact"
+              : selectedCategory || "Category"
+          }`}
+          className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
@@ -140,8 +143,8 @@ function DoctorProfilePage() {
         <table className="w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
-              <th className="px-4 py-3 text-center">Profile</th>
-              <th className="px-4 py-3 text-center">Name</th>
+              {/* <th className="px-4 py-3 text-center">Profile</th> */}
+              <th className="px-4 py-3 text-left">Name</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
                 Contact
               </th>
@@ -150,6 +153,9 @@ function DoctorProfilePage() {
               </th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
                 Gender
+              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Status
               </th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
@@ -170,15 +176,16 @@ function DoctorProfilePage() {
                           <BiSolidRightArrow />
                         )}
                       </button>
-                      <Image
+                      {/* <Image
                         src={doctor.profileImage || profile}
                         alt={doctor.name}
                         width={40}
                         height={40}
                         className="w-10 h-10 rounded-full"
-                      />
+                      /> */}
+                      {doctor.name}
                     </td>
-                    <td className="px-4 py-4 text-center">{doctor.name}</td>
+                    {/* <td className="px-4 py-4 text-center"></td> */}
                     <td className="px-4 py-4 text-center hidden md:table-cell">
                       {doctor.telephone}
                     </td>
@@ -188,12 +195,25 @@ function DoctorProfilePage() {
                     <td className="px-4 py-4 text-center hidden md:table-cell">
                       {doctor.gender}
                     </td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">
+                      <div
+                        className={` py-1 rounded ${
+                          doctor.active_status === "Active"
+                            ? "bg-green-500 text-white rounded-full text-[10px] "
+                            : "bg-red-500 text-white rounded-full text-[10px]"
+                        }`}
+                      >
+                        {doctor.active_status}
+                      </div>
+                    </td>
+
                     <td className="px-4 py-4 text-center">
                       <div className="flex items-center justify-center space-x-2">
-                        
-                      <button
+                        <button
                           className="text-yellow-600"
-                          onClick={() => router.push(`/dashboard/doctors/${doctor.id}`)}
+                          onClick={() =>
+                            router.push(`/dashboard/doctors/${doctor.id}`)
+                          }
                         >
                           <FaEdit />
                         </button>
@@ -231,6 +251,18 @@ function DoctorProfilePage() {
                         <div className="flex items-center justify-between py-2">
                           <p className="font-bold">Gender</p>
                           <p>{doctor.gender}</p>
+                        </div>
+                        <div className="flex items-center justify-between py-2">
+                          <p className="font-bold">Status</p>
+                          <span
+                        className={`px-2 py-1 rounded ${
+                          doctor.active_status === "Active"
+                            ? "bg-green-500 text-white rounded-full text-[12px]"
+                            : "bg-red-500 text-white rounded-full text-[12px]"
+                        }`}
+                      >
+                        {doctor.active_status}
+                      </span>
                         </div>
                       </td>
                     </tr>
