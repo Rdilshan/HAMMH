@@ -14,8 +14,8 @@ datasource db {
 }
 
 model User {
-  id             Int            @id @default(autoincrement())
-  email          String         @unique
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
   name           String
   role           Role
   telephone      String
@@ -24,8 +24,8 @@ model User {
   gender         Gender
   password       String?
   active_status  Active_status @default(Active)
-  created_at     DateTime       @default(now())
-  Updated_at     DateTime       @default(now())
+  created_at     DateTime      @default(now())
+  Updated_at     DateTime      @default(now())
   Patients       Patients[]
 }
 
@@ -34,6 +34,7 @@ model Patients {
   name           String
   telephone      String?
   address        String
+  location       Float[]
   age            Int
   nic            String
   gender         Gender
