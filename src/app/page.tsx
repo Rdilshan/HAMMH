@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { User } from '@/types/types'
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function LoginPage() {
   const router = useRouter()
@@ -26,9 +27,13 @@ export default function LoginPage() {
 
     if (response.status === 200) {
       localStorage.setItem("authToken", `Bearer ${data.token}`);
-      router.push('/dashboard')
+      toast.success("Successfully logined");
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 2000);
     } else {
-      console.log("show the error msg..")
+      console.log("show the error msg..");
+      toast.error(data.message || 'An error occurred');
     }
 
     // if (user.email && user.password) {
@@ -38,6 +43,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <Toaster position="top-center" reverseOrder={false} />
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
         <div>
           <h1 className="text-left text-3xl font-extrabold text-gray-900">
@@ -54,7 +60,7 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 required
-                className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="appearance-none rounded text-black relative block w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Email address"
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
               />
@@ -66,7 +72,7 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="appearance-none rounded text-black relative block w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="Password"
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
               />
