@@ -2,7 +2,7 @@
 import { FaEdit } from 'react-icons/fa';
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
-import { useState } from 'react';
+import { useState ,useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -11,21 +11,47 @@ const PatientsDetails = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const [expandedRow, setExpandedRow] = useState<number | null>(null);
+    const [patients, setPatients] = useState<any[]>([]); 
+    const [error, setError] = useState("");
     const rowsPerPage = 5;
 
-    const patientData = [
-        { patientName: 'Lasith Subasingha', NIC: '20007876887', contactNumber: '0787575875', address: 'Embilipitiya' },
-        { patientName: 'Tharindu Silva', NIC: '20005678321', contactNumber: '0712345678', address: 'Colombo' },
-        { patientName: 'Nimal Perera', NIC: '20007876555', contactNumber: '0765432109', address: 'Galle' },
-        { patientName: 'Samantha Rajapakse', NIC: '20005432109', contactNumber: '0771234567', address: 'Kandy' },
-        { patientName: 'Rashmi Fernando', NIC: '20006547832', contactNumber: '0718765432', address: 'Kurunegala' },
-        { patientName: 'Kamal Wickramasinghe', NIC: '20007898765', contactNumber: '0781234560', address: 'Matara' },
-        { patientName: 'Priya Silva', NIC: '20003456789', contactNumber: '0776654321', address: 'Jaffna' },
-        { patientName: 'Rajitha Perera', NIC: '20001234567', contactNumber: '0712348901', address: 'Negombo' },
-        { patientName: 'Sajith Wijesinghe', NIC: '20009876543', contactNumber: '0780987654', address: 'Colombo' },
-        { patientName: 'Ishara Kumara', NIC: '20003218765', contactNumber: '0768765432', address: 'Gampaha' },
-    ];
+    // const patientData = [
+    //     { patientName: 'Lasith Subasingha', NIC: '20007876887', contactNumber: '0787575875', address: 'Embilipitiya' },
+    //     { patientName: 'Tharindu Silva', NIC: '20005678321', contactNumber: '0712345678', address: 'Colombo' },
+    //     { patientName: 'Nimal Perera', NIC: '20007876555', contactNumber: '0765432109', address: 'Galle' },
+    //     { patientName: 'Samantha Rajapakse', NIC: '20005432109', contactNumber: '0771234567', address: 'Kandy' },
+    //     { patientName: 'Rashmi Fernando', NIC: '20006547832', contactNumber: '0718765432', address: 'Kurunegala' },
+    //     { patientName: 'Kamal Wickramasinghe', NIC: '20007898765', contactNumber: '0781234560', address: 'Matara' },
+    //     { patientName: 'Priya Silva', NIC: '20003456789', contactNumber: '0776654321', address: 'Jaffna' },
+    //     { patientName: 'Rajitha Perera', NIC: '20001234567', contactNumber: '0712348901', address: 'Negombo' },
+    //     { patientName: 'Sajith Wijesinghe', NIC: '20009876543', contactNumber: '0780987654', address: 'Colombo' },
+    //     { patientName: 'Ishara Kumara', NIC: '20003218765', contactNumber: '0768765432', address: 'Gampaha' },
+    // ];
 
+
+    // const router = useRouter();
+
+    useEffect(() => {
+        fetchPatients();
+      }, []);
+    
+      const fetchPatients = async () => {
+        try {
+          const response = await fetch(`/api/patient`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          });
+    
+          if (!response.ok) {
+            throw new Error("Failed to fetch patients data.");
+          }
+    
+          const data = await response.json();
+          setPatients(data);
+        } catch (err: any) {
+          setError(err.message);
+        }
+      };
 
     
        
@@ -34,16 +60,16 @@ const PatientsDetails = () => {
         setSelectedCategory(e.target.value);
     };
 
-    const filteredData = patientData.filter((patient) => {
+    const filteredData = patients.filter((patient) => {
         if (selectedCategory === 'All') {
-            return patient.patientName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+            return patient.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                    patient.NIC.includes(searchQuery);
         }
         if (selectedCategory === 'Patient Name') {
-            return patient.patientName.toLowerCase().includes(searchQuery.toLowerCase());
+            return patient.name.toLowerCase().includes(searchQuery.toLowerCase());
         }
         if (selectedCategory === 'NIC') {
-            return patient.NIC.includes(searchQuery);
+            return patient.nic.includes(searchQuery);
         }
         return true;
     });
@@ -118,14 +144,14 @@ const PatientsDetails = () => {
                                             >
                                                 {expandedRow === index ? <BiSolidDownArrow /> :<BiSolidRightArrow />}
                                             </button>
-                                            {patient.patientName}
+                                            {patient.name}
                                         </td>
-                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.NIC}</td>
-                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.contactNumber}</td>
+                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.nic}</td>
+                                        <td className="px-4 py-6 text-center hidden md:table-cell">{patient.telephone}</td>
                                         <td className="px-4 py-6 text-center hidden md:table-cell">{patient.address}</td>
                                         <td className="px-4 py-6 text-center">
                                             <button className="text-yellow-600"
-                                            onClick={() => router.push(`/dashboard/patients/${patient.NIC}`)}
+                                            onClick={() => router.push(`/dashboard/patients/${patient.nic}`)}
                                             >
                                                 <FaEdit />
                                             </button>
@@ -136,12 +162,12 @@ const PatientsDetails = () => {
                                             <td  className="px-4 py-4 bg-gray-50 text-sm text-gray-600 md:hidden">
                                                 <div className='flex items-center justify-between py-2'>
                                                     <p className='font-bold'>NIC</p>
-                                                    <p>{patient.NIC}</p>
+                                                    <p>{patient.nic}</p>
 
                                                 </div>
                                                 <div className='flex items-center justify-between py-2'>
                                                     <p className='font-bold'>Contact</p>
-                                                    <p>{patient.contactNumber}</p>
+                                                    <p>{patient.telephone}</p>
 
                                                 </div>
                                                 <div className='flex items-center justify-between py-2'>

@@ -39,12 +39,12 @@ export async function POST(request: Request) {
       );
     }
 
-    if(IsMobilePhone(data.telephone)){
-      return NextResponse.json(
-        { msg: "Invalid phone number" },
-        { status: 400 }
-      );
-    }
+    // if(IsMobilePhone(data.telephone)){
+    //   return NextResponse.json(
+    //     { msg: "Invalid phone number" },
+    //     { status: 400 }
+    //   );
+    // }
 
     const newPatient = await prisma.patients.create({
       data: {
