@@ -16,7 +16,7 @@ const NurseRegister = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const baseUrl = '/api/nurse'; 
+    const baseUrl = '/api/Nurse'; 
 
     try {
       const response = await fetch(baseUrl, {
