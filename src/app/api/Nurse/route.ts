@@ -6,6 +6,7 @@ import EmailService from "@/app/api/email/email"; // Ensure this exists and work
 
 const prisma = new PrismaClient();
 
+
 export async function GET() {
   try {
     const nurses = await prisma.user.findMany({ where: { role: "nurse" } });
