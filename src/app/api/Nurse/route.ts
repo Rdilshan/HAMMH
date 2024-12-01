@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const nurses = await prisma.user.findMany({ where: { role: "Nurse" } });
+    const nurses = await prisma.user.findMany({ where: { role: "nurse" } });
     return NextResponse.json(nurses);
   } catch (error) {
     console.error("Error fetching nurses:", error);
