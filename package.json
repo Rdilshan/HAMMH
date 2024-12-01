@@ -17,6 +17,7 @@
     "@react-google-maps/api": "^2.20.3",
     "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
+    "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
     "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
