@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import {IsMobilePhone} from 'class-validator';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +34,14 @@ export async function POST(request: Request) {
       !data.source_reffern
     ) {
       return NextResponse.json(
-        { message: "All fields are required" },
+        { msg: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    if(IsMobilePhone(data.telephone)){
+      return NextResponse.json(
+        { msg: "Invalid phone number" },
         { status: 400 }
       );
     }
@@ -48,14 +56,14 @@ export async function POST(request: Request) {
         gender: data.gender,
         source_reffern: data.source_reffern,
         created_by: Number(authid),
+        location:data.location
       },
-    });
+    })
 
     return NextResponse.json({ message: newPatient }, { status: 200 });
   } catch (error) {
-    // console.log("Error fetching patient:", error);
     return NextResponse.json(
-      { msg: "Failed to fetch patient", error: error },
+      { msg: error },
       { status: 500 }
     );
   }
