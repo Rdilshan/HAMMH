@@ -13,6 +13,26 @@ import {
 } from 'lucide-react'
 
 export default function Sidebar() {
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/Auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        window.location.href = "/";
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
+
   const pathname = usePathname()
 
   const menuItems = [
@@ -49,7 +69,7 @@ export default function Sidebar() {
 
             return (
               <Link
-              prefetch={false}
+                prefetch={false}
                 key={item.path}
                 href={item.path}
                 className={`
@@ -70,8 +90,8 @@ export default function Sidebar() {
         </div>
 
         {/* Logout Button */}
-        <Link
-          href="/logout"
+        <button
+          onClick={handleLogout}
           className={`
             flex items-center h-12 px-4 text-red-500 hover:bg-gray-50
           `}
@@ -81,7 +101,7 @@ export default function Sidebar() {
           <div className="lg:hidden absolute left-16 px-3 py-2 bg-gray-800 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
             Logout
           </div>
-        </Link>
+        </button>
       </nav>
     </aside>
   )
