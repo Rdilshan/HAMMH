@@ -8,19 +8,21 @@ import { useRouter, useParams } from 'next/navigation';
 // import { error } from 'console';
 
 interface PatientDetailsFormData {
-  fullName: string;
-  contactNumber: string;
+  name: string;
+  telephone: string;
   address: string;
   gender: string;
   age: number;
   nic:string;
-  source:string;
-  clinic:string;
+  source_reffern:string;
+  clinic_session:string;
   condition:string;
   diagnosis:string;
-  special:string;
+  special_note:string;
   choice:string;
-  injectionType: string;
+  injection_type: string;
+  use_injection:string,
+    
   // patient: any;
   // message?: string;
   // data?: any;
@@ -30,36 +32,33 @@ interface PatientDetailsFormData {
 }
 
 const options = [
-  {value : "1",label : "A"},
-  {value : "2",label : "B"},
-  {value : "3",label : "C"},
-  {value : "4",label : "D"},
-  {value : "5",label : "E"},
-  {value : "6",label : "F"},
-  {value : "1",label : "A"},
-  {value : "2",label : "B"},
-  {value : "3",label : "C"},
-  {value : "4",label : "D"},
-  {value : "5",label : "E"},
-  {value : "6",label : "F"},
+  { value: "1", label: "A" },
+  { value: "2", label: "B" },
+  { value: "3", label: "C" },
+  { value: "4", label: "D" },
+  { value: "5", label: "E" },
+  { value: "6", label: "F" },
 ]
 
 const PatientDetails = () => {
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<PatientDetailsFormData>({
-    fullName: "",
-    contactNumber: "",
+    name: "",
+    telephone: "",
     address: "",
     gender: "",
     age: 0,
     nic: "",
-    source:"",
-    clinic:"",
+    source_reffern:"",
+    clinic_session:"",
     condition:"",
     diagnosis:"",
-    special:"",
+    use_injection,
+    injection_type,
+    special_note:"",
     choice:"",
-    injectionType: "",
+   
   });
   const router = useRouter();
 
@@ -82,16 +81,7 @@ const PatientDetails = () => {
     }));
   };
 
-  // const fetchPatientData = async () => {
-  //         try {
-  //           const response = await fetch(`/api/patient/${id}`);
-  //           const data = await response.json();
-  //           console.log(data.patients.age)
-  //         }catch{
-  //           console.log("this is the error" ,Error)
-  //         }
-  //       }
-  //       fetchPatientData();
+
           
 
   useEffect(() => {
@@ -104,19 +94,19 @@ const PatientDetails = () => {
           if (response.ok) {
             setFormData((prev) => ({
               ...prev,
-              fullName: data.patients.name || "",
-              contactNumber: data.patients.telephone || "",
+              name: data.patients.name || "",
+              telephone: data.patients.telephone || "",
               address: data.patients.address || "",
               gender: data.patients.gender || "",
               age: data.patients.age || 0,
               nic: data.patients.nic || "",
-              source: data.patients.source_reffern || "",
-              clinic: data.patients.clinic_session || "",
+              source_reffern: data.patients.source_reffern || "",
+              clinic_session: data.patients.clinic_session || "",
               condition: data.patients.condition || "",
-              diagnosis: data.patients.diagnosis || "",
-              special: data.patients.special_note || "",
-              choice: data.patients.condition || "",
-              injectionType: data.patients.injection_type || "",
+              diagnosis: data.patients.diagonsis || "",
+              use_injection: data.patients.use_injection ? "yes" : "no",
+              injection_type: data.patients.injection_type || "",
+              special_note: data.patients.special_note || "",
             }));
           } else {
             toast.error("Failed to fetch patient data.");
@@ -144,14 +134,41 @@ const PatientDetails = () => {
   
   
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log(formData);
+    setIsLoading(true);
+   
+    const method =  'PUT' 
+    const baseUrl =`/api/patient/${id}`;
+
+    try {
+      const response = await fetch(baseUrl, {
+        method: method,
+        headers: {
+        'Content-Type': 'application/json',
+      },
+        body: JSON.stringify(formData),
+      });
+      const data: PatientDetailsFormData = await response.json();
+      // const data = await response.json();
+
+      if (response.ok) {
+        toast.success(id ? "Patient updated successfully!" : "Patient registered successfully!");
+        router.push("/dashboard/patient");
+      } else {
+        console.log(data.error)
+        toast.error(data.error || "Error in submission, please check your fields.");
+      }
+    } catch (error) {
+    
+      toast.error("An error occurred while submitting the form.");
+    } 
+      setIsLoading(false);
   };
 
   return (
     <div className="bg-white rounded-md p-8 shadow-lg">
+        <Toaster />
       <h2 className="text-xl font-semibold text-gray-900 mb-6">
         PATIENT DETAILS
       </h2>
@@ -169,9 +186,9 @@ const PatientDetails = () => {
             <input
               type="text"
               id="fullName"
-              name="fullName"
+              name="name"
               placeholder="Enter full name of patient"
-              value={formData.fullName}
+              value={formData.name}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
@@ -190,7 +207,7 @@ const PatientDetails = () => {
               id="contactNumber"
               name="contactNumber"
               placeholder="Enter Contact Number"
-              value={formData.contactNumber}
+              value={formData.telephone}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
@@ -285,7 +302,7 @@ const PatientDetails = () => {
             <select
               id="source"
               name="source"
-              value={formData.source}
+              value={formData.source_reffern}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
@@ -314,7 +331,7 @@ const PatientDetails = () => {
             <select
               id="clinic"
               name="clinic"
-              value={formData.clinic}
+              value={formData.clinic_session}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
@@ -401,7 +418,7 @@ const PatientDetails = () => {
               <select
                 id="injectionType"
                 name="injectionType"
-                value={formData.injectionType}
+                value={formData.injection_type}
                 onChange={handleChange}
                 className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               >
@@ -432,9 +449,9 @@ const PatientDetails = () => {
             </label>
            
             <textarea
-              
+              name="special"
               placeholder="Enter the address"
-              value={formData.special}
+              value={formData.special_note}
               onChange={handleChange}
               className="h-[250px] text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
@@ -451,8 +468,10 @@ const PatientDetails = () => {
                      focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
                      min-w-[120px]"
           >
-            Save
+            {isLoading && <div className="spinner">Loading...</div>}
+          
           </button>
+          
         </div>
       </form>
     </div>
