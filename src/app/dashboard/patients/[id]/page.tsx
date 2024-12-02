@@ -1,11 +1,9 @@
 "use client";
 
-
-import Select from 'react-select'
-import React, { useState, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useRouter, useParams } from 'next/navigation';
-// import { error } from 'console';
+import Select from "react-select";
+import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter, useParams } from "next/navigation";
 
 interface PatientDetailsFormData {
   name: string;
@@ -13,22 +11,14 @@ interface PatientDetailsFormData {
   address: string;
   gender: string;
   age: number;
-  nic:string;
-  source_reffern:string;
-  clinic_session:string;
-  condition:string;
-  diagnosis:string;
-  special_note:string;
-  choice:string;
+  nic: string;
+  source_reffern: string;
+  clinic_session: string;
+  condition: string;
+  diagonsis: string;
+  special_note: string;
   injection_type: string;
-  use_injection:string,
-    
-  // patient: any;
-  // message?: string;
-  // data?: any;
-  error?: string;
- 
-  
+  use_injection: string;
 }
 
 const options = [
@@ -38,11 +28,12 @@ const options = [
   { value: "4", label: "D" },
   { value: "5", label: "E" },
   { value: "6", label: "F" },
-]
+];
 
 const PatientDetails = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false); // Fix for hydration issues
   const [formData, setFormData] = useState<PatientDetailsFormData>({
     name: "",
     telephone: "",
@@ -50,39 +41,20 @@ const PatientDetails = () => {
     gender: "",
     age: 0,
     nic: "",
-    source_reffern:"",
-    clinic_session:"",
-    condition:"",
-    diagnosis:"",
-    use_injection,
-    injection_type,
-    special_note:"",
-    choice:"",
-   
+    source_reffern: "",
+    clinic_session: "",
+    condition: "",
+    diagonsis: "",
+    special_note: "",
+    use_injection: "",
+    injection_type: "",
   });
   const router = useRouter();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleChoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setFormData((prev) => ({
-      ...prev,
-      choice: isChecked ? "yes" : "no",
-      injectionType: isChecked ? "" : "", // Reset injection type if "No"
-    }));
-  };
-
-
-          
+  // Ensure the component runs only on the client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -94,20 +66,21 @@ const PatientDetails = () => {
           if (response.ok) {
             setFormData((prev) => ({
               ...prev,
-              name: data.patients.name || "",
-              telephone: data.patients.telephone || "",
-              address: data.patients.address || "",
-              gender: data.patients.gender || "",
-              age: data.patients.age || 0,
-              nic: data.patients.nic || "",
-              source_reffern: data.patients.source_reffern || "",
-              clinic_session: data.patients.clinic_session || "",
-              condition: data.patients.condition || "",
-              diagnosis: data.patients.diagonsis || "",
-              use_injection: data.patients.use_injection ? "yes" : "no",
-              injection_type: data.patients.injection_type || "",
-              special_note: data.patients.special_note || "",
+              name: data.patients.name || prev.name,
+              telephone: data.patients.telephone || prev.telephone,
+              address: data.patients.address || prev.address,
+              gender: data.patients.gender || prev.gender,
+              age: data.patients.age ?? prev.age, 
+              nic: data.patients.nic || prev.nic,
+              source_reffern: data.patients.source_reffern || prev.source_reffern,
+              clinic_session: data.patients.clinic_session || prev.clinic_session,
+              condition: data.patients.condition || prev.condition,
+              diagonsis: data.patients.diagonsis || prev.diagonsis,
+              special_note: data.patients.special_note || prev.special_note,
+              use_injection: data.patients.use_injection || prev.use_injection,
+              injection_type: data.patients.injection_type || prev.injection_type,
             }));
+            
           } else {
             toast.error("Failed to fetch patient data.");
           }
@@ -120,59 +93,73 @@ const PatientDetails = () => {
     }
   }, [id]);
 
-   
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    const parsedValue = e.target.type == "number" ? Number(value) : value;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: parsedValue,
+    }));
+  };
 
-
-
+  const handleChoiceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setFormData((prev) => ({
+      ...prev,
+      use_injection: isChecked ? "Yes" : "No",
+      injection_type: isChecked ? "" : "",
+    }));
+  };
 
   const handleSelectChange = (selectedOption: { value: string; label: string } | null) => {
     setFormData((prev) => ({
       ...prev,
-      diagnosis: selectedOption ? selectedOption.label : "",
+      diagonsis: selectedOption ? selectedOption.label : "",
     }));
   };
-  
-  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-   
-    const method =  'PUT' 
-    const baseUrl =`/api/patient/${id}`;
+
+
+    const method = "PUT";
+    const baseUrl = `/api/patient/${id}`;
 
     try {
       const response = await fetch(baseUrl, {
-        method: method,
+        method,
         headers: {
-        'Content-Type': 'application/json',
-      },
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
-      const data: PatientDetailsFormData = await response.json();
-      // const data = await response.json();
+      const data = await response.json();
 
       if (response.ok) {
         toast.success(id ? "Patient updated successfully!" : "Patient registered successfully!");
-        router.push("/dashboard/patient");
+        router.push("/dashboard/patients");
       } else {
-        console.log(data.error)
         toast.error(data.error || "Error in submission, please check your fields.");
       }
     } catch (error) {
-    
       toast.error("An error occurred while submitting the form.");
-    } 
+    } finally {
       setIsLoading(false);
+    }
   };
+
+  if (!isClient) {
+    // Prevent rendering mismatched HTML
+    return null;
+  }
 
   return (
     <div className="bg-white rounded-md p-8 shadow-lg">
-        <Toaster />
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">
-        PATIENT DETAILS
-      </h2>
-
+      <Toaster />
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">PATIENT DETAILS</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Full Name */}
@@ -259,7 +246,7 @@ const PatientDetails = () => {
               NIC
             </label>
             <input
-              type="number"
+              type="text"
               id="nic"
               name="nic"
               placeholder="Enter Patient NIC number"
@@ -269,7 +256,7 @@ const PatientDetails = () => {
             />
           </div>
 
-       
+
           <div>
             <label
               htmlFor="gender"
@@ -301,13 +288,13 @@ const PatientDetails = () => {
             </label>
             <select
               id="source"
-              name="source"
+              name="source_reffern"
               value={formData.source_reffern}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
-              <option value="" disabled>
-              Source Of Referral
+              <option value="" >
+                Source Of Referral
               </option>
               <option value="Consaltant">Consaltant</option>
               <option value="OPD">OPD</option>
@@ -330,14 +317,15 @@ const PatientDetails = () => {
             </label>
             <select
               id="clinic"
-              name="clinic"
-              value={formData.clinic_session}
+              name="clinic_session"
+              value={formData.clinic_session || ""}
               onChange={handleChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
-              Clinic Session
+                Clinic Session
               </option>
+              <option value="">Select Clinic Session</option>
               <option value="Consaltant">Genaral Clinic</option>
               <option value="OPD">Child & Adolescent guidance clinic</option>
               <option value="Other wards">Substance abuse clinic</option>
@@ -352,7 +340,7 @@ const PatientDetails = () => {
               htmlFor="Patient Condition"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-             Patient Condition
+              Patient Condition
             </label>
             <select
               id="condition"
@@ -362,7 +350,7 @@ const PatientDetails = () => {
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             >
               <option value="" disabled>
-              Patient Condition
+                Patient Condition
               </option>
               <option value="Consaltant">Delebrte self-harm</option>
               <option value="OPD">suicides</option>
@@ -378,11 +366,11 @@ const PatientDetails = () => {
               htmlFor="Diagonsis"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-            Diagonsis
+              Diagonsis
             </label>
             <Select
               options={options}
-              value={options.find((option) => option.label === formData.diagnosis) || null}
+              value={options.find((option) => option.label === formData.diagonsis) || null}
               onChange={handleSelectChange}
               className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
             />
@@ -398,16 +386,16 @@ const PatientDetails = () => {
             <input
               type="checkbox"
               id="yesNo"
-              name="choice"
-              checked={formData.choice === "yes"}
+              name="use_injection"
+              checked={formData.use_injection == "Yes"}
               onChange={handleChoiceChange}
               className="w-5 h-5 accent-purple-500"
             />
             <label htmlFor="yesNo" className="ml-2 text-gray-700">
-              {formData.choice === "yes" ? "Yes" : "No"}
+              {formData.use_injection == "Yes" ? "Yes" : "No"}
             </label>
           </div>
-          {formData.choice === "yes" && (
+          {formData.use_injection === "Yes" && (
             <div>
               <label
                 htmlFor="injectionType"
@@ -417,12 +405,12 @@ const PatientDetails = () => {
               </label>
               <select
                 id="injectionType"
-                name="injectionType"
+                name="injection_type"
                 value={formData.injection_type}
                 onChange={handleChange}
                 className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
               >
-                <option value="" disabled>
+                <option value="" >
                   Select Type
                 </option>
                 <option value="A">Type A</option>
@@ -430,32 +418,26 @@ const PatientDetails = () => {
               </select>
             </div>
           )}
-          
-
-
-
-
-
 
 
         </div>
 
         <div>
-            <label
-              htmlFor="special"
-              className="block text-sm font-medium text-gray-700 mb-2 w-full"
-            >
-           Special Note bout the patient
-            </label>
-           
-            <textarea
-              name="special"
-              placeholder="Enter the address"
-              value={formData.special_note}
-              onChange={handleChange}
-              className="h-[250px] text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
-            />
-          </div>
+          <label
+            htmlFor="special"
+            className="block text-sm font-medium text-gray-700 mb-2 w-full"
+          >
+            Special Note bout the patient
+          </label>
+
+          <textarea
+            name="special_note"
+            placeholder="Enter the address"
+            value={formData.special_note}
+            onChange={handleChange}
+            className="h-[250px] text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+          />
+        </div>
 
 
 
@@ -469,9 +451,9 @@ const PatientDetails = () => {
                      min-w-[120px]"
           >
             {isLoading && <div className="spinner">Loading...</div>}
-          
+
           </button>
-          
+
         </div>
       </form>
     </div>
