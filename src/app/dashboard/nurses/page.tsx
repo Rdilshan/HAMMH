@@ -139,6 +139,9 @@ function NursePage() {
               <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Email</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Gender</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Status
+              </th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
@@ -164,6 +167,17 @@ function NursePage() {
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.email}</td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.gender}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">
+                      <div
+                        className={` py-1 rounded ${
+                          nurse.active_status === "Active"
+                            ? "bg-green-500 text-white rounded-full text-[10px] "
+                            : "bg-red-500 text-white rounded-full text-[10px]"
+                        }`}
+                      >
+                        {nurse.active_status}
+                      </div>
+                    </td>
                     <td className="px-4 py-4 text-center">
                       <div className="flex items-center justify-center space-x-2">
 
