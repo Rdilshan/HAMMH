@@ -55,18 +55,24 @@ export async function PUT(request: Request,
     try {
         const id = (await params).id; 
         const data = await request.json();
-         await prisma.patients.update({
+        const patient =  await prisma.patients.update({
             where: {
                 id: Number(id)
             },
             data: data
         })
+        return NextResponse.json({ message: "success update patients" }, { status: 200 });
         return NextResponse.json({message:"success update patients"},{status:200});    
     } catch (error) {
         console.error("Error fetching patients:", error);
         return NextResponse.json(
             { error: "Failed to fetch patients" },
             { status: 500 }
+          );
+        return NextResponse.json(
+            { error: "Failed to fetch patients" },
+            { status: 500 }
         );
     }
 }
+
