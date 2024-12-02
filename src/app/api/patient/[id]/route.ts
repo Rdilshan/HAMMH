@@ -14,10 +14,13 @@ export async function GET(request: Request,
                 id: Number(id)
             },
         })
+
+        const diagonsis = await prisma.diagonsis.findMany();
+
         if(!patients){
             return NextResponse.json({message:"patients not found"},{status:404});
         }else{
-            return NextResponse.json({patients:patients},{status:200});    
+            return NextResponse.json({patients:patients , diagonsis:diagonsis},{status:200});    
         }
     } catch (error) {
         console.error("Error fetching patients:", error);

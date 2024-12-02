@@ -21,19 +21,11 @@ interface PatientDetailsFormData {
   use_injection: string;
 }
 
-const options = [
-  { value: "1", label: "A" },
-  { value: "2", label: "B" },
-  { value: "3", label: "C" },
-  { value: "4", label: "D" },
-  { value: "5", label: "E" },
-  { value: "6", label: "F" },
-];
-
 const PatientDetails = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isClient, setIsClient] = useState(false); // Fix for hydration issues
+  const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
   const [formData, setFormData] = useState<PatientDetailsFormData>({
     name: "",
     telephone: "",
@@ -70,7 +62,7 @@ const PatientDetails = () => {
               telephone: data.patients.telephone || prev.telephone,
               address: data.patients.address || prev.address,
               gender: data.patients.gender || prev.gender,
-              age: data.patients.age ?? prev.age, 
+              age: data.patients.age ?? prev.age,
               nic: data.patients.nic || prev.nic,
               source_reffern: data.patients.source_reffern || prev.source_reffern,
               clinic_session: data.patients.clinic_session || prev.clinic_session,
@@ -80,7 +72,15 @@ const PatientDetails = () => {
               use_injection: data.patients.use_injection || prev.use_injection,
               injection_type: data.patients.injection_type || prev.injection_type,
             }));
-            
+
+            const diagnosisOptions = data.diagonsis.map((diagnosis: { id: number; name: string; Icd_code: string }) => ({
+              value: diagnosis.id.toString(), 
+              label: diagnosis.name, 
+            }));
+      
+            setOptions(diagnosisOptions);
+
+
           } else {
             toast.error("Failed to fetch patient data.");
           }
