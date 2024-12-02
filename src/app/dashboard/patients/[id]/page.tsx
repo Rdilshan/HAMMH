@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+
 import Select from 'react-select'
+import React, { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import { useRouter, useParams } from 'next/navigation';
+// import { error } from 'console';
 
 interface PatientDetailsFormData {
   fullName: string;
@@ -17,6 +21,10 @@ interface PatientDetailsFormData {
   special:string;
   choice:string;
   injectionType: string;
+  // patient: any;
+  // message?: string;
+  // data?: any;
+  error?: string;
  
   
 }
@@ -37,6 +45,7 @@ const options = [
 ]
 
 const PatientDetails = () => {
+  const { id } = useParams();
   const [formData, setFormData] = useState<PatientDetailsFormData>({
     fullName: "",
     contactNumber: "",
@@ -52,6 +61,7 @@ const PatientDetails = () => {
     choice:"",
     injectionType: "",
   });
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -71,6 +81,59 @@ const PatientDetails = () => {
       injectionType: isChecked ? "" : "", // Reset injection type if "No"
     }));
   };
+
+  // const fetchPatientData = async () => {
+  //         try {
+  //           const response = await fetch(`/api/patient/${id}`);
+  //           const data = await response.json();
+  //           console.log(data.patients.age)
+  //         }catch{
+  //           console.log("this is the error" ,Error)
+  //         }
+  //       }
+  //       fetchPatientData();
+          
+
+  useEffect(() => {
+    if (id) {
+      const fetchPatientData = async () => {
+        try {
+          const response = await fetch(`/api/patient/${id}`);
+          const data = await response.json();
+
+          if (response.ok) {
+            setFormData((prev) => ({
+              ...prev,
+              fullName: data.patients.name || "",
+              contactNumber: data.patients.telephone || "",
+              address: data.patients.address || "",
+              gender: data.patients.gender || "",
+              age: data.patients.age || 0,
+              nic: data.patients.nic || "",
+              source: data.patients.source_reffern || "",
+              clinic: data.patients.clinic_session || "",
+              condition: data.patients.condition || "",
+              diagnosis: data.patients.diagnosis || "",
+              special: data.patients.special_note || "",
+              choice: data.patients.condition || "",
+              injectionType: data.patients.injection_type || "",
+            }));
+          } else {
+            toast.error("Failed to fetch patient data.");
+          }
+        } catch (error) {
+          toast.error("An error occurred while fetching patient data.");
+        }
+      };
+
+      fetchPatientData();
+    }
+  }, [id]);
+
+   
+
+
+
 
   const handleSelectChange = (selectedOption: { value: string; label: string } | null) => {
     setFormData((prev) => ({
