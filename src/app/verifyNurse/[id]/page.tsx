@@ -61,7 +61,7 @@ export default function LoginPage() {
         });
 
         const data = await response.json();
-
+        console.log(data);
         if (response.status === 202) {
           toast.success("You have already verified your account");
           setTimeout(() => {
