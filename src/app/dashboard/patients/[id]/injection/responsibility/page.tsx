@@ -46,7 +46,7 @@ const ResponsibilityForm = () => {
             if (response.ok) {
                 toast.success('Admit registered successfully!');
                 setTimeout(() => {
-                    router.push('/dashboard/patients');
+                    router.push(`/dashboard/patients/${id}/injection`);
                 }, 500);
             } else {
                 const errorMsg = data?.error;

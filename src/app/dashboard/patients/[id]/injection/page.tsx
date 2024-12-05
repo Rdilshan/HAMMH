@@ -122,7 +122,18 @@ const InjectionRecordsSection = () => {
                         <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.doctorName}</td>
                         <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.nurseName}</td>
                         <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.socialWorkers}</td>
-                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.Status}</td>
+                        <td className="px-4 py-6 text-center hidden md:table-cell ">
+                        <div
+                        className={` py-1 rounded ${
+                          injection.Status === "done"
+                            ? "bg-green-500 text-white rounded-full text-[10px] "
+                            : "bg-red-500 text-white rounded-full text-[10px]"
+                        }`}
+                      >
+                        {injection.Status}
+                      </div>
+                      </td>
+                          
                       </tr>
                       {expandedRow === overallIndex && (
                         <tr key={`expanded-${overallIndex}`}>
