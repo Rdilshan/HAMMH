@@ -36,9 +36,10 @@ const PrescriptionUpload = () => {
   const uploadImagesToFirebase = async () => {
     try {
       // Filter out files that haven't been uploaded yet
-      const filesToUpload = selectedFiles.filter(
-        (file) => !uploadedImageUrls.some((url) => url.includes(file.name))
-      );
+      const filesToUpload = selectedFiles.filter((file) => {
+        const isUploaded = uploadedImageUrls.some((url) => url.includes(encodeURIComponent(file.name)));
+        return !isUploaded; 
+      });
 
       const uploadPromises = filesToUpload.map(async (file) => {
         const storageRef = ref(storage, `prescriptions/${Date.now()}_${file.name}`);
@@ -105,21 +106,15 @@ const PrescriptionUpload = () => {
 
   const handleRemoveFile = (index: number) => {
     const removedFile = selectedFiles[index];
-    
-    // Remove the file from selected files
+
+    // // Remove the file from selected files
     setSelectedFiles(selectedFiles.filter((_, i) => i !== index));
     
-    // Remove the corresponding URL from uploaded URLs
+    // // Remove the corresponding URL from uploaded URLs
     setUploadedImageUrls(prevUrls => 
-      prevUrls.filter(url => !url.includes(removedFile.name))
+      prevUrls.filter(url => !url.includes(encodeURIComponent(removedFile.name)))
     );
 
-    // Remove progress for removed file
-    setUploadProgress(prev => {
-      const newProgress = {...prev};
-      delete newProgress[removedFile.name];
-      return newProgress;
-    });
   };
 
   const handleSave = async () => {
