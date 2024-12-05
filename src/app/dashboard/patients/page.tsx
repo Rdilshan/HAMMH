@@ -15,21 +15,6 @@ const PatientsDetails = () => {
   const [error, setError] = useState("");
   const rowsPerPage = 5;
 
-  // const patientData = [
-  //     { patientName: 'Lasith Subasingha', NIC: '20007876887', contactNumber: '0787575875', address: 'Embilipitiya' },
-  //     { patientName: 'Tharindu Silva', NIC: '20005678321', contactNumber: '0712345678', address: 'Colombo' },
-  //     { patientName: 'Nimal Perera', NIC: '20007876555', contactNumber: '0765432109', address: 'Galle' },
-  //     { patientName: 'Samantha Rajapakse', NIC: '20005432109', contactNumber: '0771234567', address: 'Kandy' },
-  //     { patientName: 'Rashmi Fernando', NIC: '20006547832', contactNumber: '0718765432', address: 'Kurunegala' },
-  //     { patientName: 'Kamal Wickramasinghe', NIC: '20007898765', contactNumber: '0781234560', address: 'Matara' },
-  //     { patientName: 'Priya Silva', NIC: '20003456789', contactNumber: '0776654321', address: 'Jaffna' },
-  //     { patientName: 'Rajitha Perera', NIC: '20001234567', contactNumber: '0712348901', address: 'Negombo' },
-  //     { patientName: 'Sajith Wijesinghe', NIC: '20009876543', contactNumber: '0780987654', address: 'Colombo' },
-  //     { patientName: 'Ishara Kumara', NIC: '20003218765', contactNumber: '0768765432', address: 'Gampaha' },
-  // ];
-
-  // const router = useRouter();
-
   useEffect(() => {
     fetchPatients();
   }, []);
@@ -56,20 +41,31 @@ const PatientsDetails = () => {
     setSelectedCategory(e.target.value);
   };
 
+
   const filteredData = patients.filter((patient) => {
+    const queryMatch =
+      patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      patient.NIC.toLowerCase().includes(searchQuery.toLowerCase());
+
     if (selectedCategory === "All") {
-      return (
-        patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        patient.NIC.includes(searchQuery)
-      );
+      return queryMatch;
     }
-    if (selectedCategory === "Patient Name") {
-      return patient.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+    if (
+      selectedCategory === "male" &&
+      patient.gender.toLowerCase() === "male"
+    ) {
+      return queryMatch;
     }
-    if (selectedCategory === "NIC") {
-      return patient.nic.includes(searchQuery);
+
+    if (
+      selectedCategory === "female" &&
+      patient.gender.toLowerCase() === "female"
+    ) {
+      return queryMatch;
     }
-    return true;
+
+    return false; // No match
   });
 
   const indexOfLastRow = currentPage * rowsPerPage;
@@ -137,8 +133,8 @@ const PatientsDetails = () => {
           className="bg-[#F8F3FF] text-black rounded-md py-2 px-3 w-full md:w-1/4 mb-2 md:mb-0 md:mr-4"
         >
           <option value="All">All</option>
-          <option value="Patient Name">Patient Name</option>
-          <option value="NIC">NIC</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
         </select>
       </div>
 
@@ -149,9 +145,9 @@ const PatientsDetails = () => {
         <table className="min-w-full text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
-              <th className="px-4 py-3 text-left">Patient Name</th>
+              <th className="px-4 py-3 text-center">Patient Name</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
-                NIC
+                Gender
               </th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
                 Contact Number
@@ -167,7 +163,7 @@ const PatientsDetails = () => {
               currentRows.map((patient, index) => (
                 <React.Fragment key={index}>
                   <tr key={index} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-6 flex items-center gap-2 ">
+                    <td className="px-4 py-6 flex items-center gap-2 text-center ">
                       <button
                         className="text-black md:hidden text-[15px]"
                         onClick={() => toggleRow(index)}
@@ -181,7 +177,7 @@ const PatientsDetails = () => {
                       {patient.name}
                     </td>
                     <td className="px-4 py-6 text-center hidden md:table-cell">
-                      {patient.nic}
+                      {patient.gender}
                     </td>
                     <td className="px-4 py-6 text-center hidden md:table-cell">
                       {patient.telephone}
