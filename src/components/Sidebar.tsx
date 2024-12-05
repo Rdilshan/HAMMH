@@ -12,7 +12,7 @@ import {
   LogOut,
 } from 'lucide-react'
 
-export default function Sidebar() {
+export default function Sidebar({ role, userid }: { role: string; userid: string }) {
 
   const handleLogout = async () => {
     try {
@@ -36,14 +36,18 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   const menuItems = [
-    { title: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { title: 'Patients', path: '/dashboard/patients', icon: Users },
-    { title: 'Doctors', path: '/dashboard/doctors', icon: UserCog },
-    { title: 'Nurses', path: '/dashboard/nurses', icon: Stethoscope },
-    { title: 'Attendance', path: '/dashboard/attendance', icon: ClipboardCheck },
-    { title: 'Injection', path: '/dashboard/injection', icon: Syringe },
-    { title: 'Report', path: '/dashboard/report', icon: FileText },
-  ]
+    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { title: "Patients", path: "/dashboard/patients", icon: Users },
+    ...(role === "admin"
+      ? [
+          { title: "Doctors", path: "/dashboard/doctors", icon: UserCog },
+          { title: "Nurses", path: "/dashboard/nurses", icon: Stethoscope },
+        ]
+      : []),
+    { title: "Attendance", path: "/dashboard/attendance", icon: ClipboardCheck },
+    { title: "Injection", path: "/dashboard/injection", icon: Syringe },
+    { title: "Report", path: "/dashboard/report", icon: FileText },
+  ];
 
   return (
     <aside

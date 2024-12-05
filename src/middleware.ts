@@ -41,7 +41,6 @@ export async function middleware(request: NextRequest) {
       };
       const role: string = payloadData.role;
       const userid: string = payloadData.id;
-      
 
       // Allow access to these dynamic routes
       if (
@@ -97,7 +96,12 @@ export async function middleware(request: NextRequest) {
 
     console.log(role);
     console.log(userid);
-    return NextResponse.next();
+
+    const response = NextResponse.next();
+    response.headers.set("X-Role", role);
+    response.headers.set("X-Id", userid);
+
+    return response;
   }
 
   if (routepath.startsWith("/")) {

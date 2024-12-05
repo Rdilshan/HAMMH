@@ -23,9 +23,10 @@ interface NotificationButtonProps {
 
 interface AdminProfileProps {
   isMobile?: boolean;
+  role?: string;
 }
 
-const Navbar = () => {
+const Navbar = ( { role, userid }: { role: string; userid: string }) => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
@@ -100,7 +101,7 @@ const Navbar = () => {
               showNotifications={showNotifications}
               toggleNotifications={toggleNotifications}
             />
-            <AdminProfile />
+            <AdminProfile role={role ?? ''}/>
           </div>
 
           {/* Mobile Menu */}
@@ -182,10 +183,12 @@ const NotificationButton: React.FC<NotificationButtonProps> = ({
 };
 
 // Admin Profile Component
-const AdminProfile: React.FC<AdminProfileProps> = ({ isMobile = false }) => (
+const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+const AdminProfile: React.FC<AdminProfileProps> = ({ role,isMobile = false}) => (
+  
   <div className={`flex items-center ${isMobile ? 'w-full' : 'gap-3'}`}>
     <div className={`${isMobile ? 'flex-1' : 'text-right'}`}>
-      <p className="text-sm font-medium text-gray-700">Admin</p>
+      <p className="text-sm font-medium text-gray-700">{role ? capitalize(role) : ''}</p>
     </div>
     <Image
       src={admin}
