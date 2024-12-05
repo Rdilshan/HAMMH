@@ -87,7 +87,7 @@ const PatientRegister = () => {
                 type="text"
                 id="fullName"
                 placeholder="Enter full name of patient"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black-400"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -100,7 +100,7 @@ const PatientRegister = () => {
                 type="text"
                 id="contactNumber"
                 placeholder="Enter Contact Number"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
                 value={contactNumber}
                 onChange={(e) => setContactNumber(e.target.value)}
               />
@@ -113,7 +113,7 @@ const PatientRegister = () => {
                 type="text"
                 id="address"
                 placeholder="Enter the address"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
@@ -126,7 +126,7 @@ const PatientRegister = () => {
                 type="number"
                 id="age"
                 placeholder="Enter the age"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
                 value={age}
                 onChange={(e) => setAge(Number(e.target.value))}
               />
@@ -139,7 +139,7 @@ const PatientRegister = () => {
                 type="number"
                 id="nic"
                 placeholder="Enter the NIC number"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
                 value={nic}
                 onChange={(e) => setnic(e.target.value)}
               />
@@ -152,7 +152,7 @@ const PatientRegister = () => {
                 id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -167,7 +167,7 @@ const PatientRegister = () => {
                 id="sourceOfReferral"
                 value={sourceOfReferral}
                 onChange={(e) => setSourceOfReferral(e.target.value)}
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 "
               >
                 <option value="OPD">OPD</option>
                 <option value="Emergency">Emergency</option>
@@ -184,7 +184,7 @@ const PatientRegister = () => {
                 type="text"
                 id="location"
                 placeholder="Select Location"
-                className="w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400 cursor-pointer"
+                className="text-black-400 w-full px-6 py-3 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500  cursor-pointer"
                 value={`${location.Latitude}, ${location.Longitude}`}
                 readOnly
                 onClick={() => setIsModalOpen(true)} // Open the modal
@@ -215,14 +215,14 @@ const PatientRegister = () => {
 
           <button
             type="submit"
-            className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
+            className="flex justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
           hover:bg-purple-700 focus:outline-none focus:ring-2 
           focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
-          w-full lg:w-1/2 my-6"
+          w-full lg:w-1/2 my-6 item-center"
           > {isLoading ? (
             <>
-              <FaSpinner className="animate-spin item-center" />
-              Registering...
+              <FaSpinner className="animate-spin " />
+              
             </>
           ) : (
             "Register Patient"

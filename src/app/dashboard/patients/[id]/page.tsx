@@ -4,6 +4,7 @@ import Select from "react-select";
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter, useParams } from "next/navigation";
+import { FaSpinner } from 'react-icons/fa';
 
 interface PatientDetailsFormData {
   name: string;
@@ -177,7 +178,7 @@ const PatientDetails = () => {
               placeholder="Enter full name of patient"
               value={formData.name}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -196,7 +197,7 @@ const PatientDetails = () => {
               placeholder="Enter Contact Number"
               value={formData.telephone}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -215,7 +216,7 @@ const PatientDetails = () => {
               placeholder="Enter the address"
               value={formData.address}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -234,7 +235,7 @@ const PatientDetails = () => {
               placeholder="Enter Patient Age"
               value={formData.age}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -252,7 +253,7 @@ const PatientDetails = () => {
               placeholder="Enter Patient NIC number"
               value={formData.nic}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -269,7 +270,7 @@ const PatientDetails = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             >
               <option value="" disabled>
                 Select Gender
@@ -291,7 +292,7 @@ const PatientDetails = () => {
               name="source_reffern"
               value={formData.source_reffern}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             >
               <option value="" >
                 Source Of Referral
@@ -320,7 +321,7 @@ const PatientDetails = () => {
               name="clinic_session"
               value={formData.clinic_session || ""}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             >
               <option value="" disabled>
                 Clinic Session
@@ -347,7 +348,7 @@ const PatientDetails = () => {
               name="condition"
               value={formData.condition}
               onChange={handleChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             >
               <option value="" disabled>
                 Patient Condition
@@ -372,7 +373,7 @@ const PatientDetails = () => {
               options={options}
               value={options.find((option) => option.label === formData.diagonsis) || null}
               onChange={handleSelectChange}
-              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+              className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
           </div>
 
@@ -408,7 +409,7 @@ const PatientDetails = () => {
                 name="injection_type"
                 value={formData.injection_type}
                 onChange={handleChange}
-                className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+                className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
               >
                 <option value="" >
                   Select Type
@@ -435,25 +436,29 @@ const PatientDetails = () => {
             placeholder="Enter the address"
             value={formData.special_note}
             onChange={handleChange}
-            className="h-[250px] text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-400"
+            className="h-[250px] text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
 
 
         {/* Submit Button */}
-        <div className="flex justify-end mt-8">
-          <button
+        <div className="flex justify-start mt-8">
+        <button
             type="submit"
-            className="px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
-                     hover:bg-purple-700 focus:outline-none focus:ring-2 
-                     focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
-                     min-w-[120px]"
-          >
-            {isLoading && <div className="spinner">Loading...</div>}
-
+            className="flex justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
+          hover:bg-purple-700 focus:outline-none focus:ring-2 
+          focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
+          w-full lg:w-1/4 my-6 item-center"
+          > {isLoading ? (
+            <>
+              <FaSpinner className="animate-spin " />
+              
+            </>
+          ) : (
+            "Save"
+          )}
           </button>
-
         </div>
       </form>
     </div>
