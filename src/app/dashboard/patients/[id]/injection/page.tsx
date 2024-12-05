@@ -1,28 +1,24 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from 'react-icons/bi';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 const InjectionRecordsSection = () => {
+  const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const[nextInjectionDate,setnextInjectionDate]=useState("");
+  const [injection, setinjections] = useState<any[]>([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
-  const InjectionData = [
-    { date: '2023/04/05', injection: 'A', doctor: 'John', nurse: 'Jane', social: 'Worker 1', status: 'True' },
-    { date: '2023/04/06', injection: 'B', doctor: 'Smith', nurse: 'Doe', social: 'Worker 2', status: 'False' },
-    { date: '2023/04/07', injection: 'C', doctor: 'Williams', nurse: 'Emily', social: 'Worker 3', status: 'True' },
-    { date: '2023/04/08', injection: 'D', doctor: 'Brown', nurse: 'Anna', social: 'Worker 4', status: 'False' },
-    { date: '2023/04/09', injection: 'E', doctor: 'Taylor', nurse: 'Liam', social: 'Worker 5', status: 'True' },
-    { date: '2023/04/10', injection: 'F', doctor: 'Miller', nurse: 'Noah', social: 'Worker 6', status: 'True' },
-    { date: '2023/04/11', injection: 'G', doctor: 'Wilson', nurse: 'Sophia', social: 'Worker 7', status: 'False' },
-  ];
-
+ 
   // Calculate pagination values
+
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = InjectionData.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(InjectionData.length / rowsPerPage);
+  const currentRows = injection.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(injection.length / rowsPerPage);
+  const [error, setError] = useState("");
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -31,8 +27,45 @@ const InjectionRecordsSection = () => {
   const toggleRow = (index: number) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
+  useEffect(() => {
+    fetchInjections();
+  }, []);
 
-  const nextInjectionDate = '11:27 AM, Thursday, October 31, 2024';
+  const fetchInjections = async () => {
+    try {
+      console.log('Fetching injections for patient ID:', id);
+      const response = await fetch(`/api/patient/${id}/Injection`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch injections: ${response.statusText}`);
+      }
+  
+      const responseData = await response.json();
+      console.log("Fetched data:", responseData);
+  
+      if (Array.isArray(responseData.data)) {
+        setinjections(responseData.data);
+  
+        // Extract the NextDate from the first record in the array
+        if (responseData.data.length > 0) {
+          setnextInjectionDate(responseData.data[0].NextDate);
+        } else {
+          setnextInjectionDate("No upcoming injections");
+        }
+      } else {
+        throw new Error("Expected 'data' to be an array in the response");
+      }
+    } catch (err: any) {
+      setError(err.message);
+      console.error(err);
+    }
+  };
+  
+
+  
   const router = useRouter();
 
   return (
@@ -61,17 +94,17 @@ const InjectionRecordsSection = () => {
           <table className="w-full text-sm ">
             <thead>
               <tr className="border-b bg-[#F8F3FF] ">
-                <th className="text-left py-3 px-4 font-bold text-gray-700">Date</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700">Injection</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell">Doctor</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell">Nurse</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell">Social Worker</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell">Status</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 text-center">Date</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 text-center">Injection</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Doctor</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Nurse</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Social Worker</th>
+                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Status</th>
               </tr>
             </thead>
             <tbody>
               {currentRows.length > 0 ? (
-                currentRows.map((row, index) => {
+                currentRows.map((injection, index) => {
                   const overallIndex = indexOfFirstRow + index;
                   return (
                     <React.Fragment key={overallIndex}>
@@ -83,13 +116,13 @@ const InjectionRecordsSection = () => {
                           >
                             {expandedRow === overallIndex ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
                           </button>
-                          {row.date}
+                          {new Date(injection.Date).toLocaleString()}
                         </td>
-                        <td className="px-4 py-6 text-center text-black">{row.injection}</td>
-                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{row.doctor}</td>
-                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{row.nurse}</td>
-                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{row.social}</td>
-                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{row.status}</td>
+                        <td className="px-4 py-6 text-center text-black">{injection.drugType}</td>
+                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.doctorName}</td>
+                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.nurseName}</td>
+                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.socialWorkers}</td>
+                        <td className="px-4 py-6 text-center hidden md:table-cell text-black">{injection.Status}</td>
                       </tr>
                       {expandedRow === overallIndex && (
                         <tr key={`expanded-${overallIndex}`}>
@@ -97,19 +130,19 @@ const InjectionRecordsSection = () => {
                             
                             <div className="flex items-center justify-between py-2">
                               <p className="font-bold">Contact</p>
-                              <p className='text-black'>{row.doctor}</p>
+                              <p className='text-black'>{injection.doctorName}</p>
                             </div>
                             <div className="flex items-center justify-between py-2">
                               <p className="font-bold">Address</p>
-                              <p className='text-black'>{row.nurse}</p>
+                              <p className='text-black'>{injection.nurseName}</p>
                             </div>
                             <div className="flex items-center justify-between py-2">
                               <p className="font-bold">Social Worker</p>
-                              <p className='text-black'>{row.social}</p>
+                              <p className='text-black'>{injection.socialWorkers}</p>
                             </div>
                             <div className="flex items-center justify-between py-2">
                               <p className="font-bold">Status</p>
-                              <p className='text-black'>{row.status}</p>
+                              <p className='text-black'>{injection.Status}</p>
                             </div>
                           </td>
                         </tr>
