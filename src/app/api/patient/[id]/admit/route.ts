@@ -70,11 +70,11 @@ export async function POST(
       data: { is_admit: "Yes" },
     });
 
-    return NextResponse.json({ message: "Patient admitted" }, { status: 200 });
+    return NextResponse.json({ message: "Patient Admit" }, { status: 200 });
   } catch (error) {
     console.error("Error fetching admit:", error);
     return NextResponse.json(
-      { error: "Failed to fetch admit" },
+      { message: "Failed to fetch admit" },
       { status: 500 }
     );
   }
