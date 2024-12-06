@@ -3,12 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../../../firebase_config'; 
+import toast, { Toaster } from 'react-hot-toast';
+import { useRouter, useParams } from 'next/navigation';
 
 const PrescriptionUpload = () => {
+  const { id } = useParams();
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [clinicDate, setClinicDate] = useState('');
-  const [nextClinicDate, setNextClinicDate] = useState('');
+  const [clinc_data, setclinc_data] = useState('');
+  const [next_data, setnext_data] = useState('');
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   
   // New state for tracking upload progress
   const [uploadProgress, setUploadProgress] = useState<{[key: string]: number}>({});
@@ -117,18 +121,61 @@ const PrescriptionUpload = () => {
 
   };
 
-  const handleSave = async () => {
-    console.log('Saving prescription data:', {
-      selectedFiles,
-      clinicDate,
-      nextClinicDate,
-      uploadedImageUrls,
-    });
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (clinc_data == "" || next_data == "" || !Array.isArray(uploadedImageUrls) || 
+    uploadedImageUrls.length === 0) {
+      toast.error('All fields are required!');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const baseUrl = `/api/patient/${id}/clinic`;
+      const response = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          clinc_data: new Date(clinc_data).toISOString(),
+          next_data:new Date(next_data).toISOString(),
+          Images:uploadedImageUrls
+         
+        }),
+      });
+
+
+
+
+      const data = await response.json();
+
+
+      if (response.ok) {
+        toast.success('Medical records are saved succfully!');
+        setTimeout(() => {
+          window.location.href = `/dashboard/patients/${id}/medical-records`;
+      }, 500);
+      } else {
+
+        toast.error(data.message);
+
+      }
+    } catch (error) {
+      console.log(error)
+
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
+    <form onSubmit={handleSave}>
+       <Toaster position="top-center" reverseOrder={false} />
     <div className="bg-white p-6 rounded-lg shadow-md relative h-screen flex flex-col">
+      
       <div className="space-y-6 ">
+
+       
         <div className="text-center mb-4">
           <h2 className="text-lg font-semibold mb-2 text-black">
             ADD PRESCRIPTION IMAGES
@@ -235,9 +282,10 @@ const PrescriptionUpload = () => {
           <div>
             <label className="block text-sm text-gray-100 mb-2">CLINIC DATE</label>
             <input
-              type="date"
-              value={clinicDate}
-              onChange={(e) => setClinicDate(e.target.value)}
+              type="datetime-local"
+              name='clinc_data'
+              value={clinc_data}
+              onChange={(e) => setclinc_data(e.target.value)}
               className="text-sm w-full px-4 py-2 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-500"
             />
           </div>
@@ -247,9 +295,10 @@ const PrescriptionUpload = () => {
               NEXT CLINIC DATE
             </label>
             <input
-              type="date"
-              value={nextClinicDate}
-              onChange={(e) => setNextClinicDate(e.target.value)}
+              name='next_data'
+              type="datetime-local"
+              value={next_data}
+              onChange={(e) => setnext_data(e.target.value)}
               className="text-sm w-full px-4 py-2 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-gray-500"
             />
           </div>
@@ -257,14 +306,16 @@ const PrescriptionUpload = () => {
 
         <div className="flex justify-end mt-4">
           <button
-            onClick={handleSave}
+            // onClick={handleSave}
             className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition-colors"
           >
             Save
           </button>
         </div>
       </div>
+     
     </div>
+    </form>
   );
 };
 
