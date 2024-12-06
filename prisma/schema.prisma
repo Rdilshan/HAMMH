@@ -86,7 +86,7 @@ model Injection {
 
 model Clinic {
   id         Int      @id @default(autoincrement())
-  Images     String
+  Images     String[]
   clinc_data DateTime
   next_data  DateTime
   patient    Patients @relation(fields: [patient_id], references: [id])
