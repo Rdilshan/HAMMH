@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
+import { FaSpinner } from 'react-icons/fa';
 
 const DischargeForm = () => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ const DischargeForm = () => {
   const [principal_diagnosis, setprincipal_diagnosis] = useState('');
   const [procedures, setprocedures] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const router = useRouter();
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -164,14 +166,19 @@ const DischargeForm = () => {
           </div>
           <div className="flex justify-end">
             <button
-              className={`px-6 py-2 text-white rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLoading
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-purple-600 hover:bg-purple-700'
-                }`}
-
-              disabled={isLoading}
-            >
-              {isLoading ? 'Saving...' : 'Save'}
+              type="submit"
+              className="flex justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
+            hover:bg-purple-700 focus:outline-none focus:ring-2 
+            focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
+            w-full lg:w-1/4 my-6 item-center"
+            > {isLoading ? (
+              <>
+                <FaSpinner className="animate-spin " />
+                
+              </>
+            ) : (
+              "Admit"
+            )}
             </button>
           </div>
         </form>

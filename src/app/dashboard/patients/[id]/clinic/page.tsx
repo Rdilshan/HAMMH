@@ -5,6 +5,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../../../firebase_config'; 
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter, useParams } from 'next/navigation';
+import { FaSpinner } from 'react-icons/fa';
 
 const PrescriptionUpload = () => {
   const { id } = useParams();
@@ -169,10 +170,10 @@ const PrescriptionUpload = () => {
   };
 
   return (
-    <form onSubmit={handleSave}>
-       <Toaster position="top-center" reverseOrder={false} />
+   
+       
     <div className="bg-white p-6 rounded-lg shadow-md relative h-screen flex flex-col">
-      
+    <Toaster position="top-center" reverseOrder={false} />
       <div className="space-y-6 ">
 
        
@@ -275,9 +276,9 @@ const PrescriptionUpload = () => {
           )}
         </div>
       </div>
-
+      <form onSubmit={handleSave}>
       {/* Fixed Date and Save Button Section */}
-      <div className=" w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[180px] left-0">
+      <div className=" w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[100px] left-0">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-gray-100 mb-2">CLINIC DATE</label>
@@ -306,16 +307,25 @@ const PrescriptionUpload = () => {
 
         <div className="flex justify-end mt-4">
           <button
-            // onClick={handleSave}
-            className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Save
+           type="submit"
+           className="flex justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
+         hover:bg-purple-700 focus:outline-none focus:ring-2 
+         focus:ring-purple-500 focus:ring-offset-2 transition duration-150 
+         w-full lg:w-1/4 my-6 item-center"
+         > {isLoading ? (
+           <>
+             <FaSpinner className="animate-spin " />
+             
+           </>
+         ) : (
+           "Save"
+         )}
           </button>
         </div>
       </div>
-     
+      </form>
     </div>
-    </form>
+
   );
 };
 

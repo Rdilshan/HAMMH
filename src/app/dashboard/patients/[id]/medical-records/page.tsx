@@ -79,8 +79,8 @@ const MedicalRecordsGrid = () => {
 
       {/* Modal for Full Record Details */}
       {modalOpen && selectedRecord && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-3/4  relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
+          <div className="bg-white p-8 rounded-lg w-3/4 max-w-1/2  relative ">
             {/* Close button with high z-index */}
             <button
               onClick={closeModal}
@@ -88,33 +88,27 @@ const MedicalRecordsGrid = () => {
             >
               X
             </button>
-           
+             <div className="flex justify-between item-center">
             <p className="mb-2">
               Clinic Data:{" "}
               {new Date(selectedRecord.clinc_data).toLocaleString()}
             </p>
-            <p className="mb-2">
-              Next Appointment:{" "}
-              {new Date(selectedRecord.next_data).toLocaleString()}
-            </p>
             
+            </div>
 
             {/* Image Gallery */}
-            <div className="">
-  <div className="overflow-x-auto ">
-    <div className="grid md:grid-cols-2 gap-4  md:flex-wrap">
-      {selectedRecord.Images.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt={`Full Record Image ${index + 1}`}
-          className="w-80 h-80 object-cover rounded-lg md:w-full md:h-auto mx-auto"
-        />
-      ))}
-    </div>
+            <div className="overflow-x-auto">
+  <div className="flex gap-4 w-full">
+    {selectedRecord.Images.map((image, index) => (
+      <img
+        key={index}
+        src={image}
+        alt={`Full Record Image ${index + 1}`}
+        className="w-80 h-80 object-cover rounded-lg md:w-full md:h-auto mx-auto"
+      />
+    ))}
   </div>
 </div>
-
 
           </div>
         </div>
