@@ -83,7 +83,7 @@ const InjectionRecordsSection = () => {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-lg font-semibold text-gray-800">INJECTION RECORDS</h2>
           <button
-           onClick={() => router.push('/dashboard/patients/1/injection/responsibility')}
+           onClick={() => router.push(`/dashboard/patients/${id}/injection/responsibility`)}
           className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
             Add new
           </button>

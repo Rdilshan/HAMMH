@@ -9,7 +9,7 @@ const ResponsibilityForm = () => {
   const [nurseName, setnurseName] = useState('');
   const [socialWorkers, setsocialWorkers] = useState('');
   const [drugType, setdrugType] = useState('');
-  const [Date ,setDate ] = useState('');
+  const [TodayDate ,setDate ] = useState('');
   const [NextDate ,setNextDate ] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -31,9 +31,9 @@ const ResponsibilityForm = () => {
                     nurseName:nurseName,
                     socialWorkers:socialWorkers,
                     drugType:drugType,
-                    Date:Date,
-                    NextDate:NextDate,
-                    patient_id: Number(`${id}`),
+                    Date:new Date(TodayDate).toISOString(),
+                    NextDate:new Date(NextDate).toISOString(),
+                    // patient_id: Number(`${id}`),
                 }),
             });
 
@@ -46,7 +46,7 @@ const ResponsibilityForm = () => {
             if (response.ok) {
                 toast.success('Admit registered successfully!');
                 setTimeout(() => {
-                    router.push(`/dashboard/patients/${id}/injection`);
+                    window.location.href = `/dashboard/patients/${id}/injection`;
                 }, 500);
             } else {
                 const errorMsg = data?.error;
@@ -158,10 +158,10 @@ const ResponsibilityForm = () => {
             Date
           </label>
           <input
-            type="text"
+            type="datetime-local"
             id="Date"
             name="Date"
-            value={Date}
+            value={TodayDate}
             onChange={(e) => setDate(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-purple-50/50 border bg-[#F8F3FF] text-black outline-none"
           />
@@ -176,7 +176,7 @@ const ResponsibilityForm = () => {
             Next Date
           </label>
           <input
-            type="text"
+            type="datetime-local"
             id="NextDate"
             name="NextDate"
             value={NextDate}
