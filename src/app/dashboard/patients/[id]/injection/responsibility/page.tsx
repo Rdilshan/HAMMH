@@ -68,7 +68,7 @@ const ResponsibilityForm = () => {
     
     <form onSubmit={handleSubmit} className="p-6 bg-white shadow-md rounded-lg">
         <Toaster position="top-center" reverseOrder={false} />
-      <h2 className="text-lg font-semibold text-gray-800 mb-6">Responsibility</h2>
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">RESPONSIBILITY</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       
@@ -86,7 +86,7 @@ const ResponsibilityForm = () => {
             value={doctorName}
             onChange={(e) => setdoctorName(e.target.value)}
             placeholder="Enter full name of doctor"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none "
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -105,7 +105,7 @@ const ResponsibilityForm = () => {
             value={nurseName}
             onChange={(e) => setnurseName(e.target.value)}
             placeholder="Enter full name of nurse"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -124,7 +124,7 @@ const ResponsibilityForm = () => {
             value={socialWorkers}
             onChange={(e) => setsocialWorkers(e.target.value)}
             placeholder="Enter full name of worker"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -141,7 +141,7 @@ const ResponsibilityForm = () => {
             name="drugType"
             value={drugType}
             onChange={(e) => setdrugType(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           >
             <option value="">Select drug type</option>
             <option value="type1">Type 1</option>
@@ -163,7 +163,7 @@ const ResponsibilityForm = () => {
             name="Date"
             value={TodayDate}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-purple-50/50 border bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -181,13 +181,13 @@ const ResponsibilityForm = () => {
             name="NextDate"
             value={NextDate}
             onChange={(e) => setNextDate(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
       </div>
 
       {/* Save Button */}
-      <div className="mt-8 flex justify-end">
+      <div className="mt-8 flex justify-start">
         <button
           type="submit"
           className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"
