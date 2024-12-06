@@ -9,10 +9,14 @@ export async function GET(
 ) {
   try {
     const id = (await params).id;
-    const records = await prisma.hospitaladmit.findMany({
-      where: { patient_id: Number(id) },
-    });
 
+    const records = await prisma.hospitaladmit.findFirst({
+      where: {
+        patient_id: Number(id),
+        discharge_date: null,
+      },
+    });
+    
     return NextResponse.json({ records: records }, { status: 200 });
   } catch (error) {
     console.error("Error fetching admit:", error);
@@ -70,11 +74,11 @@ export async function POST(
       data: { is_admit: "Yes" },
     });
 
-    return NextResponse.json({ message: "Patient admitted" }, { status: 200 });
+    return NextResponse.json({ message: "Patient Admit" }, { status: 200 });
   } catch (error) {
     console.error("Error fetching admit:", error);
     return NextResponse.json(
-      { error: "Failed to fetch admit" },
+      { message: "Failed to fetch admit" },
       { status: 500 }
     );
   }

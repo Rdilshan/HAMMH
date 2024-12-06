@@ -1,72 +1,89 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useRouter } from 'next/navigation'
-import { FaSpinner } from 'react-icons/fa';
+import { useRouter, useParams } from 'next/navigation';
 
 
 interface ApiResponse {
+  doctor: any;
   message?: string;
   data?: any;
   error?: string;
 }
 
-
-const DoctorRegister = () => {
+const DoctorEdit = () => {
+  const { id } = useParams(); // Retrieve doctor ID from URL parameters
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [email, setEmail] = useState('');
   const [specialization, setSpecialization] = useState('');
   const [gender, setGender] = useState('male');
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const router = useRouter()
+  // Fetch doctor data if editing an existing doctor
+  useEffect(() => {
+    if (id) {
+      const fetchDoctorData = async () => {
+        const response = await fetch(`/api/doctor/${id}`);
+        const data: ApiResponse = await response.json();
+        
+        
+        if (data) {
+          
+          setFullName(data.doctor.name);
+          setContactNumber(data.doctor.telephone);
+          setEmail(data.doctor.email);
+          setSpecialization(data.doctor.Specialization);
+          setGender(data.doctor.gender);
+        } else {
+            toast.error('Failed to fetch doctor data.');
+        }
+      };
+
+      fetchDoctorData();
+    }
+  }, [id]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    const baseUrl = `/api/doctor`;
+
+    const method = id ? 'PUT' : 'POST'; // Use PUT if editing, POST if creating
+    const baseUrl = id ? `/api/doctor/${id}` : '/api/doctor';
+
     const response = await fetch(baseUrl, {
-      method: "POST",
+      method: method,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: fullName,
         email: email,
         telephone: contactNumber,
         Specialization: specialization,
-        gender: gender
-      })
+        gender: gender,
+      }),
     });
 
+    const data: ApiResponse = await response.json();
+
     if (response.status === 200) {
-      toast.success('Doctor registered successfully!');
-      router.push('/dashboard/doctors')
-
+      toast.success(id ? 'Doctor updated successfully!' : 'Doctor registered successfully!');
+      router.push('/dashboard/doctors');
     } else {
-      toast.error('Email already exists or Not filling the required fields!');
-
+      toast.error(data.error || 'Error in submission, please check your fields.');
     }
-    setIsLoading(false);
-
   };
-
 
   return (
     <div className="px-6 py-4 text-black">
       <Toaster position="top-center" reverseOrder={false} />
       <form onSubmit={handleSubmit}>
-
-        <div className=" bg-white p-5 rounded-md">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">DOCTOR REGISTER</h2>
-          <div className='grid md:grid-cols-2 gap-4'>
-
-
+        <div className="bg-white p-5 rounded-md">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">{id ? 'Edit Doctor' : 'Register Doctor'}</h2>
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="fullName" className="block mb-2">
-                Full Name
-              </label>
+              <label htmlFor="fullName" className="block mb-2">Full Name</label>
               <input
                 type="text"
                 id="fullName"
@@ -77,9 +94,7 @@ const DoctorRegister = () => {
               />
             </div>
             <div>
-              <label htmlFor="contactNumber" className="block mb-2">
-                Contact Number
-              </label>
+              <label htmlFor="contactNumber" className="block mb-2">Contact Number</label>
               <input
                 type="text"
                 id="contactNumber"
@@ -90,9 +105,7 @@ const DoctorRegister = () => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block mb-2">
-                Email
-              </label>
+              <label htmlFor="email" className="block mb-2">Email</label>
               <input
                 type="email"
                 id="email"
@@ -103,9 +116,7 @@ const DoctorRegister = () => {
               />
             </div>
             <div>
-              <label htmlFor="specialization" className="block mb-2">
-                Specialization
-              </label>
+              <label htmlFor="specialization" className="block mb-2">Specialization</label>
               <input
                 type="text"
                 id="specialization"
@@ -116,9 +127,7 @@ const DoctorRegister = () => {
               />
             </div>
             <div>
-              <label htmlFor="gender" className="block mb-2">
-                Gender
-              </label>
+              <label htmlFor="gender" className="block mb-2">Gender</label>
               <select
                 id="gender"
                 value={gender}
@@ -130,24 +139,18 @@ const DoctorRegister = () => {
                 <option value="other">Other</option>
               </select>
             </div>
-            <div></div>
-            <button
+           
+          </div>
+          <button
               type="submit"
               className="bg-purple-600 text-white rounded-md py-2 px-4 mt-4"
-            > {isLoading ? (
-              <>
-                <FaSpinner className="animate-spin item-center" />
-                Registering...
-              </>
-            ) : (
-              "Register Doctor"
-            )}
+            >
+              {id ? 'Update Doctor' : 'Register Doctor'}
             </button>
-          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default DoctorRegister;
+export default DoctorEdit;

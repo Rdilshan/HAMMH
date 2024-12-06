@@ -14,10 +14,13 @@ export async function GET(request: Request,
                 id: Number(id)
             },
         })
+
+        const diagonsis = await prisma.diagonsis.findMany();
+
         if(!patients){
             return NextResponse.json({message:"patients not found"},{status:404});
         }else{
-            return NextResponse.json({patients:patients},{status:200});    
+            return NextResponse.json({patients:patients , diagonsis:diagonsis},{status:200});    
         }
     } catch (error) {
         console.error("Error fetching patients:", error);
@@ -55,18 +58,21 @@ export async function PUT(request: Request,
     try {
         const id = (await params).id; 
         const data = await request.json();
-         await prisma.patients.update({
+
+        const patient =  await prisma.patients.update({
             where: {
                 id: Number(id)
             },
             data: data
         })
-        return NextResponse.json({message:"success update patients"},{status:200});    
+
+        return NextResponse.json({ message: data }, { status: 200 });
     } catch (error) {
         console.error("Error fetching patients:", error);
         return NextResponse.json(
             { error: "Failed to fetch patients" },
             { status: 500 }
-        );
+          );
     }
 }
+

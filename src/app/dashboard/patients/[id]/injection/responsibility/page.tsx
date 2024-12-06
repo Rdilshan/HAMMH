@@ -1,35 +1,74 @@
 'use client'
 import React, { useState } from "react";
+import { useRouter, useParams } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 const ResponsibilityForm = () => {
+  const { id } = useParams();
+  const [doctorName , setdoctorName ] = useState('');
+  const [nurseName, setnurseName] = useState('');
+  const [socialWorkers, setsocialWorkers] = useState('');
+  const [drugType, setdrugType] = useState('');
+  const [TodayDate ,setDate ] = useState('');
+  const [NextDate ,setNextDate ] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
  
-  const [formData, setFormData] = useState({
-    doctorName: "",
-    nurseName: "",
-    socialWorker: "",
-    drugType: "",
-    date: "",
-    nextDate: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
  
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-   
-  };
+        setIsLoading(true);
+        try {
+          const baseUrl = `/api/patient/${id}/Injection`;
+            const response = await fetch(baseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    doctorName:doctorName,
+                    nurseName:nurseName,
+                    socialWorkers:socialWorkers,
+                    drugType:drugType,
+                    Date:new Date(TodayDate).toISOString(),
+                    NextDate:new Date(NextDate).toISOString(),
+                    // patient_id: Number(`${id}`),
+                }),
+            });
+
+           
+            let data = null;
+            if (response.headers.get('Content-Type')?.includes('application/json')) {
+                data = await response.json();
+            }
+
+            if (response.ok) {
+                toast.success('Admit registered successfully!');
+                setTimeout(() => {
+                    window.location.href = `/dashboard/patients/${id}/injection`;
+                }, 500);
+            } else {
+                const errorMsg = data?.error;
+                toast.error(errorMsg);
+                console.error(errorMsg);
+            }
+        } catch (error) {
+            toast.error('An error occurred while saving!');
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+
 
   return (
+    
     <form onSubmit={handleSubmit} className="p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-lg font-semibold text-gray-800 mb-6">Responsibility</h2>
+        <Toaster position="top-center" reverseOrder={false} />
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">RESPONSIBILITY</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       
@@ -44,10 +83,10 @@ const ResponsibilityForm = () => {
             type="text"
             id="doctorName"
             name="doctorName"
-            value={formData.doctorName}
-            onChange={handleChange}
+            value={doctorName}
+            onChange={(e) => setdoctorName(e.target.value)}
             placeholder="Enter full name of doctor"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none "
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -63,10 +102,10 @@ const ResponsibilityForm = () => {
             type="text"
             id="nurseName"
             name="nurseName"
-            value={formData.nurseName}
-            onChange={handleChange}
+            value={nurseName}
+            onChange={(e) => setnurseName(e.target.value)}
             placeholder="Enter full name of nurse"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -80,12 +119,12 @@ const ResponsibilityForm = () => {
           </label>
           <input
             type="text"
-            id="socialWorker"
-            name="socialWorker"
-            value={formData.socialWorker}
-            onChange={handleChange}
+            id="socialWorkers"
+            name="socialWorkers"
+            value={socialWorkers}
+            onChange={(e) => setsocialWorkers(e.target.value)}
             placeholder="Enter full name of worker"
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -100,9 +139,9 @@ const ResponsibilityForm = () => {
           <select
             id="drugType"
             name="drugType"
-            value={formData.drugType}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            value={drugType}
+            onChange={(e) => setdrugType(e.target.value)}
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           >
             <option value="">Select drug type</option>
             <option value="type1">Type 1</option>
@@ -119,12 +158,12 @@ const ResponsibilityForm = () => {
             Date
           </label>
           <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg bg-purple-50/50 border bg-[#F8F3FF] text-black outline-none"
+            type="datetime-local"
+            id="Date"
+            name="Date"
+            value={TodayDate}
+            onChange={(e) => setDate(e.target.value)}
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
 
@@ -137,18 +176,18 @@ const ResponsibilityForm = () => {
             Next Date
           </label>
           <input
-            type="date"
-            id="nextDate"
-            name="nextDate"
-            value={formData.nextDate}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded-lg bg-[#F8F3FF] text-black outline-none"
+            type="datetime-local"
+            id="NextDate"
+            name="NextDate"
+            value={NextDate}
+            onChange={(e) => setNextDate(e.target.value)}
+            className="text-[13px] text-sm w-full px-6 py-4 bg-purple-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
           />
         </div>
       </div>
 
       {/* Save Button */}
-      <div className="mt-8 flex justify-end">
+      <div className="mt-8 flex justify-start">
         <button
           type="submit"
           className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50"

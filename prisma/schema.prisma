@@ -14,17 +14,18 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  email          String     @unique
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
   name           String
   role           Role
   telephone      String
   Specialization String?
   profile        String?
   gender         Gender
-  password       String
-  created_at     DateTime   @default(now())
-  Updated_at     DateTime   @default(now())
+  password       String?
+  active_status  Active_status @default(Active)
+  created_at     DateTime      @default(now())
+  Updated_at     DateTime      @default(now())
   Patients       Patients[]
 }
 
@@ -33,6 +34,7 @@ model Patients {
   name           String
   telephone      String?
   address        String
+  location       Float[]
   age            Int
   nic            String
   gender         Gender
@@ -91,10 +93,11 @@ model Clinic {
   patient_id Int
   status     Attence  @default(booking)
 }
+
 model Diagonsis {
-  id Int @id @default(autoincrement())
-  name String
-  Icd_code String? 
+  id       Int     @id @default(autoincrement())
+  name     String
+  Icd_code String?
 }
 
 enum Gender {
@@ -122,4 +125,9 @@ enum Attence {
   Not_attence
   Attend
   booking
+}
+
+enum Active_status {
+  Active
+  Deactive
 }

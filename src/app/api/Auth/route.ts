@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt-ts";
 import jwt from "jsonwebtoken";
 
+
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
@@ -35,10 +36,21 @@ export async function POST(request: Request) {
         { expiresIn: "7d" }
       );
 
-      return NextResponse.json(
+
+
+      const response =  NextResponse.json(
         { token: token, Role: checkuser.role },
         { status: 200 }
       );
+
+      response.cookies.set("token", token, {
+        httpOnly: true,
+        sameSite: "strict",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60, 
+      });
+  
+      return response;
     }
   } catch (error) {
     console.error("Error fetching doctors:", error);

@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { usePatientContext } from '@/context/PatientContext'
 
 interface SubNavBarProps {
   patientId: string
@@ -11,6 +12,12 @@ interface SubNavBarProps {
 const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+
+  const { hasUsedInjection, isAdmitted, setPatientId } = usePatientContext()
+
+  React.useEffect(() => {
+    setPatientId(patientId)
+  }, [patientId, setPatientId])
 
   const navItems = [
     { 
@@ -29,18 +36,24 @@ const SubNavBar: React.FC<SubNavBarProps> = ({ patientId }) => {
       label: 'Attendance', 
       href: `/dashboard/patients/${patientId}/attendance`,
     },
-    { 
-      label: 'Injection', 
-      href: `/dashboard/patients/${patientId}/injection`,
-    },
-    { 
-      label: 'Discharge', 
-      href: `/dashboard/patients/${patientId}/discharge`,
-    },
-    { 
-      label: 'Admit', 
-      href: `/dashboard/patients/${patientId}/admit`,
-    },
+    // { 
+    //   label: 'Injection', 
+    //   href: `/dashboard/patients/${patientId}/injection`,
+    // },
+    // { 
+    //   label: 'Discharge', 
+    //   href: `/dashboard/patients/${patientId}/discharge`,
+    // },
+    // { 
+    //   label: 'Admit', 
+    //   href: `/dashboard/patients/${patientId}/admit`,
+    // },
+    ...(hasUsedInjection
+      ? [{ label: 'Injection', href: `/dashboard/patients/${patientId}/injection` }]
+      : []),
+    ...(isAdmitted
+      ? [{ label: 'Discharge', href: `/dashboard/patients/${patientId}/discharge` }]
+      : [{ label: 'Admit', href: `/dashboard/patients/${patientId}/admit` }]),
   ]
 
   const activeItem = navItems.find(item => pathname === item.href)

@@ -2,7 +2,7 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import React from "react";
 
@@ -11,47 +11,53 @@ function NursePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [nurse, setNurse] = useState<any[]>([]); // Ensure flexibility for dynamic data.
+  const [error, setError] = useState("");
   const router = useRouter();
-
   const rowsPerPage = 5;
+ 
 
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
 
-  const nurseData = [
-    {
-      id: "1",
-      name: "Dr. John Smith",
-      contactNumber: "123-456-7890",
-      email: "Cardiologist@gmail.com",
-      gender: "Male",
-      profileImage:
-        "data:image/jpeg;base64,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",
-    },
-    {
-      id: "2",
-      name: "Dr. Emily Johnson",
-      contactNumber: "234-567-8901",
-      email: "Cardiologist@gmail.com",
-      gender: "Female",
+  const fetchDoctors = async () => {
+    try {
+      const response = await fetch(`/api/Nurse`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-    },
-    {
-      id: "3",
-      name: "Dr. Michael Lee",
-      contactNumber: "345-678-9012",
-      email: "Cardiologist@gmail.com",
-      gender: "Male",
+      if (!response.ok) {
+        throw new Error("Failed to fetch doctor data.");
+      }
 
-    },
-    {
-      id: "4",
-      name: "Dr. Sarah Brown",
-      contactNumber: "456-789-0123",
-      email: "Cardiologist@gmail.com",
-      gender: "Female",
+      const data = await response.json();
+      setNurse(data);
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
-    },
-  ];
+  const handleDeleteDoctor = async (id: number) => {
+    try {
+      const response = await fetch(`/api/Nurse/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
 
+      if (!response.ok) {
+        throw new Error("Failed to delete the doctor.");
+      }
+
+      const data = await response.json();
+      alert(data.message);
+      fetchDoctors(); // Refresh the list after deletion
+    } catch (error) {
+      console.error("Error deleting doctor:", error);
+      alert("An error occurred while trying to delete the doctor.");
+    }
+  };
   // const handleSearch = () => {
   //   setCurrentPage(1);
   // };
@@ -60,18 +66,18 @@ function NursePage() {
     setSelectedCategory(e.target.value);
   };
 
-  const filteredData = nurseData.filter((doctor) => {
+  const filteredData = nurse.filter((nurse) => {
     if (selectedCategory === "All") {
       return (
-        doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doctor.contactNumber.includes(searchQuery)
+        nurse.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        nurse.contactNumber.includes(searchQuery)
       );
     }
 
     return (
-      doctor.gender === selectedCategory &&
-      (doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        doctor.contactNumber.includes(searchQuery))
+      nurse.gender === selectedCategory &&
+      (nurse.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        nurse.contactNumber.includes(searchQuery))
     );
   });
 
@@ -133,6 +139,9 @@ function NursePage() {
               <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Email</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Gender</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Status
+              </th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
@@ -154,17 +163,43 @@ function NursePage() {
 
 
                     <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {nurse.contactNumber}
+                      {nurse.telephone}
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.email}</td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">{nurse.gender}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">
+                      <div
+                        className={` py-1 rounded ${
+                          nurse.active_status === "Active"
+                            ? "bg-green-500 text-white rounded-full text-[10px] "
+                            : "bg-red-500 text-white rounded-full text-[10px]"
+                        }`}
+                      >
+                        {nurse.active_status}
+                      </div>
+                    </td>
                     <td className="px-4 py-4 text-center">
                       <div className="flex items-center justify-center space-x-2">
 
-                        <button className="text-yellow-600">
+                      <button
+                          className="text-yellow-600"
+                          onClick={() =>
+                            router.push(`/dashboard/nurses/${nurse.id}`)
+                          }
+                        >
                           <FaEdit />
                         </button>
-                        <button className="text-red-600">
+                        <button
+                          className="text-red-600"
+                          onClick={async () => {
+                            const confirmDelete = window.confirm(
+                              "Are you sure you want to delete this doctor? This action is irreversible."
+                            );
+                            if (confirmDelete) {
+                              await handleDeleteDoctor(nurse.id);
+                            }
+                          }}
+                        >
                           <FaTrash />
                         </button>
                       </div>
