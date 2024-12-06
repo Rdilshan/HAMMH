@@ -1,108 +1,121 @@
-'use client'
+"use client";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
-import Image, { StaticImageData } from 'next/image';
-import mediImage from "../../../../../../public/images.jpg";
-interface MedicalRecord {
+interface Record {
   id: number;
-  date: string;
-  imageUrl: StaticImageData;
-  type: string;
+  clinc_data: string;
+  next_data: string;
+  status: string;
+  Images: string[];
 }
 
-const MedicalRecordsGrid: React.FC = () => {
-  const [selectedRecord, setSelectedRecord] = useState<MedicalRecord | null>(null);
+const MedicalRecordsGrid = () => {
+  const [records, setRecords] = useState<Record[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
+  const { id } = useParams();
 
-  // Generate 15 records with the same image URL
-  const generateRecords = (): MedicalRecord[] => {
-    return Array.from({ length: 15 }, (_, index): MedicalRecord => ({
-      id: index + 1,
-      date: new Date(2024, 0, index + 1).toISOString().split('T')[0],
-      imageUrl: mediImage,
-      type: 'Medical Record'
-    }));
-  };
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const response = await fetch(`/api/patient/${id}/clinic`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch records");
+        }
+        const data = await response.json();
+        setRecords(data.records); // Assuming the response contains 'records'
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const records: MedicalRecord[] = generateRecords();
+    fetchRecords();
+  }, [id]);
 
-  const handleImageClick = (record: MedicalRecord): void => {
+  const handleImageClick = (record: Record) => {
     setSelectedRecord(record);
+    setModalOpen(true);
   };
 
-  const handleCloseModal = (): void => {
+  const closeModal = () => {
+    setModalOpen(false);
     setSelectedRecord(null);
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
-    <div className="w-full p-4">
-      {/* Grid Layout */}
+    <div className="text-black w-full h-auto">
+      {/* Medical Records Grid */}
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
-        {records.map((record: MedicalRecord) => (
-          <div
-            key={record.id}
-            onClick={() => handleImageClick(record)}
-            className="relative group"
-          >
-            <div className="aspect-square bg-gray-800 rounded-lg shadow-md cursor-pointer overflow-hidden transition-transform duration-200 hover:scale-105">
-              {/* Hidden Image */}
-              <Image
-                src={record.imageUrl}
-                alt={`Medical Record ${record.date}`}
-                className="w-full h-full object-cover opacity-30"
-              />
-              {/* Date Overlay */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-white text-sm font-medium">
-                  {new Date(record.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                  })}
-                </span>
-                <span className="text-gray-500 text-xs mt-1">
-                  {record.type}
-                </span>
+        {records.map((record) => (
+          <div key={record.id}>
+            <div className="record-item">
+              <div
+                className="image-container relative cursor-pointer rounded-md"
+                onClick={() => handleImageClick(record)}
+              >
+                <img
+                  src={record.Images[0]}
+                  alt={`Record Image ${record.id}`}
+                  className="w-full h-auto object-cover rounded-lg filter blur-sm" // Apply blur effect
+                />
+                {/* Overlay Date */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-70 text-white font-semibold p-2">
+                  {new Date(record.clinc_data).toLocaleDateString()}{" "}
+                  {/* Displaying date */}
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal */}
-      {selectedRecord && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-          onClick={handleCloseModal}
-        >
-          <div 
-            className="relative bg-white rounded-lg max-w-xl w-full mx-4 h-full"
-            onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          >
-            <div className="absolute top-2 right-2 z-10">
-              <button
-                onClick={handleCloseModal}
-                className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="p-4">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Medical Record - {new Date(selectedRecord.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </h3>
-              </div>
-              <Image
-                src={selectedRecord.imageUrl}
-                alt={`Medical Record ${selectedRecord.date}`}
-                className="w-full h-auto rounded-lg"
-              />
-            </div>
+      {/* Modal for Full Record Details */}
+      {modalOpen && selectedRecord && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg w-3/4  relative">
+            {/* Close button with high z-index */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-red-500 font-bold text-xl z-60"
+            >
+              X
+            </button>
+           
+            <p className="mb-2">
+              Clinic Data:{" "}
+              {new Date(selectedRecord.clinc_data).toLocaleString()}
+            </p>
+            <p className="mb-2">
+              Next Appointment:{" "}
+              {new Date(selectedRecord.next_data).toLocaleString()}
+            </p>
+            
+
+            {/* Image Gallery */}
+            <div className="">
+  <div className="overflow-x-auto ">
+    <div className="grid md:grid-cols-2 gap-4  md:flex-wrap">
+      {selectedRecord.Images.map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt={`Full Record Image ${index + 1}`}
+          className="w-80 h-80 object-cover rounded-lg md:w-full md:h-auto mx-auto"
+        />
+      ))}
+    </div>
+  </div>
+</div>
+
+
           </div>
         </div>
       )}
