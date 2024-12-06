@@ -50,14 +50,24 @@ const InjectionRecordsSection = () => {
         setinjections(responseData.data);
   
         // Extract the NextDate from the first record in the array
-        if (responseData.data.length > 0) {
-          setnextInjectionDate(responseData.data[0].NextDate);
-        } else {
-          setnextInjectionDate("No upcoming injections");
-        }
+      //   if (responseData.data.length > 0) {
+      //     setnextInjectionDate(responseData.data.Status=="processing");
+      //   } else {
+      //     setnextInjectionDate("No upcoming injections");
+      //   }
+      // } else {
+      //   throw new Error("Expected 'data' to be an array in the response");
+      // }
+
+      const processingInjection = responseData.data.find(
+        (injection: any) => injection.Status === "processing"
+      );
+
+      if (processingInjection) {
+        setnextInjectionDate(processingInjection.NextDate);
       } else {
-        throw new Error("Expected 'data' to be an array in the response");
-      }
+        setnextInjectionDate("No upcoming injections");
+      }}
     } catch (err: any) {
       setError(err.message);
       console.error(err);
@@ -74,7 +84,9 @@ const InjectionRecordsSection = () => {
       <div className="bg-red-500 p-4 rounded-lg shadow-sm border border-gray-100">
         <div className="text-white">
           <span className="font-medium">Next Injection date: </span>
-          <span className="text-white">{nextInjectionDate}</span>
+          <span className="text-white">
+          {new Date(nextInjectionDate).toLocaleString()}
+            </span>
         </div>
       </div>
 
