@@ -19,6 +19,7 @@
     "chart.js": "^4.4.6",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "firebase": "^11.0.2",
     "jose": "^5.9.6",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.456.0",
