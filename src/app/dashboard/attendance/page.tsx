@@ -1,52 +1,54 @@
 "use client"
 
 import { FaEdit } from "react-icons/fa";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 import React from "react";
 
-const patientData = [
-  {
-    id: '1',
-    name: 'John Doe',
-    contactNumber: '123-456-7890',
-    location: 'Embilipitiya',
-    date: '2024-11-15',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    contactNumber: '234-567-8901',
-    location: 'Hambantota',
-    date: '2024-11-15',
-  },
-  {
-    id: '3',
-    name: 'Mark Johnson',
-    contactNumber: '345-678-9012',
-    location: 'Kandy',
-    date: '2024-11-14',
-  },
-  {
-    id: '4',
-    name: 'Lucy Brown',
-    contactNumber: '456-789-0123',
-    location: 'Florida',
-    date: '2024-11-15',
-  },
-];
+// const patientData = [
+//   {
+//     id: '1',
+//     name: 'John Doe',
+//     contactNumber: '123-456-7890',
+//     location: 'Embilipitiya',
+//     date: '2024-11-15',
+//   },
+//   {
+//     id: '2',
+//     name: 'Jane Smith',
+//     contactNumber: '234-567-8901',
+//     location: 'Hambantota',
+//     date: '2024-11-15',
+//   },
+//   {
+//     id: '3',
+//     name: 'Mark Johnson',
+//     contactNumber: '345-678-9012',
+//     location: 'Kandy',
+//     date: '2024-11-14',
+//   },
+//   {
+//     id: '4',
+//     name: 'Lucy Brown',
+//     contactNumber: '456-789-0123',
+//     location: 'Florida',
+//     date: '2024-11-15',
+//   },
+// ];
 
 function Page() {
-  const [selectedDate, setSelectedDate] = useState('2024-11-15');
+  const today = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState(today);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
+  const [patientData, setPatientData] = useState<any[]>([]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     setCurrentPage(1);
   };
-  
+
 
   const filteredPatients = patientData.filter(
     (patient) => patient.date === selectedDate
@@ -63,6 +65,40 @@ function Page() {
   const toggleRow = (index: number) => {
     setExpandedRow(expandedRow === index ? null : index);
   };
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const response = await fetch(`/api/patient/attendance`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch records");
+        }
+        const data: any = await response.json();
+
+
+        if (data.patientData && Array.isArray(data.patientData)) {
+
+          const formattedData = data.patientData.map((record: any, index: number) => ({
+            // id: (index + 1).toString(),
+            id:record.patient.id,
+            name: record.patient.name,
+            contactNumber: record.patient.telephone,
+            location: record.patient.address,
+            date: new Date(record.clinc_data).toISOString().split('T')[0],
+          }));
+
+          setPatientData(formattedData);
+        } else {
+          console.error("No patient data found in the response.");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRecords();
+  }, []);
+
 
   return (
     <div className="px-4 py-4 bg-[#F8F3FF]">
@@ -118,7 +154,9 @@ function Page() {
                       <td className="px-4 py-4 text-center hidden md:table-cell">{patient.location}</td>
                       <td className="px-4 py-4 text-center">
                         <div className="flex items-center justify-center space-x-2">
-                          <button className="text-green-900">
+                          <button className="text-green-900" onClick={() => {
+                            window.open(`/dashboard/patients/${patient.id}`, "_blank");
+                          }}>
                             <FaEdit />
                           </button>
                         </div>
