@@ -10,7 +10,7 @@ export async function GET(
   try {
     const id = (await params).id;
     const records = await prisma.clinic.findMany({
-      where: { patient_id: Number(id) },
+      where: { patient_id: Number(id), status: "Attend" },
     });
 
     return NextResponse.json({ records: records }, { status: 200 });
@@ -31,11 +31,66 @@ export async function POST(
     const data = await request.json();
     const id = (await params).id;
 
+    //not attendence
+    await prisma.clinic.updateMany({
+      where: {
+        clinc_data: {
+          lt: new Date(data.clinc_data),
+        },
+        patient_id: Number(id),
+        status: "booking",
+      },
+      data: {
+        status: "Not_attence",
+      },
+    });
+
+    const checkingDate = new Date(data.clinc_data);
+    const startOfDay = new Date(checkingDate.setUTCHours(0, 0, 0, 0));
+    const endOfDay = new Date(checkingDate.setUTCHours(23, 59, 59, 999));
+
+    const checkdata = await prisma.clinic.findFirst({
+      where: {
+        clinc_data: {
+          gte: startOfDay,
+          lt: endOfDay,
+        },
+        patient_id: Number(id),
+      },
+    });
+
+    if (!checkdata) {
+      console.log("No matching clinic data found.");
+      await prisma.clinic.create({
+        data: {
+          Images: data.Images,
+          clinc_data: data.clinc_data,
+          next_data: data.next_data,
+          patient_id: Number(id),
+          status: "Attend",
+        },
+      });
+    } else {
+      console.log("Matching clinic data found:", checkdata);
+      await prisma.clinic.update({
+        where: {
+          id: checkdata.id,
+        },
+        data: {
+          Images: data.Images,
+          clinc_data: data.clinc_data,
+          next_data: data.next_data,
+          patient_id: Number(id),
+          status: "Attend",
+        },
+      });
+    }
+
+    //save nextdate
     await prisma.clinic.create({
       data: {
-        Images: data.Images,
-        clinc_data: data.clinc_data,
-        next_data: data.next_data,
+        Images: [],
+        clinc_data: data.next_data,
         patient_id: Number(id),
       },
     });
@@ -53,9 +108,7 @@ export async function POST(
   }
 }
 
-export async function DELETE(
-  request: Request
-) {
+export async function DELETE(request: Request) {
   try {
     const data = await request.json();
     await prisma.clinic.delete({
