@@ -12,7 +12,6 @@ const PatientsDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [patients, setPatients] = useState<any[]>([]);
-  const [error, setError] = useState("");
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -33,7 +32,7 @@ const PatientsDetails = () => {
       const data = await response.json();
       setPatients(data);
     } catch (err: any) {
-      setError(err.message);
+      console.log(err.message);
     }
   };
 

@@ -5,16 +5,32 @@ import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import Image from "next/image";
-import profile from "../../../../public/profile.png";
+
+
+interface Doctor {
+  contactNumber: string;
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  telephone: string;
+  Specialization: string;
+  profile: string | null;
+  gender: string;
+  password: string | null;
+  active_status: string;
+  created_at: string; // or Date if you want to parse it
+  Updated_at: string; // or Date if you want to parse it
+}
+
 
 function DoctorProfilePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [doctors, setDoctors] = useState<any[]>([]); // Ensure flexibility for dynamic data.
-  const [error, setError] = useState("");
+  const [doctors, setDoctors] = useState<Doctor[]>([]); // Ensure flexibility for dynamic data.
+
 
   const rowsPerPage = 5;
   const router = useRouter();
@@ -35,9 +51,10 @@ function DoctorProfilePage() {
       }
 
       const data = await response.json();
+
       setDoctors(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      console.log(err);
     }
   };
 

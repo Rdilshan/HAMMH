@@ -11,8 +11,7 @@ function NursePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [nurse, setNurse] = useState<any[]>([]); // Ensure flexibility for dynamic data.
-  const [error, setError] = useState("");
+  const [nurse, setNurse] = useState<any[]>([]);
   const router = useRouter();
   const rowsPerPage = 5;
  
@@ -34,8 +33,8 @@ function NursePage() {
 
       const data = await response.json();
       setNurse(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      console.log(err)
     }
   };
 

@@ -86,6 +86,7 @@ const PatientDetails = () => {
             toast.error("Failed to fetch patient data.");
           }
         } catch (error) {
+          console.log(error);
           toast.error("An error occurred while fetching patient data.");
         }
       };
@@ -146,6 +147,7 @@ const PatientDetails = () => {
         toast.error(data.error || "Error in submission, please check your fields.");
       }
     } catch (error) {
+      console.log(error)
       toast.error("An error occurred while submitting the form.");
     } finally {
       setIsLoading(false);

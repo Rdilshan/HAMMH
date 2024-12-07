@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import { FaEdit } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
@@ -37,11 +36,27 @@ import React from "react";
 // ];
 
 interface Patient {
-  id: string;
+  id: number;
   name: string;
   contactNumber: string;
   location: string;
   date: string;
+}
+
+interface Patientapi {
+  id: number;
+  name: string;
+  telephone: string;
+  address: string;
+}
+
+interface PatientData {
+  clinc_data: string; 
+  patient: Patientapi;
+}
+
+interface ApiResponse {
+  patientData: PatientData[];
 }
 
 function Page() {
@@ -81,12 +96,11 @@ function Page() {
         if (!response.ok) {
           throw new Error("Failed to fetch records");
         }
-        const data: any = await response.json();
-
+        const data: ApiResponse = await response.json();
 
         if (data.patientData && Array.isArray(data.patientData)) {
 
-          const formattedData = data.patientData.map((record: any) => ({
+          const formattedData = data.patientData.map((record) => ({
             // id: (index + 1).toString(),
             id:record.patient.id,
             name: record.patient.name,

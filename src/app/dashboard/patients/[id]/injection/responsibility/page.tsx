@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import { useRouter, useParams } from 'next/navigation';
+import {  useParams } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 
 const ResponsibilityForm = () => {
@@ -11,14 +11,11 @@ const ResponsibilityForm = () => {
   const [drugType, setdrugType] = useState('');
   const [TodayDate ,setDate ] = useState('');
   const [NextDate ,setNextDate ] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
- 
- 
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-        setIsLoading(true);
+
         try {
           const baseUrl = `/api/patient/${id}/Injection`;
             const response = await fetch(baseUrl, {
@@ -56,9 +53,7 @@ const ResponsibilityForm = () => {
         } catch (error) {
             toast.error('An error occurred while saving!');
             console.error(error);
-        } finally {
-            setIsLoading(false);
-        }
+        } 
     };
 
 

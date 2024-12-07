@@ -39,12 +39,11 @@ const DischargeForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("runing..")
+    setIsLoading(true);
     if (dischargeDate == '' || modeOfDischarge == '' || patientCondition == '') {
       toast.error('All fields are required!');
       return;
     }
-
 
     try {
 
@@ -70,12 +69,12 @@ const DischargeForm = () => {
           window.location.href = `/dashboard/patients/${id}`;
         }, 500);
       } else {
-
         toast.error(data.message);
-
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false);
     }
 
   };
