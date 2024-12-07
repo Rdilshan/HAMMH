@@ -23,7 +23,7 @@ const AttendanceSheet = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch records");
         }
-        const data: any = await response.json();
+        const data = await response.json();
 
         const date = new Date(data.nextdate.clinc_data); 
         const formattedDate = format(date, 'hh:mm a EEEE, MMMM dd, yyyy');

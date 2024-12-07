@@ -6,12 +6,30 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import React from "react";
 
+
+interface Nurse {
+  contactNumber: string;
+  id: number;
+  email: string;
+  name: string;
+  role: string;
+  telephone: string;
+  Specialization: string | null;
+  profile: string | null;
+  gender: string;
+  password: string | null;
+  active_status: string;
+  created_at: string; // or Date if parsing is required
+  Updated_at: string; // or Date if parsing is required
+}
+
+
 function NursePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [nurse, setNurse] = useState<any[]>([]);
+  const [nurse, setNurse] = useState<Nurse[]>([]);
   const router = useRouter();
   const rowsPerPage = 5;
  
@@ -33,6 +51,7 @@ function NursePage() {
 
       const data = await response.json();
       setNurse(data);
+      
     } catch (err: unknown) {
       console.log(err)
     }

@@ -3,11 +3,25 @@ import React, { useState ,useEffect } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from 'react-icons/bi';
 import { useRouter, useParams } from 'next/navigation';
 
+interface Injection {
+  id: number;
+  doctorName: string;
+  nurseName: string;
+  socialWorkers: string;
+  drugType: string;
+  Date: string;  // Alternatively, Date if you want to convert it later
+  NextDate: string;  // Alternatively, Date if you want to convert it later
+  Status: string;
+  patient_id: number;
+}
+
+
+
 const InjectionRecordsSection = () => {
   const { id } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const[nextInjectionDate,setnextInjectionDate]=useState("");
-  const [injection, setinjections] = useState<any[]>([]);
+  const [injection, setinjections] = useState<Injection[]>([]);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
 
@@ -18,7 +32,7 @@ const InjectionRecordsSection = () => {
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = injection.slice(indexOfFirstRow, indexOfLastRow);
   const totalPages = Math.ceil(injection.length / rowsPerPage);
-  const [error, setError] = useState("");
+
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -45,6 +59,7 @@ const InjectionRecordsSection = () => {
   
       const responseData = await response.json();
       console.log("Fetched data:", responseData);
+      
   
       if (Array.isArray(responseData.data)) {
         setinjections(responseData.data);
@@ -60,7 +75,7 @@ const InjectionRecordsSection = () => {
       // }
 
       const processingInjection = responseData.data.find(
-        (injection: any) => injection.Status === "processing"
+        (injection: Injection) => injection.Status === "processing"
       );
 
       if (processingInjection) {
@@ -68,8 +83,7 @@ const InjectionRecordsSection = () => {
       } else {
         setnextInjectionDate("No upcoming injections");
       }}
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
       console.error(err);
     }
   };
