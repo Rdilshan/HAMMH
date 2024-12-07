@@ -443,7 +443,7 @@ const PatientDetails = () => {
 
 
         {/* Submit Button */}
-        <div className="flex justify-start mt-8">
+        <div className="flex justify-end mt-8">
         <button
             type="submit"
             className="flex justify-center px-6 py-3 bg-purple-600 text-white font-medium rounded-lg 
