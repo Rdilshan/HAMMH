@@ -18,40 +18,45 @@ export async function POST(request: Request) {
     if (!checkuser) {
       return NextResponse.json({ message: "user not found" }, { status: 404 });
     }
-    const isPasswordValid = await compare(data.password, checkuser.password);
-    if (!isPasswordValid) {
-      return NextResponse.json(
-        { message: "Invalid password" },
-        { status: 401 }
-      );
-    } else {
-      const token = jwt.sign(
-        {
-          data: {
-            id: checkuser.id,
-            role:checkuser.role
+
+    if (data.password && checkuser.password) {
+      const isPasswordValid = await compare(data.password, checkuser.password);
+      if (!isPasswordValid) {
+        return NextResponse.json(
+          { message: "Invalid password" },
+          { status: 401 }
+        );
+      } else {
+        const token = jwt.sign(
+          {
+            data: {
+              id: checkuser.id,
+              role:checkuser.role
+            },
           },
-        },
-        process.env.JWT_SECRET!,
-        { expiresIn: "7d" }
-      );
-
-
-
-      const response =  NextResponse.json(
-        { token: token, Role: checkuser.role },
-        { status: 200 }
-      );
-
-      response.cookies.set("token", token, {
-        httpOnly: true,
-        sameSite: "strict",
-        path: "/",
-        maxAge: 7 * 24 * 60 * 60, 
-      });
+          process.env.JWT_SECRET!,
+          { expiresIn: "7d" }
+        );
   
-      return response;
+  
+  
+        const response =  NextResponse.json(
+          { token: token, Role: checkuser.role },
+          { status: 200 }
+        );
+  
+        response.cookies.set("token", token, {
+          httpOnly: true,
+          sameSite: "strict",
+          path: "/",
+          maxAge: 7 * 24 * 60 * 60, 
+        });
+    
+        return response;
+      }
     }
+
+
   } catch (error) {
     console.error("Error fetching doctors:", error);
     return NextResponse.json(

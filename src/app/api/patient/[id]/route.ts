@@ -59,7 +59,7 @@ export async function PUT(request: Request,
         const id = (await params).id; 
         const data = await request.json();
 
-        const patient =  await prisma.patients.update({
+        await prisma.patients.update({
             where: {
                 id: Number(id)
             },

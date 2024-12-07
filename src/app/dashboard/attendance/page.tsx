@@ -36,13 +36,21 @@ import React from "react";
 //   },
 // ];
 
+interface Patient {
+  id: string;
+  name: string;
+  contactNumber: string;
+  location: string;
+  date: string;
+}
+
 function Page() {
   const today = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState(today);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
-  const [patientData, setPatientData] = useState<any[]>([]);
+  const [patientData, setPatientData] = useState<Patient[]>([]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -78,7 +86,7 @@ function Page() {
 
         if (data.patientData && Array.isArray(data.patientData)) {
 
-          const formattedData = data.patientData.map((record: any, index: number) => ({
+          const formattedData = data.patientData.map((record: any) => ({
             // id: (index + 1).toString(),
             id:record.patient.id,
             name: record.patient.name,
