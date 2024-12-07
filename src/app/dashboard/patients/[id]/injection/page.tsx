@@ -120,12 +120,12 @@ const InjectionRecordsSection = () => {
           <table className="w-full text-sm ">
             <thead>
               <tr className="border-b bg-[#F8F3FF] ">
-                <th className="text-left py-3 px-4 font-bold text-gray-700 text-center">Date</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 text-center">Injection</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Doctor</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Nurse</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Social Worker</th>
-                <th className="text-left py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Status</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 text-center">Date</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 text-center">Injection</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Doctor</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Nurse</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Social Worker</th>
+                <th className=" py-3 px-4 font-bold text-gray-700 hidden md:table-cell text-center">Status</th>
               </tr>
             </thead>
             <tbody>
