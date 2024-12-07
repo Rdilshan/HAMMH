@@ -6,13 +6,36 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+
+interface Patient {
+  id: number;
+  name: string;
+  telephone: string;
+  address: string;
+  location: [number, number]; // Tuple to represent latitude and longitude
+  age: number;
+  nic: string;
+  gender: string;
+  source_reffern: string;
+  created_by: number;
+  clinic_session: string | null;
+  condition: string | null;
+  diagonsis: string | null;
+  use_injection: string | null;
+  injection_type: string | null;
+  special_note: string | null;
+  is_admit: string;
+  created_at: string; // or Date if parsed
+  Updated_at: string; // or Date if parsed
+}
+
+
 const PatientsDetails = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [patients, setPatients] = useState<any[]>([]);
-  const [error, setError] = useState("");
+  const [patients, setPatients] = useState<Patient[]>([]);
   const rowsPerPage = 5;
 
   useEffect(() => {
@@ -32,8 +55,8 @@ const PatientsDetails = () => {
 
       const data = await response.json();
       setPatients(data);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      console.log(err);
     }
   };
 
@@ -45,7 +68,7 @@ const PatientsDetails = () => {
   const filteredData = patients.filter((patient) => {
     const queryMatch =
       patient.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      patient.NIC.toLowerCase().includes(searchQuery.toLowerCase());
+      patient.nic.toLowerCase().includes(searchQuery.toLowerCase());
 
     if (selectedCategory === "All") {
       return queryMatch;

@@ -1,7 +1,7 @@
-import nodemailer from 'nodemailer';
+import nodemailer,{ Transporter } from 'nodemailer';
 
 class EmailService {
-  transporter: any;
+  transporter: Transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,

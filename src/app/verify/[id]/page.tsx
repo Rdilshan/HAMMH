@@ -77,7 +77,7 @@ export default function LoginPage() {
     };
 
     fetchData();
-  }, [id]);
+  }, [id,router]);
 
 
   return (

@@ -48,6 +48,7 @@ export async function POST(request: Request) {
     }    
     return NextResponse.json({ data: doctor }, { status: 200 });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -89,6 +90,7 @@ export async function PUT(request: Request) {
     }
     return NextResponse.json({ data: doctor }, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ msg: "Internal Server Error" }, { status: 500 });
   }
 }

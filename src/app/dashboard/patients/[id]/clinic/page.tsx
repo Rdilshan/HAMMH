@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../../../firebase_config'; 
 import toast, { Toaster } from 'react-hot-toast';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { FaSpinner } from 'react-icons/fa';
 
 const PrescriptionUpload = () => {

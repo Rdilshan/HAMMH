@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 
 export default function Sidebar({ role, userid }: { role: string; userid: string }) {
-
+console.log(userid)
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/Auth/logout", {

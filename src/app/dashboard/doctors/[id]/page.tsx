@@ -6,9 +6,9 @@ import { useRouter, useParams } from 'next/navigation';
 
 
 interface ApiResponse {
-  doctor: any;
+  doctor: unknown;
   message?: string;
-  data?: any;
+  data?: unknown;
   error?: string;
 }
 
@@ -31,11 +31,11 @@ const DoctorEdit = () => {
         
         if (data) {
           
-          setFullName(data.doctor.name);
-          setContactNumber(data.doctor.telephone);
-          setEmail(data.doctor.email);
-          setSpecialization(data.doctor.Specialization);
-          setGender(data.doctor.gender);
+          setFullName((data.doctor as { name: string }).name);
+          setContactNumber((data.doctor as { telephone: string }).telephone);
+          setEmail((data.doctor as { email: string }).email);
+          setSpecialization((data.doctor as { Specialization: string }).Specialization);
+          setGender((data.doctor as { gender: string }).gender);
         } else {
             toast.error('Failed to fetch doctor data.');
         }

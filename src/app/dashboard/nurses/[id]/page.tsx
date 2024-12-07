@@ -6,10 +6,16 @@ import { useRouter, useParams } from 'next/navigation';
 
 
 interface ApiResponse {
-  nurse: any;
+  nurse: Nurse;
   message?: string;
-  data?: any;
+  data?: string;
   error?: string;
+}
+interface Nurse {
+  name:string;
+  telephone:string;
+  email:string;
+  gender:string;
 }
 
 const Nurseedit = () => {

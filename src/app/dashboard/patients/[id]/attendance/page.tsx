@@ -9,10 +9,6 @@ interface AttendanceRecord {
   present: boolean;
 }
 
-interface ApiResponse {
-  clinc_data: string;
-  status: string;
-}
 
 const AttendanceSheet = () => {
   const { id } = useParams();
@@ -27,11 +23,12 @@ const AttendanceSheet = () => {
         if (!response.ok) {
           throw new Error("Failed to fetch records");
         }
-        const data: any = await response.json();
+        const data = await response.json();
 
         const date = new Date(data.nextdate.clinc_data); 
         const formattedDate = format(date, 'hh:mm a EEEE, MMMM dd, yyyy');
         setnextdate(formattedDate)
+        
         if (Array.isArray(data.records)) {
 
           const formattedData = data.records.map((record: { clinc_data: string; status: string }) => {

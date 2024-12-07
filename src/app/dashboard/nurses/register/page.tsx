@@ -43,6 +43,7 @@ const NurseRegister = () => {
         toast.error(errorData.message || 'Failed to register nurse!');
       }
     } catch (error) {
+      console.log(error)
       toast.error('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);

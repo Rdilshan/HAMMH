@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { genSaltSync, hashSync } from "bcrypt-ts";
 import EmailService from "@/app/api/email/email";
 import jwt from "jsonwebtoken";
 

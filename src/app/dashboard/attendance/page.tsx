@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import { FaEdit } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
@@ -36,13 +35,37 @@ import React from "react";
 //   },
 // ];
 
+interface Patient {
+  id: number;
+  name: string;
+  contactNumber: string;
+  location: string;
+  date: string;
+}
+
+interface Patientapi {
+  id: number;
+  name: string;
+  telephone: string;
+  address: string;
+}
+
+interface PatientData {
+  clinc_data: string; 
+  patient: Patientapi;
+}
+
+interface ApiResponse {
+  patientData: PatientData[];
+}
+
 function Page() {
   const today = new Date().toISOString().split('T')[0];
   const [selectedDate, setSelectedDate] = useState(today);
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
-  const [patientData, setPatientData] = useState<any[]>([]);
+  const [patientData, setPatientData] = useState<Patient[]>([]);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -73,12 +96,11 @@ function Page() {
         if (!response.ok) {
           throw new Error("Failed to fetch records");
         }
-        const data: any = await response.json();
-
+        const data: ApiResponse = await response.json();
 
         if (data.patientData && Array.isArray(data.patientData)) {
 
-          const formattedData = data.patientData.map((record: any, index: number) => ({
+          const formattedData = data.patientData.map((record) => ({
             // id: (index + 1).toString(),
             id:record.patient.id,
             name: record.patient.name,

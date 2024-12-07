@@ -27,6 +27,7 @@ interface AdminProfileProps {
 }
 
 const Navbar = ( { role, userid }: { role: string; userid: string }) => {
+  console.log(userid)
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 

@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
-import { genSaltSync, hashSync } from "bcrypt-ts";
 import jwt from "jsonwebtoken";
 import EmailService from "@/app/api/email/email"; // Ensure this exists and works
 
@@ -95,10 +94,10 @@ export async function POST(request: Request) {
       { msg: "Nurse created successfully", token },
       { status: 200 }
     );
-  } catch (error: any) {
-    console.error("Error processing request:", error.message || error);
+  } catch (error) {
+    console.error("Error processing request:", error );
     return NextResponse.json(
-      { msg: "Internal Server Error", error: error.message || error },
+      { msg: "Internal Server Error", error: error },
       { status: 500 }
     );
   }

@@ -18,6 +18,7 @@ export async function POST(request: Request) {
     try {
       decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
     } catch (error) {
+      console.log(error)
       return NextResponse.json(
         { msg: "Token is invalid or expired" },
         { status: 401 }
@@ -76,6 +77,7 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ data: doctor }, { status: 200 });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "Internal Server Error"}, { status: 500 });
   }
 }

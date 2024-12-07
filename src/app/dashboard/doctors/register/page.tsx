@@ -6,13 +6,6 @@ import { useRouter } from 'next/navigation'
 import { FaSpinner } from 'react-icons/fa';
 
 
-interface ApiResponse {
-  message?: string;
-  data?: any;
-  error?: string;
-}
-
-
 const DoctorRegister = () => {
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');

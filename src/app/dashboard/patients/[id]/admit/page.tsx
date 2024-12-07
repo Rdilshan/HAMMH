@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaSpinner } from 'react-icons/fa';
 
@@ -15,7 +15,7 @@ const DischargeForm = () => {
   const [procedures, setprocedures] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  const router = useRouter();
+
 
   const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
