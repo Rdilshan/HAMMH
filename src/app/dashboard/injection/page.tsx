@@ -1,73 +1,55 @@
 "use client";
 
 import { FaEdit } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 import React from "react";
 
-const patientData = [
-  {
-    id: "1",
-    name: "John Doe",
-    contactNumber: "123-456-7890",
-    location: "New York",
-    injectionType: "A",
-    date: "2024-11-15",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    contactNumber: "234-567-8901",
-    location: "California",
-    injectionType: "B",
-    date: "2024-11-15",
-  },
-  {
-    id: "3",
-    name: "Mark Johnson",
-    contactNumber: "345-678-9012",
-    location: "Texas",
-    injectionType: "A",
-    date: "2024-11-14",
-  },
-  {
-    id: "4",
-    name: "Lucy Brown",
-    contactNumber: "456-789-0123",
-    location: "Florida",
-    injectionType: "B",
-    date: "2024-11-15",
-  },
-];
+interface Patient {
+  id: number;
+  Date: string;
+  NextDate: string;
+  Status: string;
+  doctorName: string;
+  drugType: string;
+  nurseName: string;
+  patient_id: number;
+  socialWorkers: string;
+}
 
 function Page() {
-  const [selectedDate, setSelectedDate] = useState("2024-11-15");
-  const [selectedInjectionType, setSelectedInjectionType] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [injectionData, setInjectionData] = useState<Patient[]>([]);
+
   const rowsPerPage = 5;
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
-    setSelectedDate(e.target.value);
-    setCurrentPage(1);
-  };
+  useEffect(() => {
+    fetchInjectionData();
+  }, []);
 
-  const handleInjectionTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedInjectionType(e.target.value);
-    setCurrentPage(1);
-  };
-  
+  const fetchInjectionData = async () => {
+    try {
+      const response = await fetch(`/api/patient/injection`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
 
-  const filteredPatients = patientData.filter(
-    (patient) =>
-      patient.date === selectedDate &&
-      (selectedInjectionType === "All" || patient.injectionType === selectedInjectionType)
-  );
+      if (!response.ok) {
+        throw new Error("Failed to fetch injection data.");
+      }
+
+      const data = await response.json();
+      setInjectionData(data);
+    } catch (error) {
+      console.error("Error fetching injection data:", error);
+    }
+  };
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = filteredPatients.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(filteredPatients.length / rowsPerPage);
+  const currentRows = injectionData.slice(indexOfFirstRow, indexOfLastRow);
+  const totalPages = Math.ceil(injectionData.length / rowsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -79,33 +61,10 @@ function Page() {
 
   return (
     <div className="px-4 py-4 bg-[#F8F3FF]">
-      <div className="flex flex-col md:flex-row justify-between items-center mb-5">
+      <div className="flex flex-col justify-between items-center mb-5">
         <h2 className="text-2xl font-bold text-black uppercase">
           Injection Details
         </h2>
-      </div>
-
-      <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow gap-2">
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-1/3 mb-2 md:mb-0 text-black outline-none"
-        />
-        <select
-          value={selectedInjectionType}
-          onChange={handleInjectionTypeChange}
-          className="bg-[#F8F3FF] rounded-md py-3 px-4 w-full md:w-1/3 mb-2 md:mb-0 text-black outline-noe"
-        >
-          <option value="All">All</option>
-          <option value="A">Injection Type A</option>
-          <option value="B">Injection Type B</option>
-        </select>
-        <div className="text-[15px] font-bold text-white bg-red-500 py-2 px-4 rounded">
-          {filteredPatients.length} Patient
-          {filteredPatients.length === 1 ? "" : "s"} with Injection{" "}
-          {selectedInjectionType} for {selectedDate}
-        </div>
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
@@ -115,16 +74,18 @@ function Page() {
         <table className="w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
-              <th className="px-4 py-3 text-center">Patient Name</th>
+              <th className="px-4 py-3 text-center">Patient ID</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
-                Injection Type
+                Doctor Name
               </th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
-                Contact Number
+                Drug Type
               </th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">Date</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">
-                Location
+                Nurse Name
+              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">
+                Date
               </th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
@@ -132,11 +93,8 @@ function Page() {
           <tbody>
             {currentRows.length > 0 ? (
               currentRows.map((patient, index) => (
-                <React.Fragment key={index}>
-                  <tr
-                    key={index}
-                    className="border-b hover:bg-gray-50"
-                  >
+                <React.Fragment key={patient.id}>
+                  <tr className="border-b hover:bg-gray-50">
                     <td className="px-4 py-6 flex items-center gap-2">
                       <button
                         className="text-black md:hidden text-[15px]"
@@ -148,19 +106,19 @@ function Page() {
                           <BiSolidRightArrow />
                         )}
                       </button>
-                      {patient.name}
+                      {patient.patient_id}
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.injectionType}
+                      {patient.doctorName}
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.contactNumber}
+                      {patient.drugType}
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.date}
+                      {patient.nurseName}
                     </td>
                     <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.location}
+                      {patient.Date}
                     </td>
                     <td className="px-4 py-6 text-center">
                       <button className="text-yellow-600">
@@ -169,27 +127,27 @@ function Page() {
                     </td>
                   </tr>
                   {expandedRow === index && (
-                    <tr key={`expanded-${patient.id}`}>
+                    <tr>
                       <td
+                        colSpan={6}
                         className="px-4 py-4 bg-gray-50 text-sm text-gray-600"
-
                       >
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between">
-                            <p className="font-bold">Injection Type</p>
-                            <p>{patient.injectionType}</p>
+                            <p className="font-bold">Doctor Name:</p>
+                            <p>{patient.doctorName}</p>
                           </div>
                           <div className="flex justify-between">
-                            <p className="font-bold">Contact Number</p>
-                            <p>{patient.contactNumber}</p>
+                            <p className="font-bold">Drug Type:</p>
+                            <p>{patient.drugType}</p>
                           </div>
                           <div className="flex justify-between">
-                            <p className="font-bold">Date</p>
-                            <p>{patient.date}</p>
+                            <p className="font-bold">Nurse Name:</p>
+                            <p>{patient.nurseName}</p>
                           </div>
                           <div className="flex justify-between">
-                            <p className="font-bold">Location</p>
-                            <p>{patient.location}</p>
+                            <p className="font-bold">Date:</p>
+                            <p>{patient.Date}</p>
                           </div>
                         </div>
                       </td>
@@ -199,10 +157,7 @@ function Page() {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-2 text-center text-gray-500"
-                >
+                <td colSpan={6} className="px-4 py-2 text-center text-gray-500">
                   No data found
                 </td>
               </tr>
@@ -215,10 +170,11 @@ function Page() {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 text-gray-700"
-              }`}
+            className={`mx-1 px-3 py-1 rounded-md ${
+              currentPage === page
+                ? "bg-purple-600 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
             onClick={() => handlePageChange(page)}
           >
             {page}
