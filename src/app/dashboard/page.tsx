@@ -7,16 +7,60 @@ import avatar from '../../../public/avatar.png'
 import Image from 'next/image'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
+import { useEffect, useState } from 'react'
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+type StatsType = {
+  doctors: number;
+  nurses: number;
+  patients: number;
+  staff: number;
+  admit:number;
+  clinic:number;
+  injection:number;
+  male:number;
+  female:number;
+};
+
 export default function Dashboard() {
+  const [stats, setStats] = useState<StatsType>({
+    doctors: 0,
+    nurses: 0,
+    patients: 0,
+    staff: 0,
+    admit:0,
+    clinic:0,
+    injection:0,
+    male:0,
+    female:0
+  });
+  // const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/dashboard',{
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        console.log(data)
+        setStats(data);
+        // setLoading(false);
+      } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   const data = {
     labels: ['Male', 'Female'],
     datasets: [
       {
         label: 'Gender Distribution',
-        data: [60, 40], // Adjust values as needed
+        data: [stats.male, stats.female], // Adjust values as needed
         backgroundColor: ['#36A2EB', '#FF6384'],
         hoverBackgroundColor: ['#36A2EB', '#FF6384'],
         borderWidth: 1,
@@ -67,11 +111,12 @@ export default function Dashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      
         {[
-          { name: "Doctor", title: "Total Doctors", value: "10+", icon: "👨‍⚕️" },
-          { name: "Nurse", title: "Total Nurses", value: "20+", icon: "👩‍⚕️" },
-          { name: "Patient", title: "Total Patients", value: "300+", icon: "🏥" },
-          { name: "Staff", title: "Total Staff", value: "60+", icon: "👥" },
+          { name: 'Doctor', title: 'Total Doctors', value: `${stats.doctors || 0}+`, icon: '👨‍⚕️' },
+          { name: 'Nurse', title: 'Total Nurses', value: `${stats.nurses || 0}+`, icon: '👩‍⚕️' },
+          { name: 'Patient', title: 'Total Patients', value: `${stats.patients || 0}+`, icon: '🏥' },
+          { name: 'Staff', title: 'Total Staff', value: `${stats.staff || 0}+`, icon: '👥' },
         ].map((stat, index) => (
           <StatsCard key={index} {...stat} trend={80} />
         ))}
@@ -83,12 +128,12 @@ export default function Dashboard() {
           <h2 className="text-xl font-bold mb-4 text-black">HOSPITAL OVERVIEW</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {[
-              { title: "New Patients", count: 4, icon: "👤" },
-              { title: "Admin Patients", count: 80, icon: "📋" },
-              { title: "Clinic Patients", count: 500, icon: "🏥" },
-              { title: "Injection Count", count: 500, icon: "💉" },
-              { title: "Risk Patient", count: 500, icon: "⚠️" },
-              { title: "Risk Patient", count: 500, icon: "⚠️" },
+              { title: "Total Patients",count:`${stats.patients || 0}+`, icon: "👤" },
+              { title: "Admit Patients", count:`${stats.admit || 0}+`, icon: "📋" },
+              { title: "Clinic Patients", count:`${stats.clinic || 0}+`, icon: "🏥" },
+              { title: "Injection Count", count:`${stats.injection || 0}+`, icon: "💉" },
+              { title: "Total doctors", count:`${stats.doctors || 0}+`, icon: "👨‍⚕️" },
+              { title: "Total Staff", count:`${stats.staff || 0}+`, icon: "👥" },
             ].map((overview, index) => (
               <OverviewCard key={index} {...overview} />
             ))}
