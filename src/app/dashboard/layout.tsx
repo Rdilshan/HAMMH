@@ -11,7 +11,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
 
 
   return (
-    <div className="min-h-screen bg-[#F8F3FF] flex flex-col sm:flex-row">
+    <div className="min-h-screen bg-[#F8F3FF] flex">
       <Sidebar role={role ?? ''} userid={userid ?? ''} />
       <div className="flex flex-col flex-grow">
         <Navbar  role={role ?? ''} userid={userid ?? ''} />
@@ -22,3 +22,4 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     </div>
   );
 }
+
