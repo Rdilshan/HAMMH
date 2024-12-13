@@ -1,6 +1,6 @@
 interface OverviewCardProps {
     title: string
-    count: number
+    count: string | number;
     icon: string
   }
   
