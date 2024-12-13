@@ -1,53 +1,48 @@
 "use client";
 
 import { FaEdit } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSolidRightArrow, BiSolidDownArrow } from "react-icons/bi";
 import React from "react";
 
-const patientData = [
-  {
-    id: "1",
-    name: "John Doe",
-    contactNumber: "123-456-7890",
-    location: "New York",
-    injectionType: "A",
-    date: "2024-11-15",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    contactNumber: "234-567-8901",
-    location: "California",
-    injectionType: "B",
-    date: "2024-11-15",
-  },
-  {
-    id: "3",
-    name: "Mark Johnson",
-    contactNumber: "345-678-9012",
-    location: "Texas",
-    injectionType: "A",
-    date: "2024-11-14",
-  },
-  {
-    id: "4",
-    name: "Lucy Brown",
-    contactNumber: "456-789-0123",
-    location: "Florida",
-    injectionType: "B",
-    date: "2024-11-15",
-  },
-];
+
+interface Injection {
+  id: number;
+  name: string;
+  contactNumber: string;
+  location: string;
+  injectionType: string;
+  date: string;
+}
+
+interface InjectionApi {
+  id: number;
+  name: string;
+  injection_type: string;
+  telephone: string;
+  address: string;
+}
+
+interface InjectionData {
+  Date: string;
+  patient: InjectionApi;
+}
+
+interface ApiResponse {
+  injections: boolean;
+  InjectionData: InjectionData[];
+}
 
 function Page() {
-  const [selectedDate, setSelectedDate] = useState("2024-11-15");
+  const today = new Date().toISOString().split("T")[0];
+  const [selectedDate, setSelectedDate] = useState(today);
   const [selectedInjectionType, setSelectedInjectionType] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const rowsPerPage = 5;
+  const [patientData, setPatientData] = useState<Injection[]>([]);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>)=> {
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     setCurrentPage(1);
   };
@@ -56,13 +51,14 @@ function Page() {
     setSelectedInjectionType(e.target.value);
     setCurrentPage(1);
   };
-  
 
-  const filteredPatients = patientData.filter(
-    (patient) =>
-      patient.date === selectedDate &&
-      (selectedInjectionType === "All" || patient.injectionType === selectedInjectionType)
-  );
+  const filteredPatients = patientData.filter((patient) => {
+    const matchesDate = patient.date === selectedDate;
+    const matchesType =
+      selectedInjectionType === "All" ||
+      patient.injectionType === selectedInjectionType;
+    return matchesDate && matchesType;
+  });
 
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -77,12 +73,43 @@ function Page() {
     setExpandedRow(expandedRow === index ? null : index);
   };
 
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const response = await fetch(`/api/patient/injection`,{
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch records");
+        }
+        const data: ApiResponse = await response.json();
+
+        if (data.injections && Array.isArray(data.injections)) {
+          const formattedData = data.injections.map((record) => ({
+            id: record.patient.id,
+            name: record.patient.name,
+            injectionType: record.patient.injection_type,
+            contactNumber: record.patient.telephone,
+            location: record.patient.address,
+            date: new Date(record.Date).toISOString().split("T")[0],
+          }));
+          setPatientData(formattedData);
+        } else {
+          console.error("No patient data found in the response.");
+        }
+      } catch (error) {
+        console.error("Error fetching patient data:", error);
+      }
+    };
+
+    fetchRecords();
+  }, []);
+
   return (
     <div className="px-4 py-4 bg-[#F8F3FF]">
       <div className="flex flex-col md:flex-row justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold text-black uppercase">
-          Injection Details
-        </h2>
+        <h2 className="text-2xl font-bold text-black uppercase">Injection Details</h2>
       </div>
 
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow gap-2">
@@ -95,7 +122,7 @@ function Page() {
         <select
           value={selectedInjectionType}
           onChange={handleInjectionTypeChange}
-          className="bg-[#F8F3FF] rounded-md py-3 px-4 w-full md:w-1/3 mb-2 md:mb-0 text-black outline-noe"
+          className="bg-[#F8F3FF] rounded-md py-3 px-4 w-full md:w-1/3 mb-2 md:mb-0 text-black outline-none"
         >
           <option value="All">All</option>
           <option value="A">Injection Type A</option>
@@ -109,44 +136,29 @@ function Page() {
       </div>
 
       <div className="bg-white shadow rounded-lg overflow-x-auto p-4">
-        <h2 className="text-[15px] font-bold text-black uppercase mb-3">
-          Patient Details
-        </h2>
+        <h2 className="text-[15px] font-bold text-black uppercase mb-3">Patient Details</h2>
         <table className="w-full table-auto text-left text-sm text-black">
           <thead>
             <tr className="border-b bg-[#F8F3FF]">
               <th className="px-4 py-3 text-center">Patient Name</th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">
-                Injection Type
-              </th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">
-                Contact Number
-              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Injection Type</th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Contact Number</th>
               <th className="px-4 py-3 text-center hidden md:table-cell">Date</th>
-              <th className="px-4 py-3 text-center hidden md:table-cell">
-                Location
-              </th>
+              <th className="px-4 py-3 text-center hidden md:table-cell">Location</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentRows.length > 0 ? (
               currentRows.map((patient, index) => (
-                <React.Fragment key={index}>
-                  <tr
-                    key={index}
-                    className="border-b hover:bg-gray-50"
-                  >
+                <React.Fragment key={patient.id}>
+                  <tr className="border-b hover:bg-gray-50">
                     <td className="px-4 py-6 flex items-center gap-2">
                       <button
                         className="text-black md:hidden text-[15px]"
                         onClick={() => toggleRow(index)}
                       >
-                        {expandedRow === index ? (
-                          <BiSolidDownArrow />
-                        ) : (
-                          <BiSolidRightArrow />
-                        )}
+                        {expandedRow === index ? <BiSolidDownArrow /> : <BiSolidRightArrow />}
                       </button>
                       {patient.name}
                     </td>
@@ -156,24 +168,24 @@ function Page() {
                     <td className="px-4 py-4 text-center hidden md:table-cell">
                       {patient.contactNumber}
                     </td>
-                    <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.date}
-                    </td>
-                    <td className="px-4 py-4 text-center hidden md:table-cell">
-                      {patient.location}
-                    </td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{patient.date}</td>
+                    <td className="px-4 py-4 text-center hidden md:table-cell">{patient.location}</td>
                     <td className="px-4 py-6 text-center">
-                      <button className="text-yellow-600">
-                        <FaEdit />
-                      </button>
+                      <div className="flex items-center justify-center space-x-2">
+                        <button
+                          className="text-green-900"
+                          onClick={() =>
+                            window.open(`/dashboard/patients/${patient.id}`, "_blank")
+                          }
+                        >
+                          <FaEdit />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                   {expandedRow === index && (
-                    <tr key={`expanded-${patient.id}`}>
-                      <td
-                        className="px-4 py-4 bg-gray-50 text-sm text-gray-600"
-
-                      >
+                    <tr>
+                      <td colSpan={6} className="px-4 py-4 bg-gray-50 text-sm text-gray-600">
                         <div className="flex flex-col gap-2">
                           <div className="flex justify-between">
                             <p className="font-bold">Injection Type</p>
@@ -199,10 +211,7 @@ function Page() {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-2 text-center text-gray-500"
-                >
+                <td colSpan={6} className="px-4 py-2 text-center text-gray-500">
                   No data found
                 </td>
               </tr>
@@ -215,10 +224,11 @@ function Page() {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 text-gray-700"
-              }`}
+            className={`mx-1 px-3 py-1 rounded-md ${
+              currentPage === page
+                ? "bg-purple-600 text-white"
+                : "bg-gray-200 text-black"
+            }`}
             onClick={() => handlePageChange(page)}
           >
             {page}
