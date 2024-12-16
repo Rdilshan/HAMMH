@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
-    "@prisma/client": "^6.0.0",
+    "@prisma/client": "^6.0.1",
     "@react-google-maps/api": "^2.20.3",
     "bcrypt-ts": "^5.0.3",
     "chart.js": "^4.4.6",
@@ -46,7 +46,7 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8",
-    "prisma": "^6.0.0",
+    "prisma": "^6.0.1",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
