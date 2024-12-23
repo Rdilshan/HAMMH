@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import {handleFile} from 'docfillx';
+// import Report from '../../../../public/report.png';
 
 const ReportGenerate = () => {
   const [startDate, setStartDate] = useState('');
@@ -59,7 +61,8 @@ const ReportGenerate = () => {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <button className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+          <button className="bg-purple-600 text-white px-8 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+            onClick={() => handleFile("../Report.docx",{data:"Report"})} >
             Genarate
           </button>
         </div>
