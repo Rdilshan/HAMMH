@@ -30,8 +30,10 @@ function NursePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [nurse, setNurse] = useState<Nurse[]>([]);
-  const router = useRouter();
+  
+  
   const rowsPerPage = 5;
+  const router = useRouter();
  
 
   useEffect(() => {
@@ -76,26 +78,26 @@ function NursePage() {
       alert("An error occurred while trying to delete the doctor.");
     }
   };
-  // const handleSearch = () => {
-  //   setCurrentPage(1);
-  // };
+ 
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.target.value);
-  };
+ 
 
   const filteredData = nurse.filter((nurse) => {
+    const name = nurse?.name?.toLowerCase() || "";
+    const contact = nurse?.contactNumber || "";
+
     if (selectedCategory === "All") {
       return (
-        nurse.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        nurse.contactNumber.includes(searchQuery)
+        name.includes(searchQuery.toLowerCase()) ||
+        contact.includes(searchQuery)
       );
     }
 
+
     return (
-      nurse.gender === selectedCategory &&
-      (nurse.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        nurse.contactNumber.includes(searchQuery))
+      nurse?.gender === selectedCategory &&
+      (name.includes(searchQuery.toLowerCase()) ||
+        contact.includes(searchQuery))
     );
   });
 
@@ -135,12 +137,12 @@ function NursePage() {
         />
         <select
           value={selectedCategory}
-          onChange={handleCategoryChange}
+          onChange={(e) => setSelectedCategory(e.target.value)}
           className="bg-[#F8F3FF] text-black rounded-md py-2 px-3 w-full md:w-1/4 mb-2 md:mb-0 md:mr-4"
         >
           <option value="All">All</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
         </select>
 
       </div>
