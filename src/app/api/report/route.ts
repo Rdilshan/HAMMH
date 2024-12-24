@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const start_date = data.start_date;
     const end_date = data.end_date;
 
-    let date = start_date + " to " + end_date;
+    const date = start_date + " to " + end_date;
     // Initialize variables with default values
     let c_general = 0;
     let c_child = 0;
