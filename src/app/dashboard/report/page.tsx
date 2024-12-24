@@ -2,38 +2,56 @@
 
 import React, { useState } from 'react';
 import { handleFile } from 'docfillx';
+import toast, { Toaster } from "react-hot-toast";
 
 
 const ReportGenerate = () => {
+
   const [startDate, setStartDate] = useState('');
   const [endDate, setendDate] = useState('');
 
   const handleGenerateReport = async () => {
-    // handleFile("../Report.docx",{data:"Report"})
-
+    if (!startDate || !endDate) {
+      toast.error("Please select a valid date range.");
+      return;
+    }
+  
     const baseUrl = `/api/report`;
-    const response = await fetch(baseUrl, {
+    const fetchReportPromise = fetch(baseUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         start_date: startDate,
-        end_date: endDate
-      })
+        end_date: endDate,
+      }),
+    }).then(async (response) => {
+      const datares = await response.json();
+      if (response.status !== 200) {
+        throw new Error(datares?.message || "Failed to generate the report.");
+      }
+      return datares.data; // Return report data on success
     });
-    const datares = await response.json();
-    console.log(datares.data)
-
-    if (response.status === 200) {
-      handleFile("../Report.docx",datares.data)
-
-    } else {
-    }
+  
+    // Use toast.promise for feedback
+    toast.promise(fetchReportPromise, {
+      loading: "Generating report...",
+      success: "Report generated successfully!",
+      error: "An error occurred while generating the report.",
+    }).then((data) => {
+      // Handle the file after successful fetch
+      handleFile("../Report.docx", data);
+    }).catch((error) => {
+      console.error("Report generation failed:", error);
+      // Optional: Add any custom error handling logic here
+    });
   };
+  
 
   return (
     <div className="bg-white mt-6 mx-4 rounded-lg shadow-md p-8">
+      <Toaster />
       <div className="">
         <h2 className="text-black text-lg font-semibold mb-4">Generate Report</h2>
 

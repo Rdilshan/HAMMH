@@ -356,12 +356,10 @@ const PatientDetails = () => {
               <option value="" disabled>
                 Patient Condition
               </option>
-              <option value="Consaltant">Delebrte self-harm</option>
-              <option value="OPD">suicides</option>
-              <option value="Other wards">Substance abuse clinic</option>
-              <option value="Other health institution">Gender based violence clinic</option>
-              <option value="Public">Elderly clinic</option>
-              <option value="Other">Other</option>
+              <option value="Delebrte self-harm">Delebrte self-harm</option>
+              <option value="suicides">suicides</option>
+              <option value="Victims of sexual abuse">Victims of sexual abuse</option>
+              <option value="Victims of violence">Victims of violence</option>
             </select>
           </div>
 

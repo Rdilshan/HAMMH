@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const start_date = data.start_date;
     const end_date = data.end_date;
 
-    let date = start_date+" to "+end_date;
+    let date = start_date + " to " + end_date;
     // Initialize variables with default values
     let c_general = 0;
     let c_child = 0;
@@ -180,6 +180,37 @@ export async function POST(request: Request) {
       F101_FO = 0;
     let F102_MO = 0,
       F102_FO = 0;
+
+    //patient condition
+    //19
+    let M19SE = 0,
+      F19SE = 0;
+    let M19SU = 0,
+      F19SU = 0;
+    let M19VS = 0,
+      F19VS = 0;
+    let M19VV = 0,
+      F19VV = 0;
+
+    //20-59
+    let M20SE = 0,
+      F20SE = 0;
+    let M20SU = 0,
+      F20SU = 0;
+    let M20VS = 0,
+      F20VS = 0;
+    let M20VV = 0,
+      F20VV = 0;
+
+    //60
+    let M60SE = 0,
+      F60SE = 0;
+    let M60SU = 0,
+      F60SU = 0;
+    let M60VS = 0,
+      F60VS = 0;
+    let M60VV = 0,
+      F60VV = 0;
 
     const clinic = await prisma.clinic.groupBy({
       by: ["clinc_type"],
@@ -929,11 +960,204 @@ export async function POST(request: Request) {
       }
     });
 
+    const agePatients = await prisma.patients.findMany({
+      where: {
+        condition: {
+          not: "",
+        },
+      },
+      select: {
+        id: true,
+        age: true,
+        created_at: true,
+      },
+    });
+
+    const currentDate = new Date();
+
+    for (const patient of agePatients) {
+      const createdYear = new Date(patient.created_at).getFullYear();
+      const currentYear = currentDate.getFullYear();
+      const yearsPassed = currentYear - createdYear;
+      const actualAge = patient.age + yearsPassed;
+
+      await prisma.patients.update({
+        where: {
+          id: patient.id,
+        },
+        data: {
+          age: actualAge,
+        },
+      });
+    }
+
+    const patientcondition19 = await prisma.patients.groupBy({
+      by: ["condition", "gender"],
+      where: {
+        created_at: {
+          gte: new Date(start_date),
+          lte: new Date(end_date),
+        },
+        age: {
+          lte: 19,
+        },
+        condition: {
+          not: "",
+        },
+      },
+      _count: {
+        condition: true,
+      },
+    });
+
+    patientcondition19.forEach((group) => {
+      switch (group.condition) {
+        case "Delebrte self-harm":
+          if (group.gender === "male") {
+            M19SE = group._count.condition;
+          } else {
+            F19SE = group._count.condition;
+          }
+          break;
+        case "suicides":
+          if (group.gender === "male") {
+            M19SU = group._count.condition;
+          } else {
+            F19SU = group._count.condition;
+          }
+          break;
+        case "Victims of sexual abuse":
+          if (group.gender === "male") {
+            M19VS = group._count.condition;
+          } else {
+            F19VS = group._count.condition;
+          }
+          break;
+        case "Victims of violence":
+          if (group.gender === "male") {
+            M19VV = group._count.condition;
+          } else {
+            F19VV = group._count.condition;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    const patientcondition59 = await prisma.patients.groupBy({
+      by: ["condition", "gender"],
+      where: {
+        created_at: {
+          gte: new Date(start_date),
+          lte: new Date(end_date),
+        },
+        age: {
+          gte: 20,
+          lte: 59,
+        },
+        condition: {
+          not: "",
+        },
+      },
+      _count: {
+        condition: true,
+      },
+    });
+
+    patientcondition59.forEach((group) => {
+      switch (group.condition) {
+        case "Delebrte self-harm":
+          if (group.gender === "male") {
+            M20SE = group._count.condition;
+          } else {
+            F20SE = group._count.condition;
+          }
+          break;
+        case "suicides":
+          if (group.gender === "male") {
+            M20SU = group._count.condition;
+          } else {
+            F20SU = group._count.condition;
+          }
+          break;
+        case "Victims of sexual abuse":
+          if (group.gender === "male") {
+            M20VS = group._count.condition;
+          } else {
+            F20VS = group._count.condition;
+          }
+          break;
+        case "Victims of violence":
+          if (group.gender === "male") {
+            M20VV = group._count.condition;
+          } else {
+            F20VV = group._count.condition;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    const patientcondition60 = await prisma.patients.groupBy({
+      by: ["condition", "gender"],
+      where: {
+        created_at: {
+          gte: new Date(start_date),
+          lte: new Date(end_date),
+        },
+        age: {
+          gte: 60,
+        },
+        condition: {
+          not: "",
+        },
+      },
+      _count: {
+        condition: true,
+      },
+    });
+
+    patientcondition60.forEach((group) => {
+      switch (group.condition) {
+        case "Delebrte self-harm":
+          if (group.gender === "male") {
+            M60SE = group._count.condition;
+          } else {
+            F60SE = group._count.condition;
+          }
+          break;
+        case "suicides":
+          if (group.gender === "male") {
+            M60SU = group._count.condition;
+          } else {
+            F60SU = group._count.condition;
+          }
+          break;
+        case "Victims of sexual abuse":
+          if (group.gender === "male") {
+            M60VS = group._count.condition;
+          } else {
+            F60VS = group._count.condition;
+          }
+          break;
+        case "Victims of violence":
+          if (group.gender === "male") {
+            M60VV = group._count.condition;
+          } else {
+            F60VV = group._count.condition;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
     return NextResponse.json(
       {
         data: {
-
-            date,
+          date,
           //clinic session
           c_general,
           c_child,
@@ -1104,6 +1328,37 @@ export async function POST(request: Request) {
           F101_FO,
           F102_MO,
           F102_FO,
+
+          //patient condition
+          //19
+          M19SE,
+          F19SE,
+          M19SU,
+          F19SU,
+          M19VS,
+          F19VS,
+          M19VV,
+          F19VV,
+
+          //20-59
+          M20SE,
+          F20SE,
+          M20SU,
+          F20SU,
+          M20VS,
+          F20VS,
+          M20VV,
+          F20VV,
+
+          //60
+          M60SE,
+          F60SE,
+          M60SU,
+          F60SU,
+          M60VS,
+          F60VS,
+          M60VV,
+          F60VV,
         },
       },
       { status: 200 }
