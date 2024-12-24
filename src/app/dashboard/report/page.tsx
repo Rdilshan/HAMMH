@@ -23,11 +23,13 @@ const ReportGenerate = () => {
       })
     });
     const datares = await response.json();
-    console.log(datares)
+    console.log(datares.data)
 
-    // if (response.status === 200) {
-    // } else {
-    // }
+    if (response.status === 200) {
+      handleFile("../Report.docx",datares.data)
+
+    } else {
+    }
   };
 
   return (

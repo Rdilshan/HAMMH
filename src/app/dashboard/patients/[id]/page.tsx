@@ -304,6 +304,7 @@ const PatientDetails = () => {
               <option value="Other wards">Other wards</option>
               <option value="Other health institution">Other health institution</option>
               <option value="Public">Public health staff</option>
+              <option value="Community ">Community </option>
               <option value="GPs">GPs</option>
               <option value="Courts">Courts</option>
               <option value="Self">Self-referrals</option>
