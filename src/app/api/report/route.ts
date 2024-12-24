@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ClincType, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,6 +9,7 @@ export async function POST(request: Request) {
     const start_date = data.start_date;
     const end_date = data.end_date;
 
+    let date = start_date+" to "+end_date;
     // Initialize variables with default values
     let c_general = 0;
     let c_child = 0;
@@ -931,6 +932,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         data: {
+
+            date,
           //clinic session
           c_general,
           c_child,
