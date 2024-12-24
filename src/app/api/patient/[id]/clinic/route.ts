@@ -32,6 +32,7 @@ export async function POST(
   try {
     const data = await request.json();
     const id = (await params).id;
+    let patientclinc;
 
     //get the patient details
     const patientvalue = await prisma.patients.findUnique({
@@ -44,9 +45,9 @@ export async function POST(
     });
 
     if (patientvalue?.clinic_session) {
-      var patientclinc = patientvalue?.clinic_session;
+       patientclinc = patientvalue?.clinic_session;
     } else {
-      var patientclinc = "Genaral_Clinic";
+       patientclinc = "Genaral_Clinic";
     }
     //not attendence
     await prisma.clinic.updateMany({
