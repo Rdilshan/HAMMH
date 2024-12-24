@@ -85,13 +85,14 @@ model Injection {
 }
 
 model Clinic {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   Images     String[]
   clinc_data DateTime
   next_data  DateTime?
-  patient    Patients @relation(fields: [patient_id], references: [id])
+  patient    Patients  @relation(fields: [patient_id], references: [id])
   patient_id Int
-  status     Attence  @default(booking)
+  status     Attence   @default(booking)
+  clinc_type ClincType @default(Genaral_Clinic)
 }
 
 model Diagonsis {
@@ -130,4 +131,13 @@ enum Attence {
 enum Active_status {
   Active
   Deactive
+}
+
+enum ClincType {
+  Genaral_Clinic
+  Child_Adolescent_guidance_clinic
+  Substance_abuse_clinic
+  Gender_based_violence_clinic
+  Elderly_clinic
+  Other
 }

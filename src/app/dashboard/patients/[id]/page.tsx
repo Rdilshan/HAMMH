@@ -329,11 +329,11 @@ const PatientDetails = () => {
                 Clinic Session
               </option>
               <option value="">Select Clinic Session</option>
-              <option value="Consaltant">Genaral Clinic</option>
-              <option value="OPD">Child & Adolescent guidance clinic</option>
-              <option value="Other wards">Substance abuse clinic</option>
-              <option value="Other health institution">Gender based violence clinic</option>
-              <option value="Public">Elderly clinic</option>
+              <option value="Genaral_Clinic">Genaral Clinic</option>
+              <option value="Child_Adolescent_guidance_clinic">Child & Adolescent guidance clinic</option>
+              <option value="Substance_abuse_clinic">Substance abuse clinic</option>
+              <option value="Gender_based_violence_clinic">Gender based violence clinic</option>
+              <option value="Elderly_clinic">Elderly clinic</option>
               <option value="Other">Other</option>
             </select>
           </div>
