@@ -1,15 +1,33 @@
 'use client';
 
 import React, { useState } from 'react';
-import {handleFile} from 'docfillx';
+import { handleFile } from 'docfillx';
 
 
 const ReportGenerate = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setendDate] = useState('');
 
-  const handleGenerateReport = () => {
-    handleFile("../Report.docx",{data:"Report"})
+  const handleGenerateReport = async () => {
+    // handleFile("../Report.docx",{data:"Report"})
+
+    const baseUrl = `/api/report`;
+    const response = await fetch(baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        start_date: startDate,
+        end_date: endDate
+      })
+    });
+    const datares = await response.json();
+    console.log(datares)
+
+    // if (response.status === 200) {
+    // } else {
+    // }
   };
 
   return (
