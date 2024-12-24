@@ -142,10 +142,7 @@ const Navbar = ({ role, userid }: { role: string; userid: string }) => {
           `}
                 >
                   <LogOut className="h-5 w-5 min-w-[20px]" />
-                  <span className="hidden lg:block ml-4 text-sm font-medium">Logout</span>
-                  <div className="lg:hidden absolute left-16 px-3 py-2 bg-gray-800 text-white text-sm rounded opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                    Logout
-                  </div>
+                 
                 </button>
 
                 <div className="border-t border-gray-100 pt-4">
