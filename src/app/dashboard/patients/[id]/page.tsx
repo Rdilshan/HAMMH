@@ -304,6 +304,7 @@ const PatientDetails = () => {
               <option value="Other wards">Other wards</option>
               <option value="Other health institution">Other health institution</option>
               <option value="Public">Public health staff</option>
+              <option value="Community ">Community </option>
               <option value="GPs">GPs</option>
               <option value="Courts">Courts</option>
               <option value="Self">Self-referrals</option>
@@ -329,11 +330,11 @@ const PatientDetails = () => {
                 Clinic Session
               </option>
               <option value="">Select Clinic Session</option>
-              <option value="Consaltant">Genaral Clinic</option>
-              <option value="OPD">Child & Adolescent guidance clinic</option>
-              <option value="Other wards">Substance abuse clinic</option>
-              <option value="Other health institution">Gender based violence clinic</option>
-              <option value="Public">Elderly clinic</option>
+              <option value="Genaral_Clinic">Genaral Clinic</option>
+              <option value="Child_Adolescent_guidance_clinic">Child & Adolescent guidance clinic</option>
+              <option value="Substance_abuse_clinic">Substance abuse clinic</option>
+              <option value="Gender_based_violence_clinic">Gender based violence clinic</option>
+              <option value="Elderly_clinic">Elderly clinic</option>
               <option value="Other">Other</option>
             </select>
           </div>
@@ -355,12 +356,10 @@ const PatientDetails = () => {
               <option value="" disabled>
                 Patient Condition
               </option>
-              <option value="Consaltant">Delebrte self-harm</option>
-              <option value="OPD">suicides</option>
-              <option value="Other wards">Substance abuse clinic</option>
-              <option value="Other health institution">Gender based violence clinic</option>
-              <option value="Public">Elderly clinic</option>
-              <option value="Other">Other</option>
+              <option value="Delebrte self-harm">Delebrte self-harm</option>
+              <option value="suicides">suicides</option>
+              <option value="Victims of sexual abuse">Victims of sexual abuse</option>
+              <option value="Victims of violence">Victims of violence</option>
             </select>
           </div>
 

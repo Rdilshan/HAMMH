@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { ClincType } from "@prisma/client";
+
 
 const prisma = new PrismaClient();
 
@@ -30,7 +32,23 @@ export async function POST(
   try {
     const data = await request.json();
     const id = (await params).id;
+    let patientclinc;
 
+    //get the patient details
+    const patientvalue = await prisma.patients.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        clinic_session: true,
+      },
+    });
+
+    if (patientvalue?.clinic_session) {
+       patientclinc = patientvalue?.clinic_session;
+    } else {
+       patientclinc = "Genaral_Clinic";
+    }
     //not attendence
     await prisma.clinic.updateMany({
       where: {
@@ -68,6 +86,7 @@ export async function POST(
           next_data: data.next_data,
           patient_id: Number(id),
           status: "Attend",
+          clinc_type: patientclinc as ClincType
         },
       });
     } else {
@@ -92,6 +111,8 @@ export async function POST(
         Images: [],
         clinc_data: data.next_data,
         patient_id: Number(id),
+        clinc_type: patientclinc as ClincType
+        
       },
     });
 
