@@ -1,5 +1,5 @@
 "use client";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaMapPin, FaTrash } from "react-icons/fa";
 import { BiSolidRightArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { useState, useEffect } from "react";
@@ -143,9 +143,8 @@ const PatientsDetails = () => {
       <div className="flex flex-col md:flex-row justify-between bg-white items-center mb-4 p-4 rounded-lg shadow-sm">
         <input
           type="text"
-          placeholder={`Search by ${
-            selectedCategory === "All" ? "Name or NIC" : selectedCategory
-          }`}
+          placeholder={`Search by ${selectedCategory === "All" ? "Name or NIC" : selectedCategory
+            }`}
           className="bg-[#F8F3FF] rounded-md py-2 px-4 w-full md:w-2/3 mb-2 md:mb-0 md:mr-4 outline-none text-black"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -206,7 +205,15 @@ const PatientsDetails = () => {
                       {patient.telephone}
                     </td>
                     <td className="px-4 py-6 text-center hidden md:table-cell">
-                      {patient.address}
+                      {/* {patient.address} */}
+                      <button
+                        className="text-yellow-600 mr-3"
+                        onClick={() =>
+                          window.open(`https://maps.google.com/?q=${patient.location[0]},${patient.location[1]}`, '_blank')
+                        }
+                      >
+                        <FaMapPin />
+                      </button>
                     </td>
                     <td className="px-4 py-6 text-center">
                       <button
@@ -245,7 +252,16 @@ const PatientsDetails = () => {
                         </div>
                         <div className="flex items-center justify-between py-2">
                           <p className="font-bold">Address</p>
-                          <p>{patient.address}</p>
+                          <p>
+                            <button
+                              className="text-yellow-600 mr-3"
+                              onClick={() =>
+                                window.open(`https://maps.google.com/?q=${patient.location[0]},${patient.location[1]}`, '_blank')
+                              }
+                            >
+                              <FaMapPin />
+                            </button>
+                          </p>
                         </div>
                       </td>
                     </tr>
@@ -267,11 +283,10 @@ const PatientsDetails = () => {
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
-            className={`mx-1 px-3 py-1 rounded-md ${
-              currentPage === page
+            className={`mx-1 px-3 py-1 rounded-md ${currentPage === page
                 ? "bg-purple-600 text-white"
                 : "bg-gray-200 text-gray-700"
-            }`}
+              }`}
             onClick={() => handlePageChange(page)}
           >
             {page}
