@@ -23,8 +23,8 @@ export default async function DashboardLayout({ children }: { children: ReactNod
         </div>
         
         {/* Main content area with adjusted padding */}
-        <main className="flex-1 px-2 md:px-6 py-10 overflow-auto">
-          <div className="max-w-full px-7 min:">
+        <main className="flex-1 px-2 md:px-6 pt-16 overflow-auto">
+          <div className="max-w-full pl-12 min:">
             {children}
           </div>
         </main>
