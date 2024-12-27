@@ -85,41 +85,41 @@ const MedicalRecordsGrid = () => {
 
       {/* Modal for Full Record Details */}
       {modalOpen && selectedRecord && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-          <div className="bg-white p-8 rounded-lg w-3/4 max-w-1/2  relative ">
-            {/* Close button with high z-index */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-red-500 font-bold text-xl z-60"
-            >
-              X
-            </button>
-            <div className="flex justify-between item-center">
-              <p className="mb-2">
-                Clinic Data:{" "}
-                {new Date(selectedRecord.clinc_data).toLocaleString()}
-              </p>
-
-            </div>
-
-            {/* Image Gallery */}
-            <div className="overflow-x-auto">
-              <div className="flex gap-4 w-full">
-                {selectedRecord.Images.map((image, index) => (
-                  <Image
-                    key={index}
-                    src={image}
-                    alt={`Full Record Image ${index + 1}`}
-                    className="w-80 h-80 object-cover rounded-lg md:w-full md:h-auto mx-auto"
-                    width={80}
-                    height={80}
-                  />
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+       <div className="bg-white p-8 rounded-lg lg:w-3/4 lg:h-3/4 relative">
+         {/* Close button with high z-index */}
+         <button
+           onClick={closeModal}
+           className="absolute top-4 right-4 text-red-500 font-bold text-xl z-60"
+         >
+           X
+         </button>
+         <div className="flex justify-between item-center">
+           <p className="mb-2">
+             Clinic Data:{" "}
+             {new Date(selectedRecord.clinc_data).toLocaleString()}
+           </p>
+         </div>
+     
+         {/* Image Gallery */}
+         <div className="overflow-x-auto">
+           <div className="flex gap-4 w-full">
+             {selectedRecord.Images.map((image, index) => (
+               <Image
+                 key={index}
+                 src={image}
+                 alt={`Full Record Image ${index + 1}`}
+                 className="object-contain rounded-lg w-full h-auto max-w-full max-h-80 mx-auto"
+                 width={80}
+                 height={80}
+               />
+             ))}
+           </div>
+         </div>
+     
+       </div>
+     </div>
+     
       )}
     </div>
   );
