@@ -6,7 +6,7 @@ interface StatsCardProps {
     trend: number
   }
   
-  export function StatsCard({ name,title, value, icon, trend }: StatsCardProps) {
+  export function StatsCard({ name,title, value, icon }: StatsCardProps) {
     let bgColor;
     let iconBgColor
   switch (name) {
