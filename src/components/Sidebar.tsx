@@ -9,7 +9,6 @@ import {
   ClipboardCheck,
   Syringe,
   FileText,
-  LogOut,
 } from 'lucide-react'
 
 export default function Sidebar({ role, userid }: { role: string; userid: string }) {

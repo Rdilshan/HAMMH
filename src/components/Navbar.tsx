@@ -1,26 +1,12 @@
 'use client'
 
 import { useState } from 'react';
-import { Bell, Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import logo from '../../public/logo.png';
 import admin from '../../public/admin.jpg';
 
 
-interface Notification {
-  id: number;
-  title: string;
-  message: string;
-  time: string;
-  isRead: boolean;
-}
-
-interface NotificationButtonProps {
-  notifications: Notification[];
-  showNotifications: boolean;
-  toggleNotifications: () => void;
-  isMobile?: boolean;
-}
 
 interface AdminProfileProps {
   isMobile?: boolean;
@@ -29,7 +15,7 @@ interface AdminProfileProps {
 
 const Navbar = ({ role, userid }: { role: string; userid: string }) => {
   console.log(userid)
-  const [showNotifications, setShowNotifications] = useState<boolean>(false);
+  
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const handleLogout = async () => {
     try {
@@ -50,41 +36,15 @@ const Navbar = ({ role, userid }: { role: string; userid: string }) => {
   };
 
   // Demo notifications
-  const notifications: Notification[] = [
-    {
-      id: 1,
-      title: "Notifications",
-      message: "Notifications",
-      time: "5 minutes ago",
-      isRead: false
-    },
-    {
-      id: 2,
-      title: "Notifications",
-      message: "Notifications",
-      time: "1 hour ago",
-      isRead: false
-    },
-    {
-      id: 3,
-      title: "System Update",
-      message: "System maintenance scheduled for tonight",
-      time: "2 hours ago",
-      isRead: false
-    }
-  ];
+ 
 
   const toggleMobileMenu = (): void => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    // Close notifications when opening mobile menu
-    if (!isMobileMenuOpen) {
-      setShowNotifications(false);
-    }
+   
+    
   };
 
-  const toggleNotifications = (): void => {
-    setShowNotifications(!showNotifications);
-  };
+  
 
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-white shadow-sm z-50">
