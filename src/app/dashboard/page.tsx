@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { useEffect, useState } from 'react'
+import { FaUserMd, FaUserNurse, FaHospitalUser, FaUsers } from 'react-icons/fa';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -80,7 +81,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 min-h-screen text-gray-800 dark:text-gray-200">
+    <div className="py-3 px-2 min-h-screen text-gray-800 dark:text-gray-200">
       {/* Hero Section */}
       <div
         className="relative rounded-lg overflow-hidden mb-8 shadow-lg hidden sm:hidden md:block"
@@ -114,10 +115,10 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       
         {[
-          { name: 'Doctor', title: 'Total Doctors', value: `${stats.doctors || 0}+`, icon: '👨‍⚕️' },
-          { name: 'Nurse', title: 'Total Nurses', value: `${stats.nurses || 0}+`, icon: '👩‍⚕️' },
-          { name: 'Patient', title: 'Total Patients', value: `${stats.patients || 0}+`, icon: '🏥' },
-          { name: 'Staff', title: 'Total Staff', value: `${stats.staff || 0}+`, icon: '👥' },
+           { name: 'Doctor', title: 'Total Doctors', value: `${stats.doctors || 0}+`, icon: <FaUserMd /> },
+           { name: 'Nurse', title: 'Total Nurses', value: `${stats.nurses || 0}+`, icon: <FaUserNurse /> },
+           { name: 'Patient', title: 'Total Patients', value: `${stats.patients || 0}+`, icon: <FaHospitalUser /> },
+           { name: 'Staff', title: 'Total Staff', value: `${stats.staff || 0}+`, icon: <FaUsers /> },
         ].map((stat, index) => (
           <StatsCard key={index} {...stat} trend={80} />
         ))}
@@ -129,12 +130,12 @@ export default function Dashboard() {
           <h2 className="text-xl font-bold mb-4 text-black">HOSPITAL OVERVIEW</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
             {[
-              { title: "Total Patients",count:`${stats.patients || 0}+`, icon: "👤" },
-              { title: "Admit Patients", count:`${stats.admit || 0}+`, icon: "📋" },
-              { title: "Clinic Patients", count:`${stats.clinic || 0}+`, icon: "🏥" },
-              { title: "Injection Count", count:`${stats.injection || 0}+`, icon: "💉" },
-              { title: "Total doctors", count:`${stats.doctors || 0}+`, icon: "👨‍⚕️" },
-              { title: "Total Staff", count:`${stats.staff || 0}+`, icon: "👥" },
+              { title: 'Total Patients', count: `${stats.patients || 0}+`, icon: <FaHospitalUser /> },
+              { title: 'Admit Patients', count: `${stats.admit || 0}+`, icon: <FaHospitalUser /> },
+              { title: 'Clinic Patients', count: `${stats.clinic || 0}+`, icon: <FaHospitalUser /> },
+              { title: 'Injection Count', count: `${stats.injection || 0}+`, icon: <FaHospitalUser /> },
+              { title: 'Total Doctors', count: `${stats.doctors || 0}+`, icon: <FaUserMd /> },
+              { title: 'Total Staff', count: `${stats.staff || 0}+`, icon: <FaUsers /> },
             ].map((overview, index) => (
               <OverviewCard key={index} {...overview} />
             ))}

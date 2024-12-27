@@ -2,28 +2,49 @@ interface StatsCardProps {
   name:string
     title: string
     value: string
-    icon: string
+    icon: React.ReactNode;
     trend: number
   }
   
   export function StatsCard({ name,title, value, icon, trend }: StatsCardProps) {
+    let bgColor;
+    let iconBgColor
+  switch (name) {
+    case 'Doctor':
+      bgColor = 'bg-blue-500'; 
+      iconBgColor = 'bg-blue-400';
+      break;
+    case 'Nurse':
+      bgColor = 'bg-green-500'; 
+      iconBgColor = 'bg-green-400';
+      break;
+    case 'Patient':
+      bgColor = 'bg-red-500'; 
+      iconBgColor = 'bg-red-400';
+      break;
+    case 'Staff':
+      bgColor = 'bg-yellow-500'; 
+      iconBgColor = 'bg-yellow-400';
+      break;
+    default:
+      bgColor = 'bg-gray-500'; 
+  }
     return (
       <div>
-        <p className="text-black font-semibold text-sm mb-2 px-3">{name}</p>
-        <div className="bg-white rounded-lg p-6 shadow-lg">
+      
+        <div className={`rounded-lg p-6 shadow-lg ${bgColor}`}>
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-black font-semibold text-sm">{title}</p>
-            <h3 className="text-2xl font-bold mt-1 dark:text-black">{value}</h3>
+        <div className={`rounded-full p-3 ${iconBgColor}`}>
+          <span className="text-[30px] md:text-3xl text-white">{icon}</span>
           </div>
-          <span className="text-3xl">{icon}</span>
+          <div>
+            <p className="text-white font-semibold text-sm">{title}</p>
+            <h3 className="text-2xl font-bold mt-1 text-white">{value}</h3>
+          </div>
+          
+         
         </div>
-        <div className="mt-4 flex items-center gap-2">
-          <span className={trend >= 0 ? 'text-green-700' : 'text-red-500'}>
-            {trend}%
-          </span>
-          <span className="text-gray-600 dark:text-gray-400 text-sm">vs last month</span>
-        </div>
+       
       </div>
       </div>
       
