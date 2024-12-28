@@ -61,15 +61,15 @@ const MedicalRecordsGrid = () => {
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
         {records.map((record) => (
           <div key={record.id}>
-            <div className="record-item">
+            <div className="record-item ">
               <div
-                className="image-container relative cursor-pointer rounded-md"
+                className="image-container relative cursor-pointer rounded-md w-full h-40 "
                 onClick={() => handleImageClick(record)}
               >
                 <Image
                   src={record.Images[0]}
                   alt={`Record Image ${record.id}`}
-                  className="w-full h-auto object-cover rounded-lg filter blur-sm" 
+                  className="w-full h-1/2 object-cover rounded-lg filter blur-sm" 
                   width={0} height={0} // Apply blur effect
                 />
                 {/* Overlay Date */}
@@ -85,41 +85,47 @@ const MedicalRecordsGrid = () => {
 
       {/* Modal for Full Record Details */}
       {modalOpen && selectedRecord && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 ">
-          <div className="bg-white p-8 rounded-lg w-3/4 max-w-1/2  relative ">
-            {/* Close button with high z-index */}
-            <button
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-red-500 font-bold text-xl z-60"
-            >
-              X
-            </button>
-            <div className="flex justify-between item-center">
-              <p className="mb-2">
-                Clinic Data:{" "}
-                {new Date(selectedRecord.clinc_data).toLocaleString()}
-              </p>
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+       <div className="bg-white p-8 rounded-lg w-3/4 h-3/4 relative">
+         {/* Close button with high z-index */}
+         <button
+           onClick={closeModal}
+           className="absolute top-4 right-4 text-red-500 font-bold text-xl z-60"
+         >
+           X
+         </button>
+         <div className="flex justify-between item-center">
+           <p className="mb-2">
+             Clinic Data:{" "}
+             {new Date(selectedRecord.clinc_data).toLocaleString()}
+           </p>
+         </div>
+     
+         {/* Image Gallery */}
+         <div className="overflow-x-auto overflow-y-auto h-full">
+  <div className="flex gap-4 w-full h-full">
+    {selectedRecord.Images.map((image, index) => (
+      <div
+        key={index}
+        className="flex-none w-96 h-96" // Fixed container size
+      >
+        <Image
+          src={image}
+          alt={`Full Record Image ${index + 1}`}
+          className="object-cover rounded-lg"
+          width={384} 
+          height={384} 
+          quality={100} 
+        />
+      </div>
+    ))}
+  </div>
+</div>
 
-            </div>
-
-            {/* Image Gallery */}
-            <div className="overflow-x-auto">
-              <div className="flex gap-4 w-full">
-                {selectedRecord.Images.map((image, index) => (
-                  <Image
-                    key={index}
-                    src={image}
-                    alt={`Full Record Image ${index + 1}`}
-                    className="w-80 h-80 object-cover rounded-lg md:w-full md:h-auto mx-auto"
-                    width={80}
-                    height={80}
-                  />
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
+     
+       </div>
+     </div>
+     
       )}
     </div>
   );

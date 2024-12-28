@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { Menu, X, LogOut } from 'lucide-react';
 import Image from 'next/image';
-import logo from '../../public/logo.png';
-import admin from '../../public/admin.jpg';
+import logo from '../../public/logo1.png';
+import admin from '../../public/admin1.png';
 
 
 
@@ -133,7 +133,7 @@ const AdminProfile: React.FC<AdminProfileProps> = ({ role, isMobile = false }) =
     <Image
       src={admin}
       alt="Admin"
-      className="w-8 h-8 rounded-full"
+      className="w-10 h-8 rounded-full "
     />
   </div>
 );
