@@ -86,7 +86,7 @@ const MedicalRecordsGrid = () => {
       {/* Modal for Full Record Details */}
       {modalOpen && selectedRecord && (
        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-       <div className="bg-white p-8 rounded-lg lg:w-3/4 lg:h-3/4 relative">
+       <div className="bg-white p-8 rounded-lg w-3/4 h-3/4 relative">
          {/* Close button with high z-index */}
          <button
            onClick={closeModal}
@@ -102,20 +102,26 @@ const MedicalRecordsGrid = () => {
          </div>
      
          {/* Image Gallery */}
-         <div className="overflow-x-auto">
-           <div className="flex gap-4 w-full">
-             {selectedRecord.Images.map((image, index) => (
-               <Image
-                 key={index}
-                 src={image}
-                 alt={`Full Record Image ${index + 1}`}
-                 className="object-contain rounded-lg w-full h-auto max-w-full max-h-80 mx-auto"
-                 width={80}
-                 height={80}
-               />
-             ))}
-           </div>
-         </div>
+         <div className="overflow-x-auto overflow-y-auto h-full">
+  <div className="flex gap-4 w-full h-full">
+    {selectedRecord.Images.map((image, index) => (
+      <div
+        key={index}
+        className="flex-none w-96 h-96" // Fixed container size
+      >
+        <Image
+          src={image}
+          alt={`Full Record Image ${index + 1}`}
+          className="object-cover rounded-lg"
+          width={384} 
+          height={384} 
+          quality={100} 
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
      
        </div>
      </div>
