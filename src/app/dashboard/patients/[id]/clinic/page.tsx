@@ -171,21 +171,21 @@ const PrescriptionUpload = () => {
 
   return (
    
-       
-    <div className="bg-white p-6 rounded-lg shadow-md relative h-screen flex flex-col">
+       <>
+    <div className="bg-white p-6 flex flex-col">
     <Toaster position="top-center" reverseOrder={false} />
       <div className="space-y-6 ">
 
        
-        <div className="text-center mb-4">
-          <h2 className="text-lg font-semibold mb-2 text-black">
+        <div className="text-center ">
+          <h2 className="text-lg font-semibold text-black">
             ADD PRESCRIPTION IMAGES
           </h2>
         </div>
 
         {/* Drag and Drop Upload Area */}
         <div
-          className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center flex flex-col justify-center items-center flex-grow"
+          className="p-4 border-2 border-dashed border-gray-200 rounded-lg max-h-[130px]  text-center flex flex-col justify-center items-center flex-grow"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
@@ -235,11 +235,11 @@ const PrescriptionUpload = () => {
           {/* Instructions and Button */}
           {selectedFiles.length === 0 && (
             <div className="text-center">
-              <p className="text-black mb-2">Upload Prescription Images here</p>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-black ">Upload Prescription Images here</p>
+              <p className="text-sm text-gray-400 ">
                 File Supported: png, jpg, jpeg
               </p>
-              <p className="text-gray-500 mb-4">OR</p>
+              <p className="text-gray-500 ">OR</p>
               <button
                 onClick={handleBrowseClick}
                 className="text-purple-600 hover:text-purple-700 font-medium"
@@ -249,10 +249,10 @@ const PrescriptionUpload = () => {
             </div>
           )}
           {selectedFiles.length > 0 && (
-            <div className="flex justify-center mt-4 w-full my-7">
+            <div className=" absolute flex justify-center mt-4 w-full top-1/2 my-7">
               <button
                 onClick={handleBrowseClick}
-                className="text-purple-600 hover:text-purple-700 font-medium flex items-center"
+                className="bg-white  p-3 rounded text-purple-600 hover:text-purple-700 font-medium flex items-center"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -276,12 +276,16 @@ const PrescriptionUpload = () => {
           )}
         </div>
       </div>
+    
+    </div>
+
+
       <form onSubmit={handleSave}>
       {/* Fixed Date and Save Button Section */}
-      <div className=" w-full py-6 px-4 rounded-lg shadow-lg absolute bottom-[100px] left-0">
+      <div className="bg-white w-full py-6 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm text-gray-100 mb-2">CLINIC DATE</label>
+            <label className="block text-sm text-black mb-2">CLINIC DATE</label>
             <input
               type="datetime-local"
               name='clinc_data'
@@ -292,7 +296,7 @@ const PrescriptionUpload = () => {
           </div>
 
           <div>
-            <label className="block text-sm text-gray-100 mb-2">
+            <label className="block text-sm text-black mb-2">
               NEXT CLINIC DATE
             </label>
             <input
@@ -324,7 +328,7 @@ const PrescriptionUpload = () => {
         </div>
       </div>
       </form>
-    </div>
+      </>
 
   );
 };
