@@ -61,15 +61,15 @@ const MedicalRecordsGrid = () => {
       <div className="grid grid-cols-3 lg:grid-cols-5 gap-4">
         {records.map((record) => (
           <div key={record.id}>
-            <div className="record-item">
+            <div className="record-item ">
               <div
-                className="image-container relative cursor-pointer rounded-md"
+                className="image-container relative cursor-pointer rounded-md w-full h-40 "
                 onClick={() => handleImageClick(record)}
               >
                 <Image
                   src={record.Images[0]}
                   alt={`Record Image ${record.id}`}
-                  className="w-full h-auto object-cover rounded-lg filter blur-sm" 
+                  className="w-full h-1/2 object-cover rounded-lg filter blur-sm" 
                   width={0} height={0} // Apply blur effect
                 />
                 {/* Overlay Date */}
